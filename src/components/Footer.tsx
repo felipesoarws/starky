@@ -1,0 +1,115 @@
+import { Sparkles, Instagram, Github, Linkedin } from "lucide-react";
+
+export const Footer: React.FC = () => {
+  return (
+    <footer className="bg-zinc-950 pt-20 pb-10 px-10 border-t border-zinc-800">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col items-center justify-between gap-12 mb-16 lg:flex-row">
+          <div className="lg:w-[20vw]">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-6 h-6 bg-(--accent-color) rounded flex items-center justify-center">
+                <Sparkles className="w-3 h-3 text-white fill-white" />
+              </div>
+              <span className="text-lg font-bold text-white">Starky</span>
+            </div>
+            <p className="text-zinc-500 text-sm leading-relaxed">
+              A plataforma intuitiva de repetição espaçada. Aprenda mais rápido,
+              lembre por mais tempo e domine qualquer assunto com facilidade.
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between gap-15 lg:gap-30">
+            <div>
+              <h4 className="font-semibold text-white mb-6">Aprender</h4>
+              <ul className="space-y-4 text-sm text-zinc-500">
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-(--accent-color) transition-colors"
+                  >
+                    Explorar Decks
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-(--accent-color) transition-colors"
+                  >
+                    Metodologia
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-(--accent-color) transition-colors"
+                  >
+                    Baixar App
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-white mb-6">Legal</h4>
+              <ul className="space-y-4 text-sm text-zinc-500">
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-(--accent-color) transition-colors"
+                  >
+                    Política de Privacidade
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-(--accent-color) transition-colors"
+                  >
+                    Termos de Serviço
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-(--accent-color) transition-colors"
+                  >
+                    Política de Cookies
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-zinc-800">
+          <p className="text-zinc-500 text-sm mb-4 md:mb-0">
+            © 2026 Starky Inc. Todos os direitos reservados.
+          </p>
+          <div className="flex gap-6">
+            <a
+              href="https://www.instagram.com/devf____/"
+              target="_blank"
+              className="text-zinc-500 hover:text-(--accent-color) transition-colors"
+            >
+              <Instagram className="w-5 h-5" />
+            </a>
+            <a
+              href="https://github.com/felipesoarws/"
+              target="_blank"
+              className="text-zinc-500 hover:text-(--accent-color) transition-colors"
+            >
+              <Github className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/felipesoarws/"
+              target="_blank"
+              className="text-zinc-500 hover:text-(--accent-color) transition-colors"
+            >
+              <Linkedin className="w-5 h-5" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
