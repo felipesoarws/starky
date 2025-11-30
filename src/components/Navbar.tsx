@@ -1,18 +1,18 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import { Menu, X, LampDesk } from "lucide-react";
 import { Button } from "./ui/Button";
 
 interface NavbarProps {
   scrolled: boolean;
-  onStart?: () => void;
 }
 
-const Navbar = ({ scrolled, onStart }: NavbarProps) => {
+const Navbar = ({ scrolled }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${scrolled ? "bg-black/80 backdrop-blur-md border-zinc-800 py-3 shadow-sm" : "bg-transparent border-transparent py-5"}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${scrolled ? "bg-black/50 backdrop-blur-md border-zinc-800 py-3 pb-4 shadow-sm" : "bg-transparent border-transparent py-5"}`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <div
@@ -26,6 +26,7 @@ const Navbar = ({ scrolled, onStart }: NavbarProps) => {
             Starky
           </span>
         </div>
+
         {/* Desktop Header */}
         <nav className="hidden md:flex items-center gap-8">
           <a
@@ -49,8 +50,9 @@ const Navbar = ({ scrolled, onStart }: NavbarProps) => {
           >
             Entrar
           </a>
-          <Button size="sm" onClick={onStart}>
-            Começar Agora
+
+          <Button size="sm">
+            <Link to={"/overview"}>Começar Agora</Link>
           </Button>
         </div>
 
@@ -88,11 +90,10 @@ const Navbar = ({ scrolled, onStart }: NavbarProps) => {
             <Button
               className="w-full"
               onClick={() => {
-                onStart?.();
                 setIsMobileMenuOpen(false);
               }}
             >
-              Começar Agora
+              <Link to={"/overview"}>Começar Agora</Link>
             </Button>
           </div>
         </div>
