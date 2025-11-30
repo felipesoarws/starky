@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-
 import Sidebar from "../components/overview/Sidebar";
+import OverviewHeader from "../components/overview/OverviewHeader";
+
 import type { TabType } from "../components/overview/types";
 
 interface OverviewProps {
@@ -20,6 +21,10 @@ function Overview({ onExit, isLoggedIn = false, onLogin }: OverviewProps) {
         setActiveTab={setActiveTab}
         onExit={onExit}
       />
+
+      <main className="flex-1 flex flex-col h-screen overflow-hidden">
+        <OverviewHeader />
+      </main>
     </div>
   );
 }
