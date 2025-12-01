@@ -7,24 +7,17 @@ import DecksView from "../components/overview/DecksView";
 import LibraryView from "../components/overview/LibraryView";
 import StatsView from "../components/overview/StatsView";
 
-interface OverviewProps {
-  onExit: () => void;
+/* interface OverviewProps {
   isLoggedIn?: boolean;
-  onLogin?: () => void;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function Overview({ onExit, isLoggedIn = false, onLogin }: OverviewProps) {
+ */
+function Overview() {
   // view dividida de logada / não logada para ver o layout, dps tem que tirar
   const [activeTab, setActiveTab] = useState<TabType>("decks_view");
 
   return (
     <div className="min-h-screen bg-(--accent-background) flex flex-col md:flex-row overflow-hidden relative">
-      <Sidebar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onExit={onExit}
-      />
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
         <OverviewHeader />
@@ -41,10 +34,7 @@ function Overview({ onExit, isLoggedIn = false, onLogin }: OverviewProps) {
 
             {/* Stats view */}
             {(activeTab === "stats_view" || activeTab === "stats_locked") && (
-              <StatsView
-                isLocked={activeTab === "stats_locked"}
-                onLogin={onLogin || (() => {})}
-              />
+              <StatsView isLocked={activeTab === "stats_locked"} />
             )}
           </div>
         </div>

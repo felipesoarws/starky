@@ -3,10 +3,9 @@ import { Button } from "../ui/Button";
 
 interface StatsViewProps {
   isLocked: boolean;
-  onLogin: () => void;
 }
 
-const StatsView = ({ isLocked, onLogin }: StatsViewProps) => {
+const StatsView = ({ isLocked }: StatsViewProps) => {
   if (isLocked) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-center animate-fade-in">
@@ -20,7 +19,7 @@ const StatsView = ({ isLocked, onLogin }: StatsViewProps) => {
           Faça login para ver estatísticas detalhadas sobre seu desempenho e
           retenção de memória.
         </p>
-        <Button onClick={onLogin} size="lg" className="w-full sm:w-auto">
+        <Button size="lg" className="w-full sm:w-auto">
           Fazer Login
         </Button>
       </div>
