@@ -1,32 +1,34 @@
-import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight } from "lucide-react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: "primary" | "secondary" | "tertiary" | "outline" | "ghost";
+  size?: "sm" | "md" | "lg";
   withArrow?: boolean;
   className?: string;
 }
 
-export const Button: React.FC<ButtonProps> = ({ 
-  children, 
-  variant = 'primary', 
-  size = 'md', 
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  variant = "primary",
+  size = "md",
   withArrow = false,
-  className = '',
-  ...props 
+  className = "",
+  ...props
 }) => {
-  const baseStyles = "inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed rounded-full";
-  
+  const baseStyles =
+    "inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed rounded-full";
+
   const variants = {
-    // Primary: Uses the new Accent Blue (#3B45F2)
-    primary: "bg-(--accent-color) text-white hover:bg-(--accent-color)/90 shadow-lg shadow-(--accent-color)/25 focus:ring-(--accent-color)",
-    // Secondary: Dark Gray background for Dark Mode
-    secondary: "bg-zinc-800 text-zinc-100 hover:bg-zinc-700 border border-zinc-700 shadow-sm focus:ring-zinc-600",
-    // Outline: Border only
-    outline: "border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500 focus:ring-zinc-700",
-    // Ghost: Minimal
-    ghost: "text-zinc-400 hover:text-white hover:bg-zinc-800 focus:ring-zinc-700",
+    primary:
+      "bg-accent text-white hover:bg-accent/90 shadow-lg shadow-accent/25 focus:ring-accent",
+    secondary:
+      "bg-zinc-800 text-zinc-100 hover:bg-zinc-700 border border-zinc-700 shadow-sm focus:ring-zinc-600",
+    outline:
+      "border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500 focus:ring-zinc-700",
+    ghost:
+      "text-zinc-400 hover:text-white hover:bg-zinc-800 focus:ring-zinc-700",
+    tertiary:
+      "bg-white text-black hover:bg-white/90 shadow-lg shadow-accent/25 focus:ring-white border border-white",
   };
 
   const sizes = {
@@ -36,7 +38,7 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <button 
+    <button
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
       {...props}
     >

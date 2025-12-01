@@ -51,7 +51,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
             Entrar
           </a>
 
-          <Button size="sm">
+          <Button size="sm" className="bg-(--accent-color)">
             <Link to={"/overview"}>Começar Agora</Link>
           </Button>
         </div>
