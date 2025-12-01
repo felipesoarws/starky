@@ -132,8 +132,6 @@ const MobileApp = () => {
               </button>
             </div>
           </div>
-
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-(--accent-color)/10 blur-[80px] -z-10 rounded-full"></div>
         </div>
       </div>
     </section>
