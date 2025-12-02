@@ -3,7 +3,7 @@ import { ArrowLeft, LampDesk } from "lucide-react";
 import { Link } from "react-router";
 
 function Login() {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isLogin] = useState<boolean>(true);
 
   useEffect(() => {
     document.title = "Starky | Login";
