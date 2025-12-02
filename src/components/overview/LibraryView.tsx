@@ -65,7 +65,7 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
       </p>
       <div className="flex flex-wrap gap-18 items-center justify-start ">
         {decksThemes.map((deck, id) => {
-          const isAdded = decks.some((d) => d.title == deck.category);
+          const isAdded = decks.some((d) => d.title == deck.title);
 
           return (
             <div
@@ -86,9 +86,14 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
                     </a>
                   </div>
                 </div>
-                <h3 className="text-left text-xl font-bold text-white mb-2 line-clamp-2">
-                  {deck.category}
-                </h3>
+                <div className="flex items-center justify-start gap-2">
+                  <h3 className="text-left text-xl font-bold text-white mb-2 line-clamp-2">
+                    {deck.title}
+                  </h3>
+                  <p className="mb-2 text-xs text-zinc-500 bg-zinc-800 px-2 py-0.5 rounded-full mt-1 inline-block">
+                    {deck.category}
+                  </p>
+                </div>
                 <div className="text-sm text-zinc-400 mb-6 flex items-center gap-2">
                   <Library className="w-4 h-4" /> {deck.length} cards
                 </div>
@@ -99,7 +104,7 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
                   <Button
                     variant={isAdded ? "secondary" : "primary"}
                     className={`w-full justify-center ${isAdded ? "opacity-50 cursor-not-allowed" : ""}`}
-                    onClick={() => addDeckToDash(deck.category)}
+                    onClick={() => addDeckToDash(deck.title)}
                     disabled={isAdded}
                   >
                     {isAdded ? (

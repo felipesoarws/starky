@@ -2,7 +2,10 @@ import { Construction } from "lucide-react";
 
 const MobileApp = () => {
   return (
-    <section className="py-24 px-10 border-y border-zinc-800 bg-zinc-900/50">
+    <section
+      id="app"
+      className="py-24 px-10 border-y border-zinc-800 bg-zinc-900/50"
+    >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
         <div className="flex-1 text-center md:text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-yellow-500/20 bg-yellow-500/10 mb-6">

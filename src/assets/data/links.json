@@ -1,25 +1,29 @@
 [
   {
-    "category": "Inglês A1",
+    "title": "Inglês A1",
+    "category": "Inglês",
     "description": "50 cards sobre inglês iniciante.",
     "length": 50,
     "file": "./src/assets/data/decks/starky_ingles_a1.json"
   },
 
   {
-    "category": "Inglês B1",
+    "title": "Inglês B1",
+    "category": "Inglês",
     "description": "50 cards sobre inglês intermediário.",
     "length": 50,
     "file": "./src/assets/data/decks/starky_ingles_b1.json"
   },
   {
-    "category": "Inglês C1",
+    "title": "Inglês C1",
+    "category": "Inglês",
     "description": "50 cards sobre inglês avançado.",
     "length": 50,
     "file": "./src/assets/data/decks/starky_ingles_c1.json"
   },
   {
-    "category": "Inglês Corporativo",
+    "title": "Inglês Corporativo",
+    "category": "Inglês",
     "description": "50 cards sobre termos e situações comuns no ambiente corporativo.",
     "length": 50,
     "file": "./src/assets/data/decks/starky_ingles_corporativo.json"

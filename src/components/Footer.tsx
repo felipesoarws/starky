@@ -28,12 +28,18 @@ export const Footer: React.FC = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-accent transition-colors">
+                  <a
+                    href="#features"
+                    className="hover:text-accent transition-colors"
+                  >
                     Metodologia
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-accent transition-colors">
+                  <a
+                    href="#app"
+                    className="hover:text-accent transition-colors"
+                  >
                     Baixar App
                   </a>
                 </li>

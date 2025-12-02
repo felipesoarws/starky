@@ -159,7 +159,7 @@ const DecksView = ({
             </div>
 
             {/* Grid de decks */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 gap-y-12">
               {categoryDecks.map((deck) => (
                 <div
                   key={deck.id}

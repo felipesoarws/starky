@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Play, ArrowLeft, Clock } from "lucide-react";
+import {
+  Play,
+  ArrowLeft,
+  Clock,
+  Instagram,
+  Github,
+  Linkedin,
+} from "lucide-react";
 import { Button } from "./ui/Button";
 
 interface HeroProps {
@@ -16,7 +23,7 @@ const Hero = ({ onStart }: HeroProps) => {
 
       <div className="max-w-5xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/50 shadow-sm mb-8 animate-fade-in">
-          <span className="flex h-2 w-2 rounded-full bg-(--accent-color) animate-pulse"></span>
+          <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse"></span>
           <span className="text-xs font-medium text-zinc-400 ">
             A evolução do aprendizado chegou
           </span>
@@ -27,9 +34,7 @@ const Hero = ({ onStart }: HeroProps) => {
           style={{ userSelect: "none" }}
         >
           Domine qualquer assunto <br className="hidden md:block" />
-          <span className="text-(--accent-color) ">
-            com Repetição Espaçada.
-          </span>
+          <span className="text-accent ">com Repetição Espaçada.</span>
         </h1>
 
         <p
@@ -67,7 +72,7 @@ const Hero = ({ onStart }: HeroProps) => {
           className="mt-20 relative mx-auto max-w-4xl animate-slide-up text-left"
           style={{ animationDelay: "0.4s" }}
         >
-          <div className="absolute -inset-4 bg-(--accent-color)/10 blur-3xl rounded-4xl"></div>
+          <div className="absolute -inset-4 bg-accent/10 blur-3xl rounded-4xl"></div>
 
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 backdrop-blur-sm p-2 shadow-2xl ring-1 ring-black/5">
             <div className="rounded-xl bg-zinc-950 overflow-hidden relative border border-zinc-800 flex flex-col group hover:border-zinc-700 lg:aspect-16/10  transition-colors">
@@ -82,13 +87,13 @@ const Hero = ({ onStart }: HeroProps) => {
                   </div>
                   <div className="h-6 w-px bg-zinc-800 hidden sm:block"></div>
                   <span className="text-sm font-bold text-white">
-                    JavaScript Interview
+                    Conhecimentos gerais
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded bg-zinc-800/50 border border-zinc-700/50 text-xs text-zinc-400 font-mono">
                     <Clock className="w-3 h-3" />
-                    04:20
+                    07:09
                   </div>
                   <div className="flex items-center gap-1 text-sm">
                     <span className="text-white font-medium">12</span>
@@ -100,7 +105,7 @@ const Hero = ({ onStart }: HeroProps) => {
 
               {/* App - Linha de progressão */}
               <div className="h-0.5 bg-zinc-900 w-full">
-                <div className="h-full w-[60%] bg-(--accent-color)"></div>
+                <div className="h-full w-[60%] bg-accent"></div>
               </div>
 
               {/* App - Principal area */}
@@ -112,35 +117,50 @@ const Hero = ({ onStart }: HeroProps) => {
                   className={`w-full h-full max-h-[400px] bg-zinc-900 border border-zinc-800 rounded-3xl p-8 flex flex-col items-center justify-center text-center shadow-2xl relative transition-all duration-500 ${isFlipped ? "bg-zinc-800/30" : ""}`}
                 >
                   <span
-                    className={`text-xs font-bold tracking-[0.2em] uppercase mb-6 transition-colors ${isFlipped ? "text-(--accent-color)" : "text-zinc-500"}`}
+                    className={`text-xs font-bold tracking-[0.2em] uppercase mb-6 transition-colors ${isFlipped ? "text-accent" : "text-zinc-500"}`}
                   >
                     {isFlipped ? "Resposta" : "Pergunta"}
                   </span>
 
                   {!isFlipped ? (
                     <div className="animate-fade-in">
-                      <h3 className="text-2xl md:text-4xl font-medium text-white leading-tight">
-                        Qual a diferença entre{" "}
-                        <span className="text-(--accent-color)">==</span> e{" "}
-                        <span className="text-(--accent-color)">===</span> em
-                        JavaScript?
+                      <h3 className="text-4xl md:text-4xl font-medium text-white leading-0.5">
+                        Qual o nome do
+                        <span className="text-accent"> criador</span> do
+                        <span className="text-accent"> Starky</span>?
                       </h3>
                     </div>
                   ) : (
                     <div className="space-y-6 max-w-2xl animate-slide-up">
                       <p className="text-xl md:text-3xl text-zinc-100 leading-relaxed font-light">
-                        <span className="font-mono bg-zinc-800 px-1 rounded text-(--accent-color)">
-                          ==
+                        <span className="font-mono bg-zinc-800 px-1 rounded text-accent">
+                          Felipe Soares
                         </span>{" "}
-                        faz coerção de tipo (converte).
-                        <br />
-                        <br />
-                        <span className="font-mono bg-zinc-800 px-1 rounded text-(--accent-color)">
-                          ===
-                        </span>{" "}
-                        compara valor e tipo (estrito).
                       </p>
-                      <div className="w-16 h-1 bg-(--accent-color)/50 rounded-full mx-auto mt-8"></div>
+                      <div className="flex items-center justify-center gap-6">
+                        <a
+                          href="https://www.instagram.com/devf____/"
+                          target="_blank"
+                          className="text-accent/60 hover:text-accent transition-colors"
+                        >
+                          <Instagram className="w-5 h-5" />
+                        </a>
+                        <a
+                          href="https://github.com/felipesoarws/"
+                          target="_blank"
+                          className="text-accent/60 hover:text-accent transition-colors"
+                        >
+                          <Github className="w-5 h-5" />
+                        </a>
+                        <a
+                          href="https://www.linkedin.com/in/felipesoarws/"
+                          target="_blank"
+                          className="text-accent/60 hover:text-accent transition-colors"
+                        >
+                          <Linkedin className="w-5 h-5" />
+                        </a>
+                      </div>
+                      <div className="w-16 h-1 bg-accent/50 rounded-full mx-auto mt-8"></div>
                     </div>
                   )}
 
@@ -159,7 +179,7 @@ const Hero = ({ onStart }: HeroProps) => {
                 {!isFlipped ? (
                   <Button
                     size="lg"
-                    className="w-full max-w-sm text-lg py-4 shadow-xl shadow-(--accent-color)/20"
+                    className="w-full max-w-sm text-lg py-4 shadow-xl shadow-accent/20"
                     onClick={() => setIsFlipped(true)}
                   >
                     Mostrar Resposta
@@ -173,6 +193,9 @@ const Hero = ({ onStart }: HeroProps) => {
                       <span className="text-xs font-bold text-zinc-400 group-hover/btn:text-red-400 ">
                         Difícil
                       </span>
+                      <span className="text-[10px] text-zinc-600 group-hover/btn:text-red-400/70 font-mono">
+                        1m
+                      </span>
                     </button>
                     <button
                       onClick={() => setIsFlipped(false)}
@@ -180,6 +203,9 @@ const Hero = ({ onStart }: HeroProps) => {
                     >
                       <span className="text-xs font-bold text-zinc-400 group-hover/btn:text-yellow-400 ">
                         Médio
+                      </span>
+                      <span className="text-[10px] text-zinc-600 group-hover/btn:text-yellow-400/70 font-mono">
+                        10min
                       </span>
                     </button>
                     <button
@@ -189,6 +215,9 @@ const Hero = ({ onStart }: HeroProps) => {
                       <span className="text-xs font-bold text-zinc-400 group-hover/btn:text-blue-400 ">
                         Bom
                       </span>
+                      <span className="text-[10px] text-zinc-600 group-hover/btn:text-blue-400/70 font-mono">
+                        2d
+                      </span>
                     </button>
                     <button
                       onClick={() => setIsFlipped(false)}
@@ -196,6 +225,9 @@ const Hero = ({ onStart }: HeroProps) => {
                     >
                       <span className="text-xs font-bold text-zinc-400 group-hover/btn:text-green-400 ">
                         Fácil
+                      </span>
+                      <span className="text-[10px] text-zinc-600 group-hover/btn:text-green-400/70 font-mono">
+                        4d
                       </span>
                     </button>
                   </div>
