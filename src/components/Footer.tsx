@@ -1,4 +1,4 @@
-import { Sparkles, Instagram, Github, Linkedin } from "lucide-react";
+import { LampDesk, Instagram, Github, Linkedin } from "lucide-react";
 
 export const Footer: React.FC = () => {
   return (
@@ -7,8 +7,8 @@ export const Footer: React.FC = () => {
         <div className="flex flex-col items-center justify-between gap-12 mb-16 lg:flex-row">
           <div className="lg:w-[20vw]">
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-6 h-6 bg-(--accent-color) rounded flex items-center justify-center">
-                <Sparkles className="w-3 h-3 text-white fill-white" />
+              <div className="w-6 h-6 bg-accent rounded flex items-center justify-center">
+                <LampDesk className="w-3 h-3 text-white fill-white" />
               </div>
               <span className="text-lg font-bold text-white">Starky</span>
             </div>
@@ -23,26 +23,17 @@ export const Footer: React.FC = () => {
               <h4 className="font-semibold text-white mb-6">Aprender</h4>
               <ul className="space-y-4 text-sm text-zinc-500">
                 <li>
-                  <a
-                    href="#"
-                    className="hover:text-(--accent-color) transition-colors"
-                  >
+                  <a href="#" className="hover:text-accent transition-colors">
                     Explorar Decks
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="hover:text-(--accent-color) transition-colors"
-                  >
+                  <a href="#" className="hover:text-accent transition-colors">
                     Metodologia
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="hover:text-(--accent-color) transition-colors"
-                  >
+                  <a href="#" className="hover:text-accent transition-colors">
                     Baixar App
                   </a>
                 </li>
@@ -53,26 +44,17 @@ export const Footer: React.FC = () => {
               <h4 className="font-semibold text-white mb-6">Legal</h4>
               <ul className="space-y-4 text-sm text-zinc-500">
                 <li>
-                  <a
-                    href="#"
-                    className="hover:text-(--accent-color) transition-colors"
-                  >
+                  <a href="#" className="hover:text-accent transition-colors">
                     Política de Privacidade
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="hover:text-(--accent-color) transition-colors"
-                  >
+                  <a href="#" className="hover:text-accent transition-colors">
                     Termos de Serviço
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="hover:text-(--accent-color) transition-colors"
-                  >
+                  <a href="#" className="hover:text-accent transition-colors">
                     Política de Cookies
                   </a>
                 </li>
@@ -89,21 +71,21 @@ export const Footer: React.FC = () => {
             <a
               href="https://www.instagram.com/devf____/"
               target="_blank"
-              className="text-zinc-500 hover:text-(--accent-color) transition-colors"
+              className="text-zinc-500 hover:text-accent transition-colors"
             >
               <Instagram className="w-5 h-5" />
             </a>
             <a
               href="https://github.com/felipesoarws/"
               target="_blank"
-              className="text-zinc-500 hover:text-(--accent-color) transition-colors"
+              className="text-zinc-500 hover:text-accent transition-colors"
             >
               <Github className="w-5 h-5" />
             </a>
             <a
               href="https://www.linkedin.com/in/felipesoarws/"
               target="_blank"
-              className="text-zinc-500 hover:text-(--accent-color) transition-colors"
+              className="text-zinc-500 hover:text-accent transition-colors"
             >
               <Linkedin className="w-5 h-5" />
             </a>

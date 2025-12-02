@@ -18,20 +18,29 @@ import { INITIAL_DECKS } from "../components/overview/decksData";
 import type { Card, Deck, TabType } from "../components/overview/types";
 import { Button } from "../components/ui/Button";
 
-/* interface OverviewProps {
-  isLoggedIn?: boolean;
-}
- */
 function Overview() {
   // View dividida de logada / não logada para ver o layout, dps tem que tirar
   const [activeTab, setActiveTab] = useState<TabType>("decks_view");
 
-  // Estados gerais dos decks
-  const [decks, setDecks] = useState<Deck[]>(INITIAL_DECKS);
-  const [activeDeck, setActiveDeck] = useState<Deck | null>(null);
-
+  // Estados gerais de visualização
   const [viewState, setViewState] = useState<"dashboard" | "study" | "editor">(
     "dashboard"
+  );
+
+  // Estados de pesquisa de decks/categorias
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Estados gerais dos decks
+  const [decks, setDecks] = useState<Deck[]>(INITIAL_DECKS);
+
+  const [activeDeck, setActiveDeck] = useState<Deck | null>(null);
+
+  const filteredDecks = decks.filter(
+    (deck) =>
+      deck.category
+        .toLocaleLowerCase()
+        .includes(searchQuery.toLocaleLowerCase()) ||
+      deck.title.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
   );
 
   // Estado de notificação de um toast
@@ -106,23 +115,31 @@ function Overview() {
     );
   }
 
+  // FILTRO DE BUSCA
+
   return (
     <div className="min-h-screen bg-(--accent-background) flex flex-col md:flex-row overflow-hidden relative">
       <div className="block md:hidden">
-        <OverviewHeader />
+        <OverviewHeader
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
       </div>
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
         <div className="hidden md:block">
-          <OverviewHeader />
+          <OverviewHeader
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
         </div>
         <div className="flex-1 overflow-y-auto p-6 md:p-10 bg-dot-pattern">
           <div className="max-w-6xl mx-auto pb-20">
             {/* Decks  */}
             {(activeTab === "decks_view" || activeTab === "decks_locked") && (
               <DecksView
-                decks={decks}
+                decks={filteredDecks}
                 isLocked={activeTab === "decks_locked"}
                 onCreateDeck={handleCreateDeck}
                 onEditDeck={startEditingDeck}
@@ -133,7 +150,9 @@ function Overview() {
             )}
 
             {/* Library  */}
-            {activeTab === "library" && <LibraryView />}
+            {activeTab === "library" && (
+              <LibraryView decks={filteredDecks} onAddDeck={handleSaveDeck} />
+            )}
 
             {/* Stats  */}
             {(activeTab === "stats_view" || activeTab === "stats_locked") && (

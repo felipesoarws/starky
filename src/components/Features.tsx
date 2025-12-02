@@ -18,7 +18,7 @@ const Features = () => {
   return (
     <section id="features" className="py-24 px-10 bg-zinc-950">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-16 md:text-center max-w-3xl mx-auto">
+        <div className="mb-16 md:text-center max-w-5xl mx-auto">
           <h2
             className="text-3xl md:text-6xl font-bold mb-6 tracking-tight text-white leading-[.8]"
             style={{ userSelect: "none" }}
@@ -28,7 +28,7 @@ const Features = () => {
               ajudar você a lembrar.
             </span>
           </h2>
-          <p className="text-lg text-zinc-400">
+          <p className="text-lg text-zinc-400 lg:mx-[16vw]">
             O Starky combina o poder da recordação ativa com agendamento
             inteligente para garantir que você nunca esqueça o que aprendeu.
           </p>

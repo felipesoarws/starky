@@ -12,11 +12,16 @@
     "length": 50,
     "file": "./src/assets/data/decks/starky_ingles_b1.json"
   },
-
   {
     "category": "Inglês C1",
     "description": "50 cards sobre inglês avançado.",
     "length": 50,
     "file": "./src/assets/data/decks/starky_ingles_c1.json"
+  },
+  {
+    "category": "Inglês Corporativo",
+    "description": "50 cards sobre termos e situações comuns no ambiente corporativo.",
+    "length": 50,
+    "file": "./src/assets/data/decks/starky_ingles_corporativo.json"
   }
 ]

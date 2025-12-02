@@ -1,0 +1,210 @@
+[
+  {
+    "id": 4,
+    "title": "Inglês Corporativo",
+    "category": "Inglês",
+    "lastStudied": "Nunca",
+    "cards": [
+      {
+        "question": "O que significa 'briefing' no contexto corporativo?",
+        "answer": "Conjunto de informações essenciais para orientar um projeto, tarefa ou campanha."
+      },
+      {
+        "question": "O que quer dizer 'budget' em ambientes de trabalho?",
+        "answer": "Orçamento disponível para um projeto, ação ou área."
+      },
+      {
+        "question": "O que significa 'deadline'?",
+        "answer": "Prazo final para concluir uma tarefa."
+      },
+      {
+        "question": "O que quer dizer 'follow-up'?",
+        "answer": "Acompanhamento de uma demanda já iniciada."
+      },
+      {
+        "question": "O que significa 'KPI'?",
+        "answer": "Indicador-chave usado para medir desempenho."
+      },
+      {
+        "question": "O que quer dizer 'deliverable'?",
+        "answer": "Entregável final ou parcial de um projeto."
+      },
+      {
+        "question": "O que significa 'roadmap'?",
+        "answer": "Plano visual com etapas e objetivos de um projeto."
+      },
+      {
+        "question": "O que quer dizer 'scope'?",
+        "answer": "Escopo; conjunto de entregas e limites de um projeto."
+      },
+      {
+        "question": "O que significa 'benchmark'?",
+        "answer": "Referência usada para comparação de desempenho."
+      },
+      {
+        "question": "O que quer dizer 'pipeline' na área comercial?",
+        "answer": "Fluxo de oportunidades de venda em andamento."
+      },
+      {
+        "question": "O que significa 'insights' em marketing?",
+        "answer": "Percepções ou aprendizados relevantes para estratégia."
+      },
+      {
+        "question": "O que quer dizer 'launch strategy'?",
+        "answer": "Estratégia de lançamento de um produto ou campanha."
+      },
+      {
+        "question": "O que significa 'touchpoint'?",
+        "answer": "Ponto de contato entre a marca e o cliente."
+      },
+      {
+        "question": "O que quer dizer 'brand awareness'?",
+        "answer": "Nível de reconhecimento de uma marca pelo público."
+      },
+      {
+        "question": "O que significa 'stakeholder'?",
+        "answer": "Qualquer pessoa ou grupo impactado por um projeto."
+      },
+      {
+        "question": "O que quer dizer 'forecast'?",
+        "answer": "Projeção de resultados futuros."
+      },
+      {
+        "question": "O que significa 'skill set'?",
+        "answer": "Conjunto de habilidades de uma pessoa."
+      },
+      {
+        "question": "O que quer dizer 'onboarding'?",
+        "answer": "Processo de integração de um novo colaborador."
+      },
+      {
+        "question": "O que significa 'feedback' no ambiente de trabalho?",
+        "answer": "Retorno estruturado sobre desempenho ou comportamento."
+      },
+      {
+        "question": "O que quer dizer 'performance review'?",
+        "answer": "Avaliação formal do desempenho profissional."
+      },
+      {
+        "question": "O que significa 'meeting minutes'?",
+        "answer": "Resumo do que foi discutido e decidido em uma reunião."
+      },
+      {
+        "question": "O que quer dizer 'agenda' numa reunião corporativa?",
+        "answer": "Roteiro com os tópicos que serão discutidos."
+      },
+      {
+        "question": "O que significa 'action plan'?",
+        "answer": "Plano detalhado com ações, responsáveis e prazos."
+      },
+      {
+        "question": "O que quer dizer 'workload'?",
+        "answer": "Carga de trabalho de um colaborador ou equipe."
+      },
+      {
+        "question": "O que significa 'alignment' em conversas profissionais?",
+        "answer": "Alinhamento de entendimento entre pessoas envolvidas."
+      },
+      {
+        "question": "O que quer dizer 'brief' em publicidade?",
+        "answer": "Resumo estratégico que orienta uma criação ou campanha."
+      },
+      {
+        "question": "O que significa 'proposal'?",
+        "answer": "Proposta formal apresentada a um cliente ou equipe."
+      },
+      {
+        "question": "O que quer dizer 'quote' (orçamento)?",
+        "answer": "Orçamento detalhado para execução de um serviço."
+      },
+      {
+        "question": "O que significa 'pricing' em vendas?",
+        "answer": "Definição dos preços de produtos ou serviços."
+      },
+      {
+        "question": "O que quer dizer 'lead' no setor comercial?",
+        "answer": "Potencial cliente que demonstrou interesse."
+      },
+      {
+        "question": "O que significa 'retainer' em contratos?",
+        "answer": "Pagamento fixo mensal por serviços contínuos."
+      },
+      {
+        "question": "O que quer dizer 'update' no contexto de projetos?",
+        "answer": "Atualização sobre o status de uma tarefa ou entrega."
+      },
+      {
+        "question": "O que significa 'timeline'?",
+        "answer": "Linha do tempo com etapas planejadas."
+      },
+      {
+        "question": "O que quer dizer 'backlog' no contexto de equipes ágeis?",
+        "answer": "Lista de tarefas pendentes para desenvolvimento."
+      },
+      {
+        "question": "O que significa 'task' em gerenciamento de projetos?",
+        "answer": "Tarefa individual dentro de um projeto."
+      },
+      {
+        "question": "O que quer dizer 'milestone'?",
+        "answer": "Marco importante dentro da evolução de um projeto."
+      },
+      {
+        "question": "O que significa 'approval'?",
+        "answer": "Aprovação formal de algo entregue."
+      },
+      {
+        "question": "O que quer dizer 'escalate' num problema corporativo?",
+        "answer": "Enviar um problema para um nível superior de responsabilidade."
+      },
+      {
+        "question": "O que significa 'kickoff meeting'?",
+        "answer": "Reunião inicial para iniciar oficialmente um projeto."
+      },
+      {
+        "question": "O que quer dizer 'brainstorming'?",
+        "answer": "Sessão para gerar ideias de forma livre e coletiva."
+      },
+      {
+        "question": "O que significa 'deck' (apresentação)?",
+        "answer": "Arquivo de slides usado para apresentar um conteúdo."
+      },
+      {
+        "question": "O que quer dizer 'workshop'?",
+        "answer": "Sessão prática de treinamento ou troca de conhecimento."
+      },
+      {
+        "question": "O que significa 'negotiation' no mundo corporativo?",
+        "answer": "Processo de negociação entre duas partes."
+      },
+      {
+        "question": "O que quer dizer 'partnership'?",
+        "answer": "Parceria formal entre empresas ou equipes."
+      },
+      {
+        "question": "O que significa 'proposal review'?",
+        "answer": "Revisão de uma proposta antes do envio."
+      },
+      {
+        "question": "O que quer dizer 'status report'?",
+        "answer": "Relatório com a situação atual de um projeto."
+      },
+      {
+        "question": "O que significa 'follow the guidelines'?",
+        "answer": "Seguir diretrizes estabelecidas."
+      },
+      {
+        "question": "O que quer dizer 'submit the document'?",
+        "answer": "Enviar ou entregar um documento oficialmente."
+      },
+      {
+        "question": "O que significa 'schedule a call'?",
+        "answer": "Marcar uma chamada ou reunião por vídeo/telefone."
+      },
+      {
+        "question": "O que quer dizer 'provide an update'?",
+        "answer": "Fornecer uma atualização sobre o andamento de algo."
+      }
+    ]
+  }
+]

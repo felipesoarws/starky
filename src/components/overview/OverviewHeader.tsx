@@ -1,16 +1,26 @@
 import { Download, Search, Upload } from "lucide-react";
 import { Button } from "../ui/Button";
 
-const OverviewHeader = () => {
+interface OverviewHeaderProps {
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+}
+
+const OverviewHeader = ({
+  searchQuery,
+  setSearchQuery,
+}: OverviewHeaderProps) => {
   return (
     <header className="h-16 border-b border-zinc-800 bg-zinc-950/50 flex items-center justify-between px-6 md:px-8 shrink-0">
       <div className="flex items-center gap-4 text-sm text-zinc-400">
         <div className="relative">
           <Search className="w-4 h-4 absolute left-3 top-1/4  text-zinc-500" />
           <input
+            onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchQuery}
             type="text"
-            placeholder="Buscar..."
-            className="bg-zinc-900 border border-zinc-800 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:border-zinc-700 w-64 text-white placeholder-zinc-600"
+            placeholder="Buscar categoria ou deck..."
+            className="text-[.8rem] bg-zinc-900 border border-zinc-800 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:border-zinc-700 w-64 text-white placeholder-zinc-600"
           />
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { BarChart3, Eye, LampDesk, Library, Lock, LogOut } from "lucide-react";
 import type { TabType } from "./types";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 interface SidebarProps {
   activeTab: TabType;
@@ -8,6 +8,16 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
+  const navigate = useNavigate();
+
+  const onLogout = () => {
+    if (
+      window.confirm("Você deseja deslogar e voltar para a página inicial?")
+    ) {
+      navigate("/");
+    }
+  };
+
   const getButtonClass = (tab: TabType) =>
     `cursor-pointer w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors font-medium text-sm ${
       activeTab === tab
@@ -72,7 +82,10 @@ const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
         </button>
       </nav>
       <div className="p-4 border-t border-zinc-800">
-        <button className="cursor-pointer w-full flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-500 hover:text-white hover:bg-zinc-900 transition-colors text-sm font-medium">
+        <button
+          onClick={() => onLogout()}
+          className="cursor-pointer w-full flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-500 hover:text-white hover:bg-zinc-900 transition-colors text-sm font-medium"
+        >
           <LogOut className="w-4 h-4" /> Sair
         </button>
       </div>
