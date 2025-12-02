@@ -118,7 +118,7 @@ function Overview() {
   // FILTRO DE BUSCA
 
   return (
-    <div className="min-h-screen bg-(--accent-background) flex flex-col md:flex-row overflow-hidden relative">
+    <div className="min-h-screen bg-background flex flex-col md:flex-row overflow-hidden relative">
       <div className="block md:hidden">
         <OverviewHeader
           searchQuery={searchQuery}
@@ -243,7 +243,7 @@ export const DeckEditor = ({ deck, onSave, onCancel }: DeckEditorProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-(--accent-background) flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <header className="h-16 border-b border-zinc-800 bg-zinc-950/50 flex items-center justify-between px-6 sticky top-0 z-30 backdrop-blur-md">
         <div className="flex items-center gap-4">
           <div className="hidden md:block">
@@ -281,7 +281,7 @@ export const DeckEditor = ({ deck, onSave, onCancel }: DeckEditorProps) => {
               Título do Deck
             </label>
             <input
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-(--accent-color) focus:border-(--accent-color) outline-none transition-all"
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent focus:border-accent outline-none transition-all"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Ex: JavaScript Avançado"
@@ -292,7 +292,7 @@ export const DeckEditor = ({ deck, onSave, onCancel }: DeckEditorProps) => {
               Categoria
             </label>
             <input
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-(--accent-color) focus:border-(--accent-color) outline-none transition-all"
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent focus:border-accent outline-none transition-all"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               placeholder="Ex: Programação"
@@ -302,8 +302,7 @@ export const DeckEditor = ({ deck, onSave, onCancel }: DeckEditorProps) => {
 
         <div className="mb-6 flex items-center justify-between">
           <h3 className="text-xl font-bold text-white flex items-center gap-2">
-            <Layers className="w-5 h-5 text-(--accent-color)" /> Cards (
-            {cards.length})
+            <Layers className="w-5 h-5 text-accent" /> Cards ({cards.length})
           </h3>
           <Button variant="secondary" onClick={handleAddCard}>
             <Plus className="w-4 h-4 mr-2" /> Adicionar Card
@@ -316,7 +315,7 @@ export const DeckEditor = ({ deck, onSave, onCancel }: DeckEditorProps) => {
               <p>Nenhum card adicionado ainda.</p>
               <Button
                 variant="ghost"
-                className="mt-2 text-(--accent-color)"
+                className="mt-2 text-accent"
                 onClick={handleAddCard}
               >
                 Adicionar o primeiro
@@ -339,7 +338,7 @@ export const DeckEditor = ({ deck, onSave, onCancel }: DeckEditorProps) => {
                     Pergunta
                   </label>
                   <textarea
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white text-sm focus:ring-1 focus:ring-(--accent-color) outline-none resize-none min-h-20"
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white text-sm focus:ring-1 focus:ring-accent outline-none resize-none min-h-20"
                     value={card.question}
                     onChange={(e) =>
                       handleUpdateCard(card.id, "question", e.target.value)
@@ -352,7 +351,7 @@ export const DeckEditor = ({ deck, onSave, onCancel }: DeckEditorProps) => {
                     Resposta
                   </label>
                   <textarea
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-zinc-300 text-sm focus:ring-1 focus:ring-(--accent-color) outline-none resize-none min-h-20"
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-zinc-300 text-sm focus:ring-1 focus:ring-accent outline-none resize-none min-h-20"
                     value={card.answer}
                     onChange={(e) =>
                       handleUpdateCard(card.id, "answer", e.target.value)

@@ -44,12 +44,12 @@ const Navbar = ({ scrolled }: NavbarProps) => {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <a
-            href="#"
+          <Link
+            to={"/login"}
             className="text-sm font-medium text-zinc-400 hover:text-white"
           >
             Entrar
-          </a>
+          </Link>
 
           <Button size="sm" className="bg-(--accent-color)">
             <Link to={"/overview"}>Começar Agora</Link>
