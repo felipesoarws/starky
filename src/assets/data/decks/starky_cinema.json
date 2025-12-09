@@ -1,0 +1,30 @@
+[
+  {
+    "id": 10004,
+    "title": "Cinema e Cultura Pop",
+    "category": "Cinema",
+    "lastStudied": "Nunca",
+    "cards": [
+      { "id": 1, "question": "Quem dirigiu o filme 'Interestelar'?", "answer": "Christopher Nolan" },
+      { "id": 2, "question": "Qual filme ganhou o Oscar de Melhor Filme em 2020?", "answer": "Parasita" },
+      { "id": 3, "question": "Quem interpreta o Homem de Ferro no MCU?", "answer": "Robert Downey Jr." },
+      { "id": 4, "question": "Qual o nome do planeta natal do Superman?", "answer": "Krypton" },
+      { "id": 5, "question": "Em que ano foi lançado o primeiro Star Wars?", "answer": "1977" },
+      { "id": 6, "question": "Quem dirigiu 'Pulp Fiction'?", "answer": "Quentin Tarantino" },
+      { "id": 7, "question": "Qual o nome do leão de 'O Rei Leão'?", "answer": "Simba" },
+      { "id": 8, "question": "Qual filme tem a frase 'Hasta la vista, baby'?", "answer": "O Exterminador do Futuro 2" },
+      { "id": 9, "question": "Quem é o vilão de 'Vingadores: Guerra Infinita'?", "answer": "Thanos" },
+      { "id": 10, "question": "Qual a franquia de filmes de bruxos mais famosa?", "answer": "Harry Potter" },
+      { "id": 11, "question": "Quem ganhou o Oscar de Melhor Ator por 'Coringa'?", "answer": "Joaquin Phoenix" },
+      { "id": 12, "question": "Qual o nome da cidade de Batman?", "answer": "Gotham City" },
+      { "id": 13, "question": "Quem disse 'Que a Força esteja com você'?", "answer": "Jedi" },
+      { "id": 14, "question": "Qual o nome do ogro mais famoso do cinema?", "answer": "Shrek" },
+      { "id": 15, "question": "Qual filme conta a história do Facebook?", "answer": "A Rede Social" },
+      { "id": 16, "question": "Quem é o criador de Mickey Mouse?", "answer": "Walt Disney" },
+      { "id": 17, "question": "Qual filme tem um tubarão gigante assassino?", "answer": "Tubarão" },
+      { "id": 18, "question": "Qual ator interpretou Jack em 'Titanic'?", "answer": "Leonardo DiCaprio" },
+      { "id": 19, "question": "Quem é a heroína de 'Jogos Vorazes'?", "answer": "Katniss Everdeen" },
+      { "id": 20, "question": "Qual o nome do brinquedo cowboy de Toy Story?", "answer": "Woody" }
+    ]
+  }
+]

@@ -2,30 +2,58 @@
   {
     "title": "Inglês A1",
     "category": "Inglês",
-    "description": "50 cards sobre inglês iniciante.",
-    "length": 50,
+    "description": "20 cards sobre inglês iniciante.",
+    "length": 20,
     "file": "./src/assets/data/decks/starky_ingles_a1.json"
   },
 
   {
     "title": "Inglês B1",
     "category": "Inglês",
-    "description": "50 cards sobre inglês intermediário.",
-    "length": 50,
+    "description": "20 cards sobre inglês intermediário.",
+    "length": 20,
     "file": "./src/assets/data/decks/starky_ingles_b1.json"
   },
   {
     "title": "Inglês C1",
     "category": "Inglês",
-    "description": "50 cards sobre inglês avançado.",
-    "length": 50,
+    "description": "20 cards sobre inglês avançado.",
+    "length": 20,
     "file": "./src/assets/data/decks/starky_ingles_c1.json"
   },
   {
     "title": "Inglês Corporativo",
     "category": "Inglês",
-    "description": "50 cards sobre termos e situações comuns no ambiente corporativo.",
-    "length": 50,
+    "description": "20 cards sobre termos e situações comuns no ambiente corporativo.",
+    "length": 20,
     "file": "./src/assets/data/decks/starky_ingles_corporativo.json"
+  },
+  {
+    "title": "Geografia Geral",
+    "category": "Geografia",
+    "description": "Capitais, países e curiosidades geográficas.",
+    "length": 20,
+    "file": "./src/assets/data/decks/starky_geografia.json"
+  },
+  {
+    "title": "Ciência e Natureza",
+    "category": "Ciência",
+    "description": "Física, química, biologia e astronomia.",
+    "length": 20,
+    "file": "./src/assets/data/decks/starky_ciencia.json"
+  },
+  {
+    "title": "História Mundial",
+    "category": "História",
+    "description": "Grandes eventos e personalidades da história.",
+    "length": 20,
+    "file": "./src/assets/data/decks/starky_historia.json"
+  },
+  {
+    "title": "Cinema e Cultura Pop",
+    "category": "Cinema",
+    "description": "Filmes, diretores e curiosidades pop.",
+    "length": 20,
+    "file": "./src/assets/data/decks/starky_cinema.json"
   }
 ]

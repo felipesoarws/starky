@@ -12,9 +12,54 @@ import { useNavigate } from "react-router";
 
 
 
+const HERO_CARDS = [
+  {
+    category: "Geografia",
+    question: "Qual a capital da França?",
+    answer: "Paris",
+    color: "text-blue-400",
+    bg: "bg-blue-500/10",
+    border: "border-blue-500/20"
+  },
+  {
+    category: "Ciência",
+    question: "Qual o símbolo químico do Ouro?",
+    answer: "Au",
+    color: "text-yellow-400",
+    bg: "bg-yellow-500/10",
+    border: "border-yellow-500/20"
+  },
+  {
+    category: "História",
+    question: "Em que ano o homem pisou na Lua?",
+    answer: "1969",
+    color: "text-red-400",
+    bg: "bg-red-500/10",
+    border: "border-red-500/20"
+  },
+  {
+    category: "Cinema",
+    question: "Quem dirigiu o filme 'Interestelar'?",
+    answer: "Christopher Nolan",
+    color: "text-purple-400",
+    bg: "bg-purple-500/10",
+    border: "border-purple-500/20"
+  }
+];
+
 const Hero = () => {
   const navigate = useNavigate();
   const [isFlipped, setIsFlipped] = useState(false);
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+
+  const currentCard = HERO_CARDS[currentCardIndex];
+
+  const handleNextCard = () => {
+      setIsFlipped(false);
+      setTimeout(() => {
+          setCurrentCardIndex((prev) => (prev + 1) % HERO_CARDS.length);
+      }, 200); // 
+  }
 
   return (
     <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-10 overflow-hidden bg-(--accent-background)">
@@ -80,15 +125,12 @@ const Hero = () => {
               {/* App - Header */}
               <div className="h-14 border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-md flex items-center justify-between px-6 z-10">
                 <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 rounded-lg bg-zinc-800/50 flex items-center justify-center text-zinc-400">
-                    <ArrowLeft
-                      className="w-4 h-4 cursor-pointer"
-                      onClick={() => setIsFlipped(false)}
-                    />
+                  <div className="w-8 h-8 rounded-lg bg-zinc-800/50 flex items-center justify-center text-zinc-400 hover:text-white transition-colors cursor-pointer" onClick={() => setIsFlipped(false)}>
+                    <ArrowLeft className="w-4 h-4" />
                   </div>
                   <div className="h-6 w-px bg-zinc-800 hidden sm:block"></div>
-                  <span className="text-sm font-bold text-white">
-                    Conhecimentos gerais
+                  <span className={`text-sm font-bold ${currentCard.color}`}>
+                    {currentCard.category}
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
@@ -97,16 +139,19 @@ const Hero = () => {
                     07:09
                   </div>
                   <div className="flex items-center gap-1 text-sm">
-                    <span className="text-white font-medium">12</span>
+                    <span className="text-white font-medium">{currentCardIndex + 1}</span>
                     <span className="text-zinc-600">/</span>
-                    <span className="text-zinc-500">20</span>
+                    <span className="text-zinc-500">{HERO_CARDS.length}</span>
                   </div>
                 </div>
               </div>
 
               {/* App - Linha de progressão */}
               <div className="h-0.5 bg-zinc-900 w-full">
-                <div className="h-full w-[60%] bg-accent"></div>
+                <div 
+                    className="h-full bg-accent transition-all duration-500"
+                    style={{ width: `${((currentCardIndex + 1) / HERO_CARDS.length) * 100}%` }}
+                ></div>
               </div>
 
               {/* App - Principal area */}
@@ -124,49 +169,23 @@ const Hero = () => {
                   </span>
 
                   {!isFlipped ? (
-                    <div className="animate-fade-in">
-                      <h3 className="text-2xl md:text-4xl font-medium text-white leading-0.5">
-                        Qual o nome do
-                        <span className="text-accent"> criador</span> do
-                        <span className="text-accent"> Starky</span>?
+                    <div className="animate-fade-in key={currentCard.question}">
+                      <h3 className="text-2xl md:text-4xl font-medium text-white leading-tight">
+                        {currentCard.question}
                       </h3>
                     </div>
                   ) : (
-                    <div className="space-y-6 max-w-2xl animate-slide-up">
-                      <p className="text-xl md:text-3xl text-zinc-100 leading-relaxed font-light">
-                        <span className="font-mono bg-zinc-800 px-1 rounded text-accent">
-                          Felipe Soares
-                        </span>{" "}
+                    <div className="space-y-6 max-w-2xl animate-slide-up key={currentCard.answer}">
+                      <p className="text-xl md:text-4xl text-zinc-100 leading-relaxed font-bold">
+                          {currentCard.answer}
                       </p>
-                      <div className="flex items-center justify-center gap-6">
-                        <a
-                          href="https://www.instagram.com/devf____/"
-                          target="_blank"
-                          className="text-accent/60 hover:text-accent transition-colors"
-                        >
-                          <Instagram className="w-5 h-5" />
-                        </a>
-                        <a
-                          href="https://github.com/felipesoarws/"
-                          target="_blank"
-                          className="text-accent/60 hover:text-accent transition-colors"
-                        >
-                          <Github className="w-5 h-5" />
-                        </a>
-                        <a
-                          href="https://www.linkedin.com/in/felipesoarws/"
-                          target="_blank"
-                          className="text-accent/60 hover:text-accent transition-colors"
-                        >
-                          <Linkedin className="w-5 h-5" />
-                        </a>
-                      </div>
+                      
                       <div className="w-16 h-1 bg-accent/50 rounded-full mx-auto mt-8"></div>
                     </div>
                   )}
 
                   {!isFlipped && (
-                    <div className="mt-12 h-6">
+                    <div className="mt-12 h-6 flex items-center justify-center">
                       <span className="text-xs md:text-sm text-zinc-500 animate-pulse">
                         Toque para ver a resposta
                       </span>
@@ -188,7 +207,7 @@ const Hero = () => {
                 ) : (
                   <div className="grid grid-cols-4 gap-3 w-full max-w-2xl animate-fade-in">
                     <button
-                      onClick={() => setIsFlipped(false)}
+                      onClick={handleNextCard}
                       className="flex flex-col items-center justify-center p-3 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-red-900/10 hover:border-red-900/50 transition-colors group/btn"
                     >
                       <span className="text-xs font-bold text-zinc-400 group-hover/btn:text-red-400 ">
@@ -199,7 +218,7 @@ const Hero = () => {
                       </span>
                     </button>
                     <button
-                      onClick={() => setIsFlipped(false)}
+                      onClick={handleNextCard}
                       className="flex flex-col items-center justify-center p-3 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-yellow-900/10 hover:border-yellow-900/50 transition-colors group/btn"
                     >
                       <span className="text-xs font-bold text-zinc-400 group-hover/btn:text-yellow-400 ">
@@ -210,7 +229,7 @@ const Hero = () => {
                       </span>
                     </button>
                     <button
-                      onClick={() => setIsFlipped(false)}
+                      onClick={handleNextCard}
                       className="flex flex-col items-center justify-center p-3 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-blue-900/10 hover:border-blue-900/50 transition-colors group/btn"
                     >
                       <span className="text-xs font-bold text-zinc-400 group-hover/btn:text-blue-400 ">
@@ -221,7 +240,7 @@ const Hero = () => {
                       </span>
                     </button>
                     <button
-                      onClick={() => setIsFlipped(false)}
+                      onClick={handleNextCard}
                       className="flex flex-col items-center justify-center p-3 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-green-900/10 hover:border-green-900/50 transition-colors group/btn"
                     >
                       <span className="text-xs font-bold text-zinc-400 group-hover/btn:text-green-400 ">

@@ -1,17 +1,15 @@
-import { BookOpen, Code2, Globe, Hash } from "lucide-react";
+import { BookOpen, Clapperboard, Globe, Microscope } from "lucide-react";
 
 const subjects = [
-  { name: "JavaScript ES6", icon: <Code2 className="w-4 h-4" /> },
-  { name: "HTML5 Semântico", icon: <Code2 className="w-4 h-4" /> },
-  { name: "CSS3 & Flexbox", icon: <Code2 className="w-4 h-4" /> },
-  { name: "Inglês A1 - Básico", icon: <Globe className="w-4 h-4" /> },
-  { name: "Inglês B2 - Intermediário", icon: <Globe className="w-4 h-4" /> },
-  { name: "Inglês C1 - Avançado", icon: <Globe className="w-4 h-4" /> },
-  { name: "React Hooks", icon: <Code2 className="w-4 h-4" /> },
-  { name: "História do Brasil", icon: <BookOpen className="w-4 h-4" /> },
-  { name: "Cálculo I", icon: <Hash className="w-4 h-4" /> },
-  { name: "Francês para Viagem", icon: <Globe className="w-4 h-4" /> },
-  { name: "Python para Data Science", icon: <Code2 className="w-4 h-4" /> },
+  { name: "Geografia Geral", icon: <Globe className="w-4 h-4 text-blue-400" /> },
+  { name: "Ciência e Natureza", icon: <Microscope className="w-4 h-4 text-green-400" /> },
+  { name: "História Mundial", icon: <BookOpen className="w-4 h-4 text-red-400" /> },
+  { name: "Cinema e Cultura Pop", icon: <Clapperboard className="w-4 h-4 text-purple-400" /> },
+  // Repetindo os temas do Hero para consistência, mais alguns extras
+  { name: "Inglês A1", icon: <Globe className="w-4 h-4 text-indigo-400" /> },
+  { name: "Astronomia", icon: <Microscope className="w-4 h-4 text-yellow-400" /> },
+  { name: "Literatura", icon: <BookOpen className="w-4 h-4 text-orange-400" /> },
+  { name: "Tecnologia", icon: <Microscope className="w-4 h-4 text-cyan-400" /> },
 ];
 
 const marqueeItems = [...subjects, ...subjects];

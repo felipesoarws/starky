@@ -9,6 +9,10 @@ import inglesA1 from "../../assets/data/decks/starky_ingles_a1.json";
 import inglesB1 from "../../assets/data/decks/starky_ingles_b1.json";
 import inglesC1 from "../../assets/data/decks/starky_ingles_c1.json";
 import ingles_corporativo from "../../assets/data/decks/starky_ingles_corporativo.json";
+import geografia from "../../assets/data/decks/starky_geografia.json";
+import ciencia from "../../assets/data/decks/starky_ciencia.json";
+import historia from "../../assets/data/decks/starky_historia.json";
+import cinema from "../../assets/data/decks/starky_cinema.json";
 
 interface LibraryViewProps {
   decks: Deck[];
@@ -21,6 +25,10 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
     inglesB1[0],
     inglesC1[0],
     ingles_corporativo[0],
+    geografia[0],
+    ciencia[0],
+    historia[0],
+    cinema[0],
   ];
 
   const addDeckToDash = (deckName: string) => {
@@ -63,14 +71,14 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
       <p className="text-zinc-400 mb-8">
         Baixe decks prontos criados pela comunidade Starky.
       </p>
-      <div className="flex flex-wrap gap-18 items-center justify-start ">
+      <div className="flex flex-wrap gap-18 items-start justify-start ">
         {decksThemes.map((deck, id) => {
           const isAdded = decks.some((d) => d.title == deck.title);
 
           return (
             <div
               key={id}
-              className="group relative bg-zinc-900 border border-zinc-800 rounded-3xl p-6 hover:border-zinc-700 hover:shadow-xl hover:shadow-black/50 transition-all flex flex-col justify-between h-full min-h-[200px] w-[20rem] md:min-w-[20rem]"
+              className="lg:h-[17rem] group relative bg-zinc-900 border border-zinc-800 rounded-3xl p-6 hover:border-zinc-700 hover:shadow-xl hover:shadow-black/50 transition-all flex flex-col justify-between h-full min-h-[200px] w-[20rem] md:min-w-[20rem]"
             >
               <div>
                 <div className="flex justify-between items-center mb-4">
@@ -87,7 +95,7 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
                   </div>
                 </div>
                 <div className="flex items-center justify-start gap-2">
-                  <h3 className="text-left text-xl font-bold text-white mb-2 line-clamp-2">
+                  <h3 className="text-left text-[1.1rem] font-bold text-white mb-2 line-clamp-2">
                     {deck.title}
                   </h3>
                   <p className="mb-2 text-xs text-zinc-500 bg-zinc-800 px-2 py-0.5 rounded-full mt-1 inline-block">
@@ -97,7 +105,7 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
                 <div className="text-sm text-zinc-400 mb-6 flex items-center gap-2">
                   <Library className="w-4 h-4" /> {deck.length} cards
                 </div>
-                <p className="text-left text-sm text-zinc-400 mb-6 flex items-center gap-2">
+                <p className="text-left text-[0.8rem] text-zinc-400 mb-6 flex items-center gap-2">
                   {deck.description}
                 </p>
                 <div>

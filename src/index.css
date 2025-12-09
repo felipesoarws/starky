@@ -11,6 +11,11 @@
   scroll-behavior: smooth;
 }
 
+body {
+    background-color: var(--accent-background);
+    color: #ffffff;
+}
+
 @keyframes marquee {
   0% {
     transform: translateX(0);

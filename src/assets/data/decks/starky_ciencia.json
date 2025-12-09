@@ -1,0 +1,30 @@
+[
+  {
+    "id": 10002,
+    "title": "Ciência e Natureza",
+    "category": "Ciência",
+    "lastStudied": "Nunca",
+    "cards": [
+      { "id": 1, "question": "Qual o símbolo químico do Ouro?", "answer": "Au" },
+      { "id": 2, "question": "Qual o planeta mais próximo do Sol?", "answer": "Mercúrio" },
+      { "id": 3, "question": "Qual a fórmula química da água?", "answer": "H2O" },
+      { "id": 4, "question": "Quantos ossos tem o corpo humano adulto?", "answer": "206" },
+      { "id": 5, "question": "Qual é a velocidade da luz?", "answer": "Aproximadamente 300.000 km/s" },
+      { "id": 6, "question": "Quem formulou a Teoria da Relatividade?", "answer": "Albert Einstein" },
+      { "id": 7, "question": "Qual gás as plantas absorvem na fotossíntese?", "answer": "Dióxido de Carbono (CO2)" },
+      { "id": 8, "question": "Qual é o maior animal do planeta?", "answer": "Baleia Azul" },
+      { "id": 9, "question": "O que significa DNA?", "answer": "Ácido Desoxirribonucleico" },
+      { "id": 10, "question": "Qual o elemento mais abundante no universo?", "answer": "Hidrogênio" },
+      { "id": 11, "question": "Qual a unidade básica da vida?", "answer": "Célula" },
+      { "id": 12, "question": "O que mede a Escala Richter?", "answer": "Magnitude de terremotos" },
+      { "id": 13, "question": "Qual o planeta conhecido como Planeta Vermelho?", "answer": "Marte" },
+      { "id": 14, "question": "Qual a temperatura de ebulição da água (nível do mar)?", "answer": "100°C" },
+      { "id": 15, "question": "Qual órgão bombeia o sangue no corpo?", "answer": "Coração" },
+      { "id": 16, "question": "Quem descobriu a penicilina?", "answer": "Alexander Fleming" },
+      { "id": 17, "question": "Qual o metal líquido à temperatura ambiente?", "answer": "Mercúrio" },
+      { "id": 18, "question": "O que é um ano-luz?", "answer": "Medida de distância" },
+      { "id": 19, "question": "Qual o satélite natural da Terra?", "answer": "Lua" },
+      { "id": 20, "question": "O que as abelhas produzem?", "answer": "Mel" }
+    ]
+  }
+]

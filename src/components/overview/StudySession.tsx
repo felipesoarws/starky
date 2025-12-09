@@ -92,20 +92,20 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
   return (  
     <div className="fixed inset-0 bg-background text-white flex flex-col z-50">
       <header className="h-16 flex items-center justify-between p-6 px-8 border-b border-white/5 bg-[#101013]">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <button 
             onClick={onCancel}
             className="p-2 -ml-2 text-zinc-400 hover:text-white rounded-full hover:bg-white/5 transition-colors"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-3 h-3 md:w-5 md:h-5" />
           </button>
           <span className="text-zinc-700">|</span>
-          <h1 className="font-bold text-sm tracking-wide text-zinc-200">{deck.title}</h1>
+          <h1 className="font-bold text-xs md:text-sm tracking-wide text-zinc-200">{deck.title}</h1>
         </div>
 
         <div className="flex items-center gap-6 text-xs font-mono text-zinc-500">
-          <div className="flex items-center gap-2 bg-zinc-900/50 px-3 py-1.5 rounded-full border border-white/5">
-            <Clock className="w-3.5 h-3.5" />
+          <div className="flex items-center gap-2 bg-zinc-900/50 px-2 py-1 rounded-full border border-white/5">
+            <Clock className="w-3 h-3 md:w-3.5 md:h-3.5" />
             <span>{formatTime(seconds)}</span>
           </div>
           <div className="font-bold text-zinc-400">
@@ -115,12 +115,12 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
       </header>
 
       {/* Área Central do Card */}
-      <main className="flex-1 flex items-center justify-center p-4 md:p-6 relative w-full h-full overflow-hidden">
+      <main className="flex-1 flex items-center justify-center p-4 md:p-6 relative w-full overflow-y-auto">
         
         {/* Card Container */}
         <div 
           onClick={() => !isFlipped && setIsFlipped(true)}
-          className="w-full max-w-4xl aspect-[4/5] md:aspect-video bg-[#121214] border border-white/5 rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 cursor-pointer hover:border-white/10 transition-colors shadow-2xl relative group mx-auto"
+          className="w-full max-w-4xl min-h-[50vh] md:min-h-0 md:aspect-video bg-[#121214] md:max-h-[65vh] border border-white/5 rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 cursor-pointer hover:border-white/10 transition-colors shadow-2xl relative group mx-auto my-auto"
         >
           <div className="text-center max-w-2xl w-full">
 
@@ -135,11 +135,11 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
             )}
            
             {isFlipped ? (
-              <span key={`content-answer-${currentIndex}`} className="animate-slide-up text-xl md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-normal block break-words">
+              <span key={`content-answer-${currentIndex}`} className="animate-slide-up text-lg md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-relaxed block break-words">
               {currentCard.answer}
             </span>
             ) : (
-              <span key={`content-question-${currentIndex}`} className="animate-slide-up text-xl md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-normal block break-words">
+              <span key={`content-question-${currentIndex}`} className="animate-slide-up text-lg md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-relaxed block break-words">
               {currentCard.question}
             </span>
             )}
@@ -147,7 +147,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
 
             {/* Indicador visual de 'clique para virar' se não virado */}
             {!isFlipped && (
-              <div className="animate-pulse absolute bottom-10 md:bottom-15 left-1/2 -translate-x-1/2 text-xs text-zinc-600 whitespace-nowrap">
+              <div className="animate-pulse mt-6 text-xs translate-y-8 text-zinc-600 whitespace-nowrap lg:translate-y-12">
                 Toque para ver a resposta
               </div>
             )}
@@ -162,7 +162,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
       </main>
 
       {/* Footer com Ações */}
-      <footer className="py-6 pb-10 md:py-10 md:pb-14 border-t border-white/5 bg-[#09090b] flex items-center justify-center px-4">
+      <footer className="py-6 pb-10 md:py-4 md:pb-8 border-t border-white/5 bg-[#101013] flex items-center justify-center px-4 md:h-[7rem]">
         {!isFlipped ? (
            <Button 
             size="lg" 
@@ -175,25 +175,29 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full max-w-3xl">
             <DifficultyButton 
               label="Difícil" 
-              time="1m" 
+              time="1m"
+              textColor="red" 
               color="bg-zinc-900 border-zinc-800 hover:border-red-700 hover:bg-red-800/20" 
               onClick={() => handleDifficulty(1)} 
             />
             <DifficultyButton 
               label="Médio" 
-              time="10m" 
+              time="10m"
+              textColor="yellow" 
               color="bg-zinc-900 border-zinc-800 hover:border-yellow-700 hover:bg-yellow-800/20" 
               onClick={() => handleDifficulty(10)} 
             />
             <DifficultyButton 
               label="Bom" 
               time="2d" 
+              textColor="blue"
               color="bg-zinc-900 border-zinc-800 hover:border-blue-700 hover:bg-blue-800/20" 
               onClick={() => handleDifficulty(2880)} 
             />
             <DifficultyButton 
               label="Fácil" 
               time="4d" 
+              textColor="green"
               color="bg-zinc-900 border-zinc-800 hover:border-green-700 hover:bg-green-800/20" 
               onClick={() => handleDifficulty(5760)} 
             />
@@ -205,14 +209,14 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
 }
 
 // Subcomponente de Botão de Dificuldade
-function DifficultyButton({ label, time, color, onClick }: { label: string, time: string, color: string, onClick: () => void }) {
+function DifficultyButton({ label, time, textColor, color, onClick }: { label: string, time: string, textColor: string, color: string, onClick: () => void }) {
   return (
     <button 
       onClick={onClick}
       className={`h-15 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${color} group active:scale-95`}
     >
-      <span className="font-bold text-zinc-300 group-hover:text-white">{label}</span>
-      <span className="text-[10px] font-mono text-zinc-600 group-hover:text-zinc-500">{time}</span>
+      <span className="text-sm font-bold text-zinc-300 group-hover:text-white">{label}</span>
+      <span className={`text-[10px] font-mono text-zinc-600 group-hover:text-${textColor}-500`}>{time}</span>
     </button>
   );
 }
