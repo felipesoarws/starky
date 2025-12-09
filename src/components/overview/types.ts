@@ -18,7 +18,5 @@ export interface Deck {
 
 export type TabType =
   | "decks_view"
-  | "decks_locked"
   | "library"
   | "stats_view"
-  | "stats_locked";

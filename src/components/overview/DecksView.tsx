@@ -9,6 +9,7 @@ import {
   Plus,
   Trash2,
   X,
+  Clock,
 } from "lucide-react";
 import { Button } from "../ui/Button";
 import type { Deck } from "./types";
@@ -163,7 +164,36 @@ const DecksView = ({
 
             {/* Grid de decks */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 gap-y-12">
-              {categoryDecks.map((deck) => (
+              {categoryDecks.map((deck) => {
+                // Lógica de revisão
+                const now = new Date();
+                const cardsToReview = deck.cards.filter(c => !c.nextReviewDate || new Date(c.nextReviewDate) <= now).length;
+                
+                let statusText = "";
+                let statusColor = "text-zinc-500";
+                
+                if (cardsToReview > 0) {
+                    statusText = `${cardsToReview} para revisar hoje`;
+                    statusColor = "text-yellow-500";
+                } else {
+                    const nextDate = deck.cards
+                        .map(c => c.nextReviewDate ? new Date(c.nextReviewDate) : null)
+                        .filter((d): d is Date => d !== null && d > now)
+                        .sort((a,b) => a.getTime() - b.getTime())[0];
+                    
+                    if (nextDate) {
+                        const day = nextDate.getDate().toString().padStart(2, '0');
+                        const month = (nextDate.getMonth() + 1).toString().padStart(2, '0');
+                        const hours = nextDate.getHours().toString().padStart(2, '0');
+                        const minutes = nextDate.getMinutes().toString().padStart(2, '0');
+                        statusText = `Próxima: ${day}/${month} às ${hours}:${minutes}`;
+                    } else {
+                        statusText = "Tudo em dia!";
+                        statusColor = "text-green-500";
+                    }
+                }
+
+                return (
                 <div
                   key={deck.id}
                   className="group relative bg-zinc-900 border border-zinc-800 rounded-3xl p-6 hover:border-zinc-700 hover:shadow-xl hover:shadow-black/50 transition-all flex flex-col justify-between h-full min-h-[200px] w-[20rem] md:min-w-[20rem]"
@@ -192,12 +222,16 @@ const DecksView = ({
                     <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">
                       {deck.title}
                     </h3>
-                    <div className="text-sm text-zinc-400 mb-6 flex items-center gap-2">
-                      <Library className="w-4 h-4" /> {deck.cards.length} cards
+                    <div className="text-sm text-zinc-400 mb-2 flex items-center gap-2">
+                        <Library className="w-4 h-4" /> {deck.cards.length} cards
+                    </div>
+                     <div className={`text-xs font-mono flex items-center gap-2 ${statusColor}`}>
+                        <Clock className="w-3 h-3" />
+                         {statusText}
                     </div>
                   </div>
 
-                    <div>
+                    <div className="mt-6">
                     <Button 
                       className="w-full justify-between group/btn"
                       onClick={() => onStudyDeck(deck)}
@@ -207,7 +241,7 @@ const DecksView = ({
                     </Button>
                   </div>
                 </div>
-              ))}
+              )})}
             </div>
           </div>
         );

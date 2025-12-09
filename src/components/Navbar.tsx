@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
-import { Menu, X, LampDesk } from "lucide-react";
+import { Menu, X, LampDesk, LogOut } from "lucide-react";
 import { Button } from "./ui/Button";
 import { useAuth } from "../context/AuthContext";
 
@@ -10,7 +10,29 @@ interface NavbarProps {
 
 const Navbar = ({ scrolled }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setIsProfileOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .slice(0, 2)
+      .join('')
+      .toUpperCase();
+}
 
   return (
     <header
@@ -47,21 +69,54 @@ const Navbar = ({ scrolled }: NavbarProps) => {
 
         <div className="hidden md:flex items-center gap-4">
           {isAuthenticated && user ? (
-              <span className="text-sm font-medium text-zinc-400">
-                  Olá, <span className="text-white">{user.name.split(' ')[0]}!</span>
-              </span>
-          ) : (
-            <Link
-                to={"/login"}
-                className="text-sm font-medium text-zinc-400 hover:text-white"
-            >
-                Entrar
-            </Link>
-          )}
+               <div className="relative flex items-center justify-between gap-4" ref={profileRef}>
+               
+                  <div 
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    className="cursor-pointer select-none w-10 h-10 rounded-full bg-linear-to-l from-(--accent-color) to-blue-400 flex items-center justify-center text-sm font-bold text-white border border-white/10 hover:opacity-90 transition-opacity" 
+                    title={user.name}
+                  >
+                    {getInitials(user.name)}
+                  </div>
 
-          <Button size="sm" className="bg-(--accent-color)">
-            <Link to={"/overview"}>Começar Agora</Link>
-          </Button>
+                  <Button size="sm" className="bg-accent">
+                    <Link to={"/overview"}>Começar Agora</Link>
+                </Button>
+                   
+                    {/* Logout Dialog/Dropdown */}
+                    {isProfileOpen && (
+                        <div className="absolute top-12 right-0 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden animate-fade-in z-50">
+                             <div className="px-4 py-3 border-b border-zinc-800">
+                                <p className="text-sm font-medium text-white truncate">{user.name}</p>
+                                <p className="text-xs text-zinc-500 truncate">{user.email}</p>
+                            </div>
+                          
+                            <button 
+                                onClick={() => {
+                                    logout();
+                                    setIsProfileOpen(false);
+                                }}
+                                className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-zinc-800 transition-colors flex items-center gap-2"
+                            >
+                                <LogOut className="w-4 h-4" />
+                                Sair da conta
+                            </button>
+                        </div>
+                    )}
+               </div>
+          ) : (
+             <div className="flex items-center gap-4">
+                <Link
+                    to={"/login"}
+                    className="text-sm font-medium text-zinc-400 hover:text-white"
+                >
+                    Entrar
+                </Link>
+                <Button size="sm" className="bg-accent">
+                    <Link to={"/overview"}>Começar Agora</Link>
+                </Button>
+            </div>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -92,17 +147,32 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           </a>
           <hr className="border-zinc-800" />
           <div className="flex flex-col gap-3">
-            <Button variant="secondary" className="w-full">
-              Entrar
-            </Button>
-            <Button
-              className="w-full"
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-              }}
-            >
-              <Link to={"/overview"}>Começar Agora</Link>
-            </Button>
+             {isAuthenticated ? (
+                 <Button
+                  className="w-full bg-red-900/20 text-red-400 hover:bg-red-900/40 border border-red-900/50"
+                  onClick={() => {
+                    logout();
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                 Sair
+                </Button>
+             ) : (
+                <>
+                 <Button variant="secondary" className="w-full">
+                    <Link to="/login">Entrar</Link>
+                    </Button>
+                    <Button
+                    className="w-full"
+                    onClick={() => {
+                        setIsMobileMenuOpen(false);
+                    }}
+                    >
+                    <Link to={"/overview"}>Começar Agora</Link>
+                    </Button>
+                </>
+             )}
+           
           </div>
         </div>
       )}

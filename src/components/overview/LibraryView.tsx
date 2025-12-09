@@ -1,6 +1,7 @@
 import { Download, Library, CirclePlus, Check } from "lucide-react";
 import { Button } from "../ui/Button";
 import type { Card, Deck } from "./types";
+import { useAuth } from "../../context/AuthContext";
 
 // Decks prontos
 import decksThemes from "../../assets/data/links.json";
@@ -31,7 +32,14 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
     cinema[0],
   ];
 
+  const { isAuthenticated } = useAuth();
+  
   const addDeckToDash = (deckName: string) => {
+    if (!isAuthenticated) {
+        alert("Crie uma conta gratuita para salvar este deck na sua biblioteca!");
+        return;
+    }
+
     const selectedDeck = savedDecks.find((deck) => deck.title === deckName);
     if (!selectedDeck) return;
 
