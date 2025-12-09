@@ -1,11 +1,13 @@
 import { BarChart3 } from "lucide-react";
 import { Button } from "../ui/Button";
+import { useNavigate } from "react-router";
 
 interface StatsViewProps {
   isLocked: boolean;
 }
 
 const StatsView = ({ isLocked }: StatsViewProps) => {
+  const navigate = useNavigate();
   if (isLocked) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-center animate-fade-in">
@@ -19,7 +21,7 @@ const StatsView = ({ isLocked }: StatsViewProps) => {
           Faça login para ver estatísticas detalhadas sobre seu desempenho e
           retenção de memória.
         </p>
-        <Button size="lg" className="w-full sm:w-auto">
+        <Button size="lg" className="w-full sm:w-auto" onClick={() => navigate("/login")}>
           Fazer Login
         </Button>
       </div>

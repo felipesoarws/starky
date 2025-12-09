@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router";
 import Sidebar from "../components/overview/Sidebar";
 import OverviewHeader from "../components/overview/OverviewHeader";
 import StatsView from "../components/overview/StatsView";
 import DecksView from "../components/overview/DecksView";
 import LibraryView from "../components/overview/LibraryView";
 import StudySession from "../components/overview/StudySession";
+import { useAuth } from "../context/AuthContext";
 
 import {
   ArrowLeft,
@@ -21,8 +23,15 @@ import type { Card, Deck, TabType } from "../components/overview/types";
 import { Button } from "../components/ui/Button";
 
 function Overview() {
-  // View dividida de logada / não logada para ver o layout, dps tem que tirar
-  const [activeTab, setActiveTab] = useState<TabType>("decks_view");
+  const { user, isAuthenticated } = useAuth();
+  const [searchParams] = useSearchParams();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const [activeTab, setActiveTab] = useState<TabType>(() => {
+      const tabParam = searchParams.get("tab");
+      if (tabParam === "library") return "library";
+      return "decks_view";
+  });
 
   // Estados gerais de visualização
   const [viewState, setViewState] = useState<"dashboard" | "study" | "editor">(
@@ -33,15 +42,36 @@ function Overview() {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Estados gerais dos decks
-  const [decks, setDecks] = useState<Deck[]>(() => {
-    const saved = localStorage.getItem("starky_decks");
-    return saved ? JSON.parse(saved) : INITIAL_DECKS;
-  });
+  const [decks, setDecks] = useState<Deck[]>([]);
+
+  // Carregar decks quando o usuário mudar
+  useEffect(() => {
+    const storageKey = user ? `starky_decks_${user.id}` : "starky_decks_guest";
+    const saved = localStorage.getItem(storageKey);
+    
+    if (saved) {
+      setDecks(JSON.parse(saved));
+    } else {
+      // Se for usuário novo, começa vazio ou com dados iniciais? 
+      // O requisito diz "relacione ações salvas... a conta criada".
+      // Vamos assumir que começa vazio se não tiver nada.
+      // Mas para manter a demo funcionando, podemos carregar INITIAL_DECKS para guest se vazio.
+      if (!user) {
+          setDecks(INITIAL_DECKS);
+      } else {
+          setDecks([]);
+      }
+    }
+  }, [user]);
 
   // Persistência
   useEffect(() => {
-    localStorage.setItem("starky_decks", JSON.stringify(decks));
-  }, [decks]);
+    // Só salva se houver decks carregados (evita sobrescrever com vazio no mount inicial antes do load)
+    // Mas decks=[] é valido. 
+    // Vamos usar a chave correta.
+    const storageKey = user ? `starky_decks_${user.id}` : "starky_decks_guest";
+    localStorage.setItem(storageKey, JSON.stringify(decks));
+  }, [decks, user]);
 
   const [activeDeck, setActiveDeck] = useState<Deck | null>(null);
   
@@ -91,6 +121,10 @@ function Overview() {
   };
 
   const startEditingDeck = (deck: Deck | null) => {
+    if (!isAuthenticated) {
+        // Bloqueio extra caso UI falhe, mas a UI já deve bloquear.
+        return; 
+    }
     setActiveDeck(deck);
     setViewState("editor");
   };
@@ -214,9 +248,18 @@ function Overview() {
         <OverviewHeader
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
+          onMenuClick={() => setIsMobileMenuOpen(true)}
         />
       </div>
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Sidebar 
+        activeTab={activeTab} 
+        setActiveTab={(tab) => {
+            setActiveTab(tab);
+            setIsMobileMenuOpen(false); // Close on selection
+        }} 
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
 
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
         <div className="hidden md:block">
@@ -231,7 +274,7 @@ function Overview() {
             {(activeTab === "decks_view" || activeTab === "decks_locked") && (
               <DecksView
                 decks={filteredDecks}
-                isLocked={activeTab === "decks_locked"}
+                isLocked={!isAuthenticated}
                 onCreateDeck={handleCreateDeck}
                 onEditDeck={startEditingDeck}
                 onDeleteDeck={handleDeleteDeck}
@@ -248,7 +291,7 @@ function Overview() {
 
             {/* Stats  */}
             {(activeTab === "stats_view" || activeTab === "stats_locked") && (
-              <StatsView isLocked={activeTab === "stats_locked"} />
+              <StatsView isLocked={!isAuthenticated} />
             )}
           </div>
         </div>

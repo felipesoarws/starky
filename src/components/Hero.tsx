@@ -8,12 +8,12 @@ import {
   Linkedin,
 } from "lucide-react";
 import { Button } from "./ui/Button";
+import { useNavigate } from "react-router";
 
-interface HeroProps {
-  onStart?: () => void;
-}
 
-const Hero = ({ onStart }: HeroProps) => {
+
+const Hero = () => {
+  const navigate = useNavigate();
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
@@ -54,7 +54,7 @@ const Hero = ({ onStart }: HeroProps) => {
             size="lg"
             withArrow
             className="w-full sm:w-auto"
-            onClick={onStart}
+            onClick={() => navigate("/login")}
           >
             Comece Grátis
           </Button>
@@ -62,6 +62,7 @@ const Hero = ({ onStart }: HeroProps) => {
             variant="secondary"
             size="lg"
             className="w-full sm:w-auto group"
+            onClick={() => navigate("/overview?tab=library")}
           >
             <Play className="w-4 h-4 fill-current mr-2 group-hover:scale-110 transition-transform" />
             Explorar Decks
@@ -124,7 +125,7 @@ const Hero = ({ onStart }: HeroProps) => {
 
                   {!isFlipped ? (
                     <div className="animate-fade-in">
-                      <h3 className="text-4xl md:text-4xl font-medium text-white leading-0.5">
+                      <h3 className="text-2xl md:text-4xl font-medium text-white leading-0.5">
                         Qual o nome do
                         <span className="text-accent"> criador</span> do
                         <span className="text-accent"> Starky</span>?
@@ -166,7 +167,7 @@ const Hero = ({ onStart }: HeroProps) => {
 
                   {!isFlipped && (
                     <div className="mt-12 h-6">
-                      <span className="text-sm text-zinc-500 animate-pulse">
+                      <span className="text-xs md:text-sm text-zinc-500 animate-pulse">
                         Toque para ver a resposta
                       </span>
                     </div>
@@ -178,7 +179,7 @@ const Hero = ({ onStart }: HeroProps) => {
               <div className="h-24 border-t border-zinc-800 bg-zinc-950 flex items-center justify-center px-6 gap-4 z-10">
                 {!isFlipped ? (
                   <Button
-                    size="lg"
+                    size="md"
                     className="w-full max-w-sm text-lg py-4 shadow-xl shadow-accent/20"
                     onClick={() => setIsFlipped(true)}
                   >

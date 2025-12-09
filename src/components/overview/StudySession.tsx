@@ -115,31 +115,31 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
       </header>
 
       {/* Área Central do Card */}
-      <main className="flex-1 flex items-center justify-center p-6 relative">
+      <main className="flex-1 flex items-center justify-center p-4 md:p-6 relative w-full h-full overflow-hidden">
         
         {/* Card Container */}
         <div 
           onClick={() => !isFlipped && setIsFlipped(true)}
-          className="w-full max-w-4xl aspect-video bg-[#121214] border border-white/5 rounded-3xl flex flex-col items-center justify-center p-10 cursor-pointer hover:border-white/10 transition-colors shadow-2xl relative group"
+          className="w-full max-w-4xl aspect-[4/5] md:aspect-video bg-[#121214] border border-white/5 rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 cursor-pointer hover:border-white/10 transition-colors shadow-2xl relative group mx-auto"
         >
-          <div className="text-center max-w-2xl">
+          <div className="text-center max-w-2xl w-full">
 
             {isFlipped ? (
-               <span key={`label-answer-${currentIndex}`} className="animate-slide-up text-[10px] font-bold tracking-[0.2em] text-blue-500 uppercase mb-6 block">
+               <span key={`label-answer-${currentIndex}`} className="animate-slide-up text-[10px] font-bold tracking-[0.2em] text-blue-500 uppercase mb-4 md:mb-6 block">
               Resposta
             </span>
             ) : (
-              <span key={`label-question-${currentIndex}`} className="animate-slide-up text-[10px] font-bold tracking-[0.2em] text-zinc-500 uppercase mb-6 block">
+              <span key={`label-question-${currentIndex}`} className="animate-slide-up text-[10px] font-bold tracking-[0.2em] text-zinc-500 uppercase mb-4 md:mb-6 block">
               Pergunta
             </span>
             )}
            
             {isFlipped ? (
-              <span key={`content-answer-${currentIndex}`} className="animate-slide-up text-xl md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-normal block">
+              <span key={`content-answer-${currentIndex}`} className="animate-slide-up text-xl md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-normal block break-words">
               {currentCard.answer}
             </span>
             ) : (
-              <span key={`content-question-${currentIndex}`} className="animate-slide-up text-xl md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-normal block">
+              <span key={`content-question-${currentIndex}`} className="animate-slide-up text-xl md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-normal block break-words">
               {currentCard.question}
             </span>
             )}
@@ -147,7 +147,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
 
             {/* Indicador visual de 'clique para virar' se não virado */}
             {!isFlipped && (
-              <div className="animate-pulse absolute bottom-15 left-[58%] -translate-x-1/2  text-xs text-zinc-600">
+              <div className="animate-pulse absolute bottom-10 md:bottom-15 left-1/2 -translate-x-1/2 text-xs text-zinc-600 whitespace-nowrap">
                 Toque para ver a resposta
               </div>
             )}
@@ -162,17 +162,17 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
       </main>
 
       {/* Footer com Ações */}
-      <footer className="py-10 pb-14 border-t border-white/5 bg-[#09090b] flex items-center justify-center">
+      <footer className="py-6 pb-10 md:py-10 md:pb-14 border-t border-white/5 bg-[#09090b] flex items-center justify-center px-4">
         {!isFlipped ? (
            <Button 
             size="lg" 
-            className="min-w-[700px] bg-accent text-white hover:bg-accent/70"
+            className="w-full max-w-2xl bg-accent text-white hover:bg-accent/70"
             onClick={() => setIsFlipped(true)}
           >
             Mostrar Resposta
           </Button>
         ) : (
-          <div className="grid grid-cols-4 gap-4 w-full max-w-3xl px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full max-w-3xl">
             <DifficultyButton 
               label="Difícil" 
               time="1m" 

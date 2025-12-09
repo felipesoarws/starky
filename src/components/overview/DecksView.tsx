@@ -12,7 +12,8 @@ import {
 } from "lucide-react";
 import { Button } from "../ui/Button";
 import type { Deck } from "./types";
-
+import { useNavigate } from "react-router";
+  
 interface DecksViewProps {
   decks: Deck[];
   isLocked: boolean;
@@ -34,6 +35,7 @@ const DecksView = ({
   onUpdateCategory,
   onDeleteCategory,
 }: DecksViewProps) => {
+  const navigate = useNavigate();
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
   const [newCategoryName, setNewCategoryName] = useState<string>("");
 
@@ -62,7 +64,7 @@ const DecksView = ({
           Para criar e salvar seus próprios decks de estudo, você precisa de uma
           conta gratuita no Starky.
         </p>
-        <Button size="lg" className="w-full sm:w-auto">
+        <Button size="lg" className="w-full sm:w-auto" onClick={() => navigate("/login")}>
           Criar Conta Grátis
         </Button>
       </div>

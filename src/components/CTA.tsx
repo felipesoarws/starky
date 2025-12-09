@@ -1,6 +1,8 @@
 import { Button } from "./ui/Button";
+import { useNavigate } from "react-router";
 
 const CTA = () => {
+  const navigate = useNavigate();
   return (
     <section className="py-24 px-6 bg-(--accent-background)">
       <div className="max-w-5xl mx-auto rounded-[3rem] bg-(--accent-color) p-12 md:p-24 text-center relative overflow-hidden shadow-2xl shadow-(--accent-color)/20">
@@ -13,10 +15,10 @@ const CTA = () => {
             habilidades com o Starky. Comece de graça hoje.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="lg" withArrow>
+            <Button variant="secondary" size="lg" withArrow onClick={() => navigate("/login")}>
               Comece Grátis
             </Button>
-            <Button size="lg" variant="tertiary">
+            <Button size="lg" variant="tertiary" onClick={() => navigate("/overview")}>
               Explorar Decks
             </Button>
           </div>

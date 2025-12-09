@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { Menu, X, LampDesk } from "lucide-react";
 import { Button } from "./ui/Button";
+import { useAuth } from "../context/AuthContext";
 
 interface NavbarProps {
   scrolled: boolean;
@@ -9,6 +10,7 @@ interface NavbarProps {
 
 const Navbar = ({ scrolled }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <header
@@ -44,12 +46,18 @@ const Navbar = ({ scrolled }: NavbarProps) => {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <Link
-            to={"/login"}
-            className="text-sm font-medium text-zinc-400 hover:text-white"
-          >
-            Entrar
-          </Link>
+          {isAuthenticated && user ? (
+              <span className="text-sm font-medium text-zinc-400">
+                  Olá, <span className="text-white">{user.name.split(' ')[0]}!</span>
+              </span>
+          ) : (
+            <Link
+                to={"/login"}
+                className="text-sm font-medium text-zinc-400 hover:text-white"
+            >
+                Entrar
+            </Link>
+          )}
 
           <Button size="sm" className="bg-(--accent-color)">
             <Link to={"/overview"}>Começar Agora</Link>
