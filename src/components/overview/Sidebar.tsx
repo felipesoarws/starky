@@ -1,4 +1,4 @@
-import { BarChart3, Eye, LampDesk, Library, Lock, LogOut, X } from "lucide-react";
+import { BarChart3, Eye, LampDesk, Library, LogOut, X } from "lucide-react";
 import type { TabType } from "./types";
 import { Link, useNavigate } from "react-router";
 
