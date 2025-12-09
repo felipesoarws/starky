@@ -3,7 +3,6 @@
 O Starky é uma aplicação moderna e inteligente de flashcards projetada para ajudá-lo a dominar qualquer assunto através da repetição espaçada. Construído com uma estética *premium* em modo escuro, oferece uma experiência de estudo focada e imersiva.
 
 ![Tela Inicial](./public/screenshots/home.png)
-*(Nota: Adicione uma captura de tela aqui se disponível)*
 
 ## ✨ Principais Funcionalidades
 
