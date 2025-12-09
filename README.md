@@ -1,73 +1,63 @@
-# React + TypeScript + Vite
+# Starky 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O Starky é uma aplicação moderna e inteligente de flashcards projetada para ajudá-lo a dominar qualquer assunto através da repetição espaçada. Construído com uma estética *premium* em modo escuro, oferece uma experiência de estudo focada e imersiva.
 
-Currently, two official plugins are available:
+![Tela Inicial](./public/screenshots/home.png)
+*(Nota: Adicione uma captura de tela aqui se disponível)*
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Principais Funcionalidades
 
-## React Compiler
+- **🧠 Sistema de Repetição Espaçada (SRS)**: Algoritmo inteligente que agenda revisões com base em quão bem você conhece cada card (Fácil, Médio, Difícil).
+- **💾 Persistência Local**: Todo o seu progresso, decks e cards são salvos automaticamente no LocalStorage do seu navegador. Sem necessidade de login.
+- **🎨 UI Dark Premium**: Uma interface elegante, minimalista e livre de distrações, projetada para longas sessões de estudo.
+- **⏱️ Cronômetro de Sessão**: Acompanhe seu tempo por sessão com um cronômetro integrado.
+- **📊 Acompanhamento de Progresso**: Feedback visual sobre o seu domínio de cada deck.
+- **📱 Design Responsivo**: Funciona perfeitamente em dispositivos desktop e móveis.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tecnologias Utilizadas
 
-## Expanding the ESLint configuration
+- **Framework**: React 18
+- **Linguagem**: TypeScript
+- **Estilização**: Tailwind CSS
+- **Build Tool**: Vite
+- **Ícones**: Lucide React
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Começando
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Pré-requisitos
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Node.js (v16 ou superior)
+- npm ou yarn
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Instalação
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1.  Clone o repositório:
+    ```bash
+    git clone https://github.com/felipesoarws/starky_v2.git
+    ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+2.  Navegue até o diretório do projeto:
+    ```bash
+    cd starky
+    ```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+3.  Instale as dependências:
+    ```bash
+    npm install
+    ```
+
+4.  Inicie o servidor de desenvolvimento:
+    ```bash
+    npm run dev
+    ```
+
+## 📖 Como Usar
+
+1.  **Criar um Deck**: Clique em "Novo Deck" na barra lateral para criar uma coleção de cards.
+2.  **Adicionar Cards**: Digite suas perguntas e respostas.
+3.  **Estudar**: Clique em "Estudar" em um deck. Leia a pergunta, vire o card e avalie sua dificuldade.
+4.  **Revisar**: O Starky trará de volta os cards que você achou difíceis mais cedo, enquanto empurra os fáceis para datas posteriores.
+
+## 📝 Licença
+
+Este projeto é open source e está disponível sob a [Licença MIT](LICENSE).
