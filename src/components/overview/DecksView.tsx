@@ -19,7 +19,7 @@ interface DecksViewProps {
   onCreateDeck: () => void;
   onEditDeck: (deck: Deck) => void;
   onDeleteDeck: (id: number) => void;
-  /* onStudyDeck: (deck: Deck) => void;*/
+  onStudyDeck: (deck: Deck) => void;
   onUpdateCategory: (oldName: string, newName: string) => void;
   onDeleteCategory: (categoryName: string) => void;
 }
@@ -30,6 +30,7 @@ const DecksView = ({
   onCreateDeck,
   onEditDeck,
   onDeleteDeck,
+  onStudyDeck,
   onUpdateCategory,
   onDeleteCategory,
 }: DecksViewProps) => {
@@ -194,8 +195,11 @@ const DecksView = ({
                     </div>
                   </div>
 
-                  <div>
-                    <Button className="w-full justify-between group/btn">
+                    <div>
+                    <Button 
+                      className="w-full justify-between group/btn"
+                      onClick={() => onStudyDeck(deck)}
+                    >
                       Estudar Agora{" "}
                       <ChevronRight className="w-4 h-4 text-white/50 group-hover/btn:translate-x-1 transition-transform" />
                     </Button>

@@ -4,6 +4,8 @@ export interface Card {
   answer: string;
   difficulty?: "easy" | "good" | "medium" | "hard";
   lastReviewed?: Date;
+  nextReviewDate?: string; // ISO string
+  interval?: number; // Minutes
 }
 
 export interface Deck {

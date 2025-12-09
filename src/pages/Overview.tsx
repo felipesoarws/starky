@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "../components/overview/Sidebar";
 import OverviewHeader from "../components/overview/OverviewHeader";
 import StatsView from "../components/overview/StatsView";
 import DecksView from "../components/overview/DecksView";
 import LibraryView from "../components/overview/LibraryView";
+import StudySession from "../components/overview/StudySession";
 
 import {
   ArrowLeft,
   CheckCircle,
+  Clock,
   Layers,
   Plus,
   Save,
@@ -31,9 +33,20 @@ function Overview() {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Estados gerais dos decks
-  const [decks, setDecks] = useState<Deck[]>(INITIAL_DECKS);
+  const [decks, setDecks] = useState<Deck[]>(() => {
+    const saved = localStorage.getItem("starky_decks");
+    return saved ? JSON.parse(saved) : INITIAL_DECKS;
+  });
+
+  // Persistência
+  useEffect(() => {
+    localStorage.setItem("starky_decks", JSON.stringify(decks));
+  }, [decks]);
 
   const [activeDeck, setActiveDeck] = useState<Deck | null>(null);
+  
+  // Snapshot dos cards para a sessão de estudo (evita que cards sumam ao atualizar data)
+  const [studySessionCards, setStudySessionCards] = useState<Card[]>([]);
 
   const filteredDecks = decks.filter(
     (deck) =>
@@ -43,8 +56,21 @@ function Overview() {
       deck.title.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
   );
 
-  // Estado de notificação de um toast
-  const [showToast, setShowToast] = useState(false);
+  // Estado de notificação (Toast)
+  const [toastConfig, setToastConfig] = useState<{
+    show: boolean;
+    message: string;
+    type: "success" | "info";
+  }>({
+    show: false,
+    message: "",
+    type: "success",
+  });
+
+  const showNotification = (message: string, type: "success" | "info" = "success") => {
+      setToastConfig({ show: true, message, type });
+      setTimeout(() => setToastConfig(prev => ({ ...prev, show: false })), 3000);
+  };
 
   // FUNÇÕES DOS DECKS
   const handleSaveDeck = (savedDeck: Deck) => {
@@ -61,8 +87,7 @@ function Overview() {
     setActiveDeck(null);
 
     // Toast de confirmação
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 2500);
+    showNotification("Deck salvo com sucesso.");
   };
 
   const startEditingDeck = (deck: Deck | null) => {
@@ -78,6 +103,50 @@ function Overview() {
 
   const handleCreateDeck = () => {
     startEditingDeck(null);
+  };
+
+  const handleUpdateCardInDeck = (deckId: number, card: Card) => {
+    setDecks((prevDecks) =>
+      prevDecks.map((d) => {
+        if (d.id === deckId) {
+          return {
+            ...d,
+            cards: d.cards.map((c) => (c.id === card.id ? card : c)),
+            lastStudied: new Date().toLocaleDateString(),
+          };
+        }
+        return d;
+      })
+    );
+
+    // Atualiza também o deck ativo síncronamente para a UI refletir
+    if (activeDeck && activeDeck.id === deckId) {
+      setActiveDeck((prev) => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          cards: prev.cards.map((c) => (c.id === card.id ? card : c)),
+        };
+      });
+    }
+  };
+
+
+  const handleStudyDeck = (deck: Deck) => {
+    // Verificar se há cards para revisar agora
+    const cardsToReview = deck.cards.filter((card) => {
+      if (!card.nextReviewDate) return true; // Nunca estudado
+      return new Date(card.nextReviewDate) <= new Date(); // Vencido
+    });
+
+    if (cardsToReview.length === 0) {
+      showNotification("Tudo em dia! Nenhum card para revisar neste deck agora.", "info");
+      return;
+    }
+
+    setStudySessionCards(cardsToReview); // Congela a lista para a sessão
+    setActiveDeck(deck);
+    setViewState("study");
   };
 
   // FUNÇÕES DAS CATEGGORIAS
@@ -115,6 +184,28 @@ function Overview() {
     );
   }
 
+  if (viewState === "study" && activeDeck) {
+    const studyDeck = {
+        ...activeDeck,
+        cards: studySessionCards
+    };
+
+    return (
+      <StudySession
+        deck={studyDeck}
+        onUpdateCard={(card) => handleUpdateCardInDeck(activeDeck.id, card)}
+        onFinish={() => {
+          setViewState("dashboard");
+          setActiveDeck(null);
+        }}
+        onCancel={() => {
+          setViewState("dashboard");
+          setActiveDeck(null);
+        }}
+      />
+    );
+  }
+
   // FILTRO DE BUSCA
 
   return (
@@ -144,6 +235,7 @@ function Overview() {
                 onCreateDeck={handleCreateDeck}
                 onEditDeck={startEditingDeck}
                 onDeleteDeck={handleDeleteDeck}
+                onStudyDeck={handleStudyDeck}
                 onUpdateCategory={handleUpdateCategory}
                 onDeleteCategory={handleDeleteCategory}
               />
@@ -161,14 +253,20 @@ function Overview() {
           </div>
         </div>
 
-        {showToast && (
+        {toastConfig.show && (
           <div className="fixed bottom-6 right-6 bg-zinc-900 border border-zinc-800 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-slide-up z-50">
-            <div className="w-6 h-6 rounded-full bg-green-900/30 flex items-center justify-center border border-green-500/20">
-              <CheckCircle className="w-3.5 h-3.5 text-green-500" />
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center border ${
+                toastConfig.type === 'success' 
+                ? 'bg-green-900/30 border-green-500/20 text-green-500' 
+                : 'bg-blue-900/30 border-blue-500/20 text-blue-500'
+            }`}>
+              {toastConfig.type === 'success' ? <CheckCircle className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
             </div>
             <div>
-              <span className="font-semibold text-sm">Sucesso</span>
-              <p className="text-xs text-zinc-400">Deck salvo com sucesso.</p>
+              <span className="font-semibold text-sm">
+                  {toastConfig.type === 'success' ? 'Sucesso' : 'Aviso'}
+              </span>
+              <p className="text-xs text-zinc-400">{toastConfig.message}</p>
             </div>
           </div>
         )}
@@ -209,7 +307,19 @@ export const DeckEditor = ({ deck, onSave, onCancel }: DeckEditorProps) => {
     field: "question" | "answer",
     value: string
   ) => {
-    setCards(cards.map((c) => (c.id === id ? { ...c, [field]: value } : c)));
+    setCards(cards.map((c) => {
+      if (c.id === id) {
+          return { 
+              ...c, 
+              [field]: value,
+              // Resetar status de revisão para o card aparecer novamente
+              nextReviewDate: undefined,
+              lastReviewed: undefined,
+              interval: undefined
+          };
+      }
+      return c;
+    }));
   };
 
   const handleDeleteCard = (id: number) => {
