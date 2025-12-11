@@ -18,7 +18,7 @@ const CTA = () => {
             <Button variant="secondary" size="lg" withArrow onClick={() => navigate("/login")}>
               Comece Grátis
             </Button>
-            <Button size="lg" variant="tertiary" onClick={() => navigate("/overview")}>
+            <Button size="lg" variant="tertiary" onClick={() => navigate("/overview?tab=library")}>
               Explorar Decks
             </Button>
           </div>

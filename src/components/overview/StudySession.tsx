@@ -91,8 +91,8 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
 
   return (  
     <div className="fixed inset-0 bg-background text-white flex flex-col z-50">
-      <header className="h-16 flex items-center justify-between p-6 px-8 border-b border-white/5 bg-[#101013]">
-        <div className="flex items-center gap-2 md:gap-4">
+      <header className="h-16 flex items-center justify-between p-6 px-8 border-b border-white/5 bg-[#101013] relative">
+        <div className="flex items-center gap-2 md:gap-4 z-10">
           <button 
             onClick={onCancel}
             className="p-2 -ml-2 text-zinc-400 hover:text-white rounded-full hover:bg-white/5 transition-colors"
@@ -103,7 +103,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
           <h1 className="font-bold text-xs md:text-sm tracking-wide text-zinc-200">{deck.title}</h1>
         </div>
 
-        <div className="flex items-center gap-6 text-xs font-mono text-zinc-500">
+        <div className="flex items-center gap-6 text-xs font-mono text-zinc-500 z-10">
           <div className="flex items-center gap-2 bg-zinc-900/50 px-2 py-1 rounded-full border border-white/5">
             <Clock className="w-3 h-3 md:w-3.5 md:h-3.5" />
             <span>{formatTime(seconds)}</span>
@@ -111,6 +111,14 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
           <div className="font-bold text-zinc-400">
             <span className="text-white">{currentIndex + 1}</span> / {deck.cards.length}
           </div>
+        </div>
+
+        {/* Barra de Progresso */}
+        <div className="absolute bottom-0 left-0 h-1 bg-blue-500/20 w-full">
+            <div 
+                className="h-full bg-blue-500 transition-all duration-300 ease-out"
+                style={{ width: `${((currentIndex + 1) / deck.cards.length) * 100}%` }}
+            />
         </div>
       </header>
 

@@ -17,10 +17,12 @@ import {
   Save,
   Trash2,
 } from "lucide-react";
-import { INITIAL_DECKS } from "../components/overview/decksData";
+
 
 import type { Card, Deck, TabType } from "../components/overview/types";
 import { Button } from "../components/ui/Button";
+
+const API_URL = "http://localhost:3001/api";
 
 function Overview() {
   const { user, isAuthenticated } = useAuth();
@@ -46,32 +48,29 @@ function Overview() {
 
   // Carregar decks quando o usuário mudar
   useEffect(() => {
-    const storageKey = user ? `starky_decks_${user.id}` : "starky_decks_guest";
-    const saved = localStorage.getItem(storageKey);
-    
-    if (saved) {
-      setDecks(JSON.parse(saved));
-    } else {
-      // Se for usuário novo, começa vazio ou com dados iniciais? 
-      // O requisito diz "relacione ações salvas... a conta criada".
-      // Vamos assumir que começa vazio se não tiver nada.
-      // Mas para manter a demo funcionando, podemos carregar INITIAL_DECKS para guest se vazio.
-      if (!user) {
-          setDecks(INITIAL_DECKS);
+    const loadDecks = async () => {
+      if (user) {
+        try {
+          const token = localStorage.getItem("starky_token");
+          const res = await fetch(`${API_URL}/decks`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setDecks(data);
+          }
+        } catch (error) {
+          console.error("Falha ao carregar decks", error);
+        }
       } else {
-          setDecks([]);
+        // Modo visitante (dados efêmeros)
+        setDecks([]);
       }
-    }
+    };
+    loadDecks();
   }, [user]);
 
-  // Persistência
-  useEffect(() => {
-    // Só salva se houver decks carregados (evita sobrescrever com vazio no mount inicial antes do load)
-    // Mas decks=[] é valido. 
-    // Vamos usar a chave correta.
-    const storageKey = user ? `starky_decks_${user.id}` : "starky_decks_guest";
-    localStorage.setItem(storageKey, JSON.stringify(decks));
-  }, [decks, user]);
+
 
   const [activeDeck, setActiveDeck] = useState<Deck | null>(null);
   
@@ -103,35 +102,94 @@ function Overview() {
   };
 
   // FUNÇÕES DOS DECKS
-  const handleSaveDeck = (savedDeck: Deck) => {
-    // Checar se está atualizando ou criando um deck novo
-    const exists = decks.find((d) => d.id === savedDeck.id);
+  const handleSaveDeck = async (savedDeck: Deck) => {
+    if (user) {
+      try {
+        const token = localStorage.getItem("starky_token");
+        // Only treat as update if ID is truthy (not 0) AND exists in current list
+        const isUpdate = !!savedDeck.id && decks.some(d => d.id === savedDeck.id);
+        
+        let url = `${API_URL}/decks`;
+        let method = "POST";
+        
+        // Nota: A lógica permite criar novo deck mesmo se ID estiver presente (se veio do fluxo de criação local com Date.now())
+        // Mas se corresponder a um ID real do DB (do estado decks), é uma atualização.
+        // Precisamos ter cuidado com colisão de ID entre Date.now() e ID serial do DB.
+        // IDs do DB geralmente são inteiros pequenos. Date.now() é enorme.
+        // Vamos supor que se existir no estado 'decks' atual, é uma atualização.
+        
+        if (isUpdate) {
+            url = `${API_URL}/decks/${savedDeck.id}`;
+            method = "PUT";
+        }
 
-    if (exists) {
-      setDecks(decks.map((d) => (d.id === savedDeck.id ? savedDeck : d)));
+        const res = await fetch(url, {
+             method,
+             headers: { 
+                 "Content-Type": "application/json",
+                 Authorization: `Bearer ${token}` 
+             },
+             body: JSON.stringify(savedDeck)
+        });
+
+        if (res.ok) {
+            const updatedDeck = await res.json();
+            if (isUpdate) {
+                setDecks(decks.map((d) => (d.id === updatedDeck.id ? updatedDeck : d)));
+            } else {
+                setDecks([updatedDeck, ...decks]);
+            }
+            showNotification("Deck salvo com sucesso.");
+        } else {
+            alert("Erro ao salvar deck");
+        }
+      } catch (error) {
+          console.error(error);
+          alert("Erro de conexão");
+      }
     } else {
-      setDecks([savedDeck, ...decks]);
+        // Lógica de Visitante
+        const exists = decks.find((d) => d.id === savedDeck.id);
+        if (exists) {
+            setDecks(decks.map((d) => (d.id === savedDeck.id ? savedDeck : d)));
+        } else {
+            setDecks([savedDeck, ...decks]);
+        }
+        showNotification("Deck salvo (apenas localmente).");
     }
 
     setViewState("dashboard");
     setActiveDeck(null);
-
-    // Toast de confirmação
-    showNotification("Deck salvo com sucesso.");
   };
 
   const startEditingDeck = (deck: Deck | null) => {
     if (!isAuthenticated) {
         // Bloqueio extra caso UI falhe, mas a UI já deve bloquear.
+        // Alert user
+        alert("Você precisa estar logado para criar/editar decks personalizados.");
         return; 
     }
     setActiveDeck(deck);
     setViewState("editor");
   };
 
-  const handleDeleteDeck = (id: number) => {
+  const handleDeleteDeck = async (id: number) => {
     if (window.confirm("Tem certeza que deseja excluir este deck?")) {
-      setDecks(decks.filter((d) => d.id !== id));
+      if (user) {
+          try {
+             const token = localStorage.getItem("starky_token");
+             await fetch(`${API_URL}/decks/${id}`, {
+                 method: "DELETE",
+                 headers: { Authorization: `Bearer ${token}` }
+             });
+             setDecks(decks.filter((d) => d.id !== id));
+          } catch(err) {
+              console.error(err);
+              alert("Erro ao excluir");
+          }
+      } else {
+          setDecks(decks.filter((d) => d.id !== id));
+      }
     }
   };
 
@@ -139,19 +197,44 @@ function Overview() {
     startEditingDeck(null);
   };
 
-  const handleUpdateCardInDeck = (deckId: number, card: Card) => {
+  const handleUpdateCardInDeck = async (deckId: number, card: Card) => {
+    // Atualização Otimista
     setDecks((prevDecks) =>
       prevDecks.map((d) => {
         if (d.id === deckId) {
           return {
             ...d,
             cards: d.cards.map((c) => (c.id === card.id ? card : c)),
-            lastStudied: new Date().toLocaleDateString(),
+            lastStudied: new Date().toLocaleDateString(), // UI format
           };
         }
         return d;
       })
     );
+
+    if (user) {
+        try {
+            const token = localStorage.getItem("starky_token");
+            // Chamada API (Disparar e esquecer ou tratar erro)
+            await fetch(`${API_URL}/cards/${card.id}`, {
+                method: "PUT",
+                headers: { 
+                     "Content-Type": "application/json",
+                     Authorization: `Bearer ${token}` 
+                },
+                body: JSON.stringify({
+                    difficulty: card.difficulty,
+                    nextReviewDate: card.nextReviewDate,
+                    interval: card.interval,
+                    lastReviewed: card.lastReviewed
+                })
+            });
+            // Também atualizar lastStudied do deck se necessário? A lógica do backend pode precisar tratar esse gatilho.
+            // Por enquanto, apenas atualizamos o card.
+        } catch (error) {
+            console.error("Falha ao sincronizar progresso do card", error);
+        }
+    }
 
     // Atualiza também o deck ativo síncronamente para a UI refletir
     if (activeDeck && activeDeck.id === deckId) {
@@ -184,23 +267,61 @@ function Overview() {
   };
 
   // FUNÇÕES DAS CATEGGORIAS
-  const handleDeleteCategory = (catName: string) => {
+  const handleDeleteCategory = async (catName: string) => {
     if (
       window.confirm(
         `ATENÇÃO: Isso excluirá a categoria "${catName}" e TODOS os decks dentro dela. Continuar?`
       )
     ) {
-      setDecks(decks.filter((d) => d.category !== catName));
+      if (user) {
+         try {
+             const token = localStorage.getItem("starky_token");
+             await fetch(`${API_URL}/categories/${encodeURIComponent(catName)}`, {
+                 method: "DELETE",
+                 headers: { Authorization: `Bearer ${token}` }
+             });
+             // Optimistic update
+             setDecks(decks.filter((d) => d.category !== catName));
+         } catch(err) {
+             console.error("Erro ao excluir categoria", err);
+             alert("Erro ao excluir categoria");
+         }
+      } else {
+        setDecks(decks.filter((d) => d.category !== catName));
+      }
     }
   };
 
-  const handleUpdateCategory = (oldName: string, newName: string) => {
+  const handleUpdateCategory = async (oldName: string, newName: string) => {
     if (newName.trim() && newName !== oldName) {
-      setDecks(
-        decks.map((d) =>
-          d.category === oldName ? { ...d, category: newName } : d
-        )
-      );
+      if (user) {
+          try {
+              const token = localStorage.getItem("starky_token");
+              await fetch(`${API_URL}/categories/${encodeURIComponent(oldName)}`, {
+                  method: "PUT",
+                  headers: { 
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}` 
+                  },
+                  body: JSON.stringify({ newName })
+              });
+              // Optimistic Update
+              setDecks(
+                decks.map((d) =>
+                  d.category === oldName ? { ...d, category: newName } : d
+                )
+              );
+          } catch(err) {
+              console.error("Erro ao renomear categoria", err);
+              alert("Erro ao atualizar categoria");
+          }
+      } else {
+        setDecks(
+            decks.map((d) =>
+            d.category === oldName ? { ...d, category: newName } : d
+            )
+        );
+      }
     }
   };
 
@@ -356,9 +477,10 @@ export const DeckEditor = ({ deck, onSave, onCancel }: DeckEditorProps) => {
               ...c, 
               [field]: value,
               // Resetar status de revisão para o card aparecer novamente
-              nextReviewDate: undefined,
-              lastReviewed: undefined,
-              interval: undefined
+              // Use null para garantir que o JSON envie o valor e o backend limpe o campo
+              nextReviewDate: null,
+              lastReviewed: null,
+              interval: null
           };
       }
       return c;

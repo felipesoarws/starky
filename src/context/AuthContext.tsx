@@ -1,7 +1,9 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 
+const API_URL = "http://localhost:3001/api";
+
 interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
 }
@@ -13,6 +15,7 @@ interface AuthContextType {
   register: (name: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
+  token: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,73 +34,97 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(localStorage.getItem("starky_token"));
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load session on startup
+  // Carregar sessão na inicialização
   useEffect(() => {
-    const storedUser = localStorage.getItem("starky_session");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setIsLoading(false);
+    const initAuth = async () => {
+      const storedToken = localStorage.getItem("starky_token");
+      if (storedToken) {
+        try {
+          const res = await fetch(`${API_URL}/auth/me`, {
+            headers: { Authorization: `Bearer ${storedToken}` }
+          });
+          
+          if (res.ok) {
+            const userData = await res.json();
+            setUser(userData);
+          } else {
+            console.warn("Token invalid, logging out");
+            logout();
+          }
+        } catch (error) {
+           console.error("Falha na verificação de autenticação", error);
+           logout();
+        }
+      }
+      setIsLoading(false);
+    };
+
+    initAuth();
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // Check against stored users
-    const users = JSON.parse(localStorage.getItem("starky_users") || "[]");
-    const foundUser = users.find((u: any) => u.email === email && u.password === password);
-    
-    if (foundUser) {
-      const userData = { id: foundUser.id, name: foundUser.name, email: foundUser.email };
-      setUser(userData);
-      localStorage.setItem("starky_session", JSON.stringify(userData));
+    try {
+      const res = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) {
+        setIsLoading(false);
+        return false;
+      }
+
+      const data = await res.json();
+      setToken(data.token);
+      setUser(data.user);
+      localStorage.setItem("starky_token", data.token);
+      
       setIsLoading(false);
       return true;
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+      return false;
     }
-    
-    setIsLoading(false);
-    return false;
   };
 
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
-     // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    try {
+      const res = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-    const users = JSON.parse(localStorage.getItem("starky_users") || "[]");
-    
-    // Check if user exists
-    if (users.some((u: any) => u.email === email)) {
+      if (!res.ok) {
+        setIsLoading(false);
+        return false;
+      }
+
+      const data = await res.json();
+      setToken(data.token);
+      setUser(data.user);
+      localStorage.setItem("starky_token", data.token);
+
       setIsLoading(false);
-      return false; // Email already in use
+      return true;
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+      return false;
     }
-    
-    const newUser = {
-      id: "user_" + Date.now(),
-      name,
-      email,
-      password // In a real app, never store passwords like this!
-    };
-    
-    users.push(newUser);
-    localStorage.setItem("starky_users", JSON.stringify(users));
-    
-    // Auto login after register
-    const userData = { id: newUser.id, name: newUser.name, email: newUser.email };
-    setUser(userData);
-    localStorage.setItem("starky_session", JSON.stringify(userData));
-    
-    setIsLoading(false);
-    return true;
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("starky_session");
+    setToken(null);
+    localStorage.removeItem("starky_token");
   };
 
   return (
@@ -107,7 +134,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       login, 
       register, 
       logout,
-      isLoading 
+      isLoading,
+      token
     }}>
       {children}
     </AuthContext.Provider>

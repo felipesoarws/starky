@@ -64,7 +64,11 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
     });
 
     const normalizedDeck: Deck = {
-      ...selectedDeck,
+      title: selectedDeck.title,
+      category: selectedDeck.category,
+      // No ID, so it is treated as creation
+      id: 0, 
+      lastStudied: "Nunca",
       cards: normalizedCards,
     };
 

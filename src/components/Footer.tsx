@@ -1,4 +1,5 @@
 import { LampDesk, Instagram, Github, Linkedin } from "lucide-react";
+import { Link } from "react-router";
 
 export const Footer: React.FC = () => {
   return (
@@ -23,9 +24,9 @@ export const Footer: React.FC = () => {
               <h4 className="font-semibold text-white mb-6">Aprender</h4>
               <ul className="space-y-4 text-sm text-zinc-500">
                 <li>
-                  <a href="#" className="hover:text-accent transition-colors">
+                  <Link to="/overview?tab=library" className="hover:text-accent transition-colors">
                     Explorar Decks
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a
