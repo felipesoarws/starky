@@ -20,7 +20,10 @@ interface LibraryViewProps {
   onAddDeck: (deck: Deck) => void;
 }
 
+import { useDialog } from "../../context/DialogContext";
+
 const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
+  const { showAlert } = useDialog();
   const savedDecks = [
     inglesA1[0],
     inglesB1[0],
@@ -36,7 +39,7 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
   
   const addDeckToDash = (deckName: string) => {
     if (!isAuthenticated) {
-        alert("Crie uma conta gratuita para salvar este deck na sua biblioteca!");
+        showAlert("Acesso Restrito", "Crie uma conta gratuita para salvar este deck na sua biblioteca!");
         return;
     }
 
@@ -47,7 +50,7 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
       (d) => d.title === selectedDeck.title
     );
     if (isDeckAlreadyAdded) {
-      alert("Você já possui este deck na sua biblioteca!");
+      showAlert("Deck já adicionado", "Você já possui este deck na sua biblioteca!");
       return;
     }
 

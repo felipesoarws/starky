@@ -10,12 +10,15 @@ interface OverviewHeaderProps {
   onMenuClick?: () => void;
 }
 
+import { useDialog } from "../../context/DialogContext";
+
 const OverviewHeader = ({
   searchQuery,
   setSearchQuery,
   onMenuClick,
 }: OverviewHeaderProps) => {
   const { user, logout } = useAuth();
+  const { showAlert } = useDialog();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
@@ -68,7 +71,7 @@ const OverviewHeader = ({
           variant="outline"
           size="sm"
           className="hidden sm:flex"
-          onClick={() => alert("Feature: Importar Decks")}
+          onClick={() => showAlert("Em breve", "Feature: Importar Decks")}
         >
           <Upload className="w-4 h-4 mr-2" /> Importar
         </Button>
@@ -76,7 +79,7 @@ const OverviewHeader = ({
           variant="outline"
           size="sm"
           className="hidden sm:flex"
-          onClick={() => alert("Feature: Exportar Decks")}
+          onClick={() => showAlert("Em breve", "Feature: Exportar Decks")}
         >
           <Download className="w-4 h-4 mr-2" /> Exportar
         </Button>

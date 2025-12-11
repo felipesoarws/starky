@@ -8,14 +8,18 @@ import { AuthProvider } from "./context/AuthContext.tsx";
 
 import "./index.css";
 
+import { DialogProvider } from "./context/DialogContext.tsx";
+
 createRoot(document.getElementById("root")!).render(
   <AuthProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/overview" element={<Overview />} />
-      </Routes>
-    </BrowserRouter>
+    <DialogProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/overview" element={<Overview />} />
+        </Routes>
+      </BrowserRouter>
+    </DialogProvider>
   </AuthProvider>
 );

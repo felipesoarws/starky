@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router";
 
 import { useAuth } from "../../context/AuthContext";
 
+import { useDialog } from "../../context/DialogContext";
+
 interface SidebarProps {
   activeTab: TabType;
   setActiveTab: (tab: TabType) => void;
@@ -14,14 +16,13 @@ interface SidebarProps {
 const Sidebar = ({ activeTab, setActiveTab, isOpen, onClose }: SidebarProps) => {
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { showConfirm } = useDialog();
 
   const onLogout = () => {
-    if (
-      window.confirm("Você deseja deslogar e voltar para a página inicial?")
-    ) {
+    showConfirm("Sair", "Você deseja deslogar e voltar para a página inicial?", () => {
       logout();
       navigate("/");
-    }
+    });
   };
 
   const getButtonClass = (tab: TabType) =>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, LampDesk, Loader2 } from "lucide-react";
+import { ArrowLeft, LampDesk, Loader2, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import { Button } from "../components/ui/Button";
@@ -9,6 +9,7 @@ function Login() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   
   const { login, register, isLoading, isAuthenticated } = useAuth();
@@ -104,13 +105,22 @@ function Login() {
 
                 <div className="space-y-1">
                     <label className="text-sm font-medium text-zinc-300">Senha</label>
-                    <input 
-                        type="password" 
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none"
-                        placeholder="••••••••"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                    />
+                    <div className="relative">
+                        <input 
+                            type={showPassword ? "text" : "password"}
+                            className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none pr-10"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-[.22rem] text-zinc-400 hover:text-white transition-colors"
+                        >
+                            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                    </div>
                 </div>
 
                 {error && (

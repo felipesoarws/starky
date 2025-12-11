@@ -7,6 +7,7 @@ import DecksView from "../components/overview/DecksView";
 import LibraryView from "../components/overview/LibraryView";
 import StudySession from "../components/overview/StudySession";
 import { useAuth } from "../context/AuthContext";
+import { useDialog } from "../context/DialogContext";
 
 import {
   ArrowLeft,
@@ -28,6 +29,7 @@ function Overview() {
   const { user, isAuthenticated } = useAuth();
   const [searchParams] = useSearchParams();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { showAlert, showConfirm } = useDialog();
   
   const [activeTab, setActiveTab] = useState<TabType>(() => {
       const tabParam = searchParams.get("tab");
@@ -141,11 +143,11 @@ function Overview() {
             }
             showNotification("Deck salvo com sucesso.");
         } else {
-            alert("Erro ao salvar deck");
+            showAlert("Erro", "Erro ao salvar deck");
         }
       } catch (error) {
           console.error(error);
-          alert("Erro de conexão");
+          showAlert("Erro", "Erro de conexão");
       }
     } else {
         // Lógica de Visitante
@@ -166,7 +168,7 @@ function Overview() {
     if (!isAuthenticated) {
         // Bloqueio extra caso UI falhe, mas a UI já deve bloquear.
         // Alert user
-        alert("Você precisa estar logado para criar/editar decks personalizados.");
+        showAlert("Acesso Restrito", "Você precisa estar logado para criar/editar decks personalizados.");
         return; 
     }
     setActiveDeck(deck);
@@ -174,7 +176,7 @@ function Overview() {
   };
 
   const handleDeleteDeck = async (id: number) => {
-    if (window.confirm("Tem certeza que deseja excluir este deck?")) {
+    showConfirm("Excluir Deck", "Tem certeza que deseja excluir este deck?", async () => {
       if (user) {
           try {
              const token = localStorage.getItem("starky_token");
@@ -185,12 +187,12 @@ function Overview() {
              setDecks(decks.filter((d) => d.id !== id));
           } catch(err) {
               console.error(err);
-              alert("Erro ao excluir");
+              showAlert("Erro", "Erro ao excluir");
           }
       } else {
           setDecks(decks.filter((d) => d.id !== id));
       }
-    }
+    });
   };
 
   const handleCreateDeck = () => {
@@ -268,11 +270,7 @@ function Overview() {
 
   // FUNÇÕES DAS CATEGGORIAS
   const handleDeleteCategory = async (catName: string) => {
-    if (
-      window.confirm(
-        `ATENÇÃO: Isso excluirá a categoria "${catName}" e TODOS os decks dentro dela. Continuar?`
-      )
-    ) {
+    showConfirm("Excluir Categoria", `ATENÇÃO: Isso excluirá a categoria "${catName}" e TODOS os decks dentro dela. Continuar?`, async () => {
       if (user) {
          try {
              const token = localStorage.getItem("starky_token");
@@ -284,12 +282,12 @@ function Overview() {
              setDecks(decks.filter((d) => d.category !== catName));
          } catch(err) {
              console.error("Erro ao excluir categoria", err);
-             alert("Erro ao excluir categoria");
+             showAlert("Erro", "Erro ao excluir categoria");
          }
       } else {
         setDecks(decks.filter((d) => d.category !== catName));
       }
-    }
+    });
   };
 
   const handleUpdateCategory = async (oldName: string, newName: string) => {
@@ -313,7 +311,7 @@ function Overview() {
               );
           } catch(err) {
               console.error("Erro ao renomear categoria", err);
-              alert("Erro ao atualizar categoria");
+              showAlert("Erro", "Erro ao atualizar categoria");
           }
       } else {
         setDecks(
@@ -331,6 +329,7 @@ function Overview() {
       <DeckEditor
         deck={activeDeck}
         onSave={handleSaveDeck}
+        showAlert={showAlert}
         onCancel={() => {
           setViewState("dashboard");
           setActiveDeck(null);
@@ -449,9 +448,10 @@ interface DeckEditorProps {
   deck: Deck | null; /* Se for null é para entrar no modo de criação de deck */
   onSave: (deck: Deck) => void;
   onCancel: () => void;
+  showAlert: (title: string, description?: string) => void;
 }
 
-export const DeckEditor = ({ deck, onSave, onCancel }: DeckEditorProps) => {
+export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProps) => {
   const [title, setTitle] = useState(deck?.title || "");
   const [category, setCategory] = useState(deck?.category || "");
   const [cards, setCards] = useState<Card[]>(deck?.cards || []);
@@ -493,7 +493,7 @@ export const DeckEditor = ({ deck, onSave, onCancel }: DeckEditorProps) => {
 
   const handleSave = () => {
     if (!title.trim() || !category.trim()) {
-      alert("Título e Categoria são obrigatórios");
+      showAlert("Campos Obrigatórios", "Título e Categoria são obrigatórios");
       return;
     }
 
@@ -502,7 +502,7 @@ export const DeckEditor = ({ deck, onSave, onCancel }: DeckEditorProps) => {
     );
 
     if (hasIncompleteCards) {
-      alert("Todos os cards precisam ter Pergunta e Resposta preenchidas!");
+      showAlert("Cards Incompletos", "Todos os cards precisam ter Pergunta e Resposta preenchidas!");
       return;
     }
 
