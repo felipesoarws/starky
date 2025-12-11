@@ -23,7 +23,7 @@ import {
 import type { Card, Deck, TabType } from "../components/overview/types";
 import { Button } from "../components/ui/Button";
 
-const API_URL = "http://localhost:3001/api";
+import { API_URL } from "../config";
 
 function Overview() {
   const { user, isAuthenticated } = useAuth();
