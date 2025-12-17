@@ -1,8 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { db } from "./db";
-import { users, decks, cards } from "./db/schema";
+import { db } from "./db/index.js";
+import { users, decks, cards } from "./db/schema.js";
 import { eq, and } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -339,6 +339,21 @@ app.put("/api/categories/:name", authenticateToken, async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Export app for Vercel
+export default app;
+
+// Only listen if run directly (not imported as a module)
+// In Vercel, this file is imported, so listen won't run.
+// locally 'npm run server' runs this file directly.
+
+
+if (process.env.NODE_ENV !== 'production') {
+  const server = app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+  
+  // Workaround: Prevent process from exiting immediately when running locally
+  // This is necessary because app.listen() is not holding the event loop open
+  // in this specific environment (Node + Drizzle + dotenv combination)
+  setInterval(() => {}, 60000);
+}
