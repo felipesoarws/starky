@@ -59,7 +59,22 @@ const PrivacyPolicy = () => {
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-semibold text-white mb-4">5. Seus Direitos Legais</h2>
+                        <h2 className="text-2xl font-semibold text-white mb-4">5. Cookies e Tecnologias de Rastreamento</h2>
+                        <p className="leading-relaxed mb-4">
+                            Utilizamos cookies e tecnologias similares (como Google Analytics e Google Tag Manager) para rastrear a atividade em nosso serviço e armazenar certas informações.
+                        </p>
+                        <p className="leading-relaxed mb-4">
+                            Os cookies são arquivos com uma pequena quantidade de dados que podem incluir um identificador exclusivo anônimo.
+                            Você pode instruir seu navegador a recusar todos os cookies ou indicar quando um cookie está sendo enviado.
+                        </p>
+                        <ul className="list-disc pl-6 space-y-2">
+                            <li><strong className="text-white">Cookies Essenciais:</strong> Usados para autenticação (login) e segurança.</li>
+                            <li><strong className="text-white">Cookies de Análise:</strong> Usados para coletar informações sobre como você usa o Starky (ex: páginas visitadas, tempo gasto) para nos ajudar a melhorar a plataforma.</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-semibold text-white mb-4">6. Seus Direitos Legais</h2>
                         <p className="leading-relaxed">
                             Sob certas circunstâncias, você tem direitos sob as leis de proteção de dados em relação aos seus dados pessoais, incluindo o direito de solicitar acesso,
                             correção, apagamento, restrição, transferência, ou de retirar o consentimento.

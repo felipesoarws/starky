@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex items-center justify-between gap-15 lg:gap-30">
+          <div className="flex items-start justify-between gap-15 lg:gap-30">
             <div>
               <h4 className="font-semibold text-white mb-6">Aprender</h4>
               <ul className="space-y-4 text-sm text-zinc-500">
@@ -58,11 +58,6 @@ export const Footer: React.FC = () => {
                 <li>
                   <a href="#" className="hover:text-accent transition-colors">
                     Termos de Serviço
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-accent transition-colors">
-                    Política de Cookies
                   </a>
                 </li>
               </ul>
