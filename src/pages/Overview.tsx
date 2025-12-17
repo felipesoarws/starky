@@ -30,11 +30,11 @@ function Overview() {
   const [searchParams] = useSearchParams();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { showAlert, showConfirm } = useDialog();
-  
+
   const [activeTab, setActiveTab] = useState<TabType>(() => {
-      const tabParam = searchParams.get("tab");
-      if (tabParam === "library") return "library";
-      return "decks_view";
+    const tabParam = searchParams.get("tab");
+    if (tabParam === "library") return "library";
+    return "decks_view";
   });
 
   // Estados gerais de visualização
@@ -75,7 +75,7 @@ function Overview() {
 
 
   const [activeDeck, setActiveDeck] = useState<Deck | null>(null);
-  
+
   // Snapshot dos cards para a sessão de estudo (evita que cards sumam ao atualizar data)
   const [studySessionCards, setStudySessionCards] = useState<Card[]>([]);
 
@@ -99,8 +99,8 @@ function Overview() {
   });
 
   const showNotification = (message: string, type: "success" | "info" = "success") => {
-      setToastConfig({ show: true, message, type });
-      setTimeout(() => setToastConfig(prev => ({ ...prev, show: false })), 3000);
+    setToastConfig({ show: true, message, type });
+    setTimeout(() => setToastConfig(prev => ({ ...prev, show: false })), 3000);
   };
 
   // FUNÇÕES DOS DECKS
@@ -110,54 +110,54 @@ function Overview() {
         const token = localStorage.getItem("starky_token");
         // Only treat as update if ID is truthy (not 0) AND exists in current list
         const isUpdate = !!savedDeck.id && decks.some(d => d.id === savedDeck.id);
-        
+
         let url = `${API_URL}/decks`;
         let method = "POST";
-        
+
         // Nota: A lógica permite criar novo deck mesmo se ID estiver presente (se veio do fluxo de criação local com Date.now())
         // Mas se corresponder a um ID real do DB (do estado decks), é uma atualização.
         // Precisamos ter cuidado com colisão de ID entre Date.now() e ID serial do DB.
         // IDs do DB geralmente são inteiros pequenos. Date.now() é enorme.
         // Vamos supor que se existir no estado 'decks' atual, é uma atualização.
-        
+
         if (isUpdate) {
-            url = `${API_URL}/decks/${savedDeck.id}`;
-            method = "PUT";
+          url = `${API_URL}/decks/${savedDeck.id}`;
+          method = "PUT";
         }
 
         const res = await fetch(url, {
-             method,
-             headers: { 
-                 "Content-Type": "application/json",
-                 Authorization: `Bearer ${token}` 
-             },
-             body: JSON.stringify(savedDeck)
+          method,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(savedDeck)
         });
 
         if (res.ok) {
-            const updatedDeck = await res.json();
-            if (isUpdate) {
-                setDecks(decks.map((d) => (d.id === updatedDeck.id ? updatedDeck : d)));
-            } else {
-                setDecks([updatedDeck, ...decks]);
-            }
-            showNotification("Deck salvo com sucesso.");
+          const updatedDeck = await res.json();
+          if (isUpdate) {
+            setDecks(decks.map((d) => (d.id === updatedDeck.id ? updatedDeck : d)));
+          } else {
+            setDecks([updatedDeck, ...decks]);
+          }
+          showNotification("Deck salvo com sucesso.");
         } else {
-            showAlert("Erro", "Erro ao salvar deck");
+          showAlert("Erro", "Erro ao salvar deck");
         }
       } catch (error) {
-          console.error(error);
-          showAlert("Erro", "Erro de conexão");
+        console.error(error);
+        showAlert("Erro", "Erro de conexão");
       }
     } else {
-        // Lógica de Visitante
-        const exists = decks.find((d) => d.id === savedDeck.id);
-        if (exists) {
-            setDecks(decks.map((d) => (d.id === savedDeck.id ? savedDeck : d)));
-        } else {
-            setDecks([savedDeck, ...decks]);
-        }
-        showNotification("Deck salvo (apenas localmente).");
+      // Lógica de Visitante
+      const exists = decks.find((d) => d.id === savedDeck.id);
+      if (exists) {
+        setDecks(decks.map((d) => (d.id === savedDeck.id ? savedDeck : d)));
+      } else {
+        setDecks([savedDeck, ...decks]);
+      }
+      showNotification("Deck salvo (apenas localmente).");
     }
 
     setViewState("dashboard");
@@ -166,10 +166,10 @@ function Overview() {
 
   const startEditingDeck = (deck: Deck | null) => {
     if (!isAuthenticated) {
-        // Bloqueio extra caso UI falhe, mas a UI já deve bloquear.
-        // Alert user
-        showAlert("Acesso Restrito", "Você precisa estar logado para criar/editar decks personalizados.");
-        return; 
+      // Bloqueio extra caso UI falhe, mas a UI já deve bloquear.
+      // Alert user
+      showAlert("Acesso Restrito", "Você precisa estar logado para criar/editar decks personalizados.");
+      return;
     }
     setActiveDeck(deck);
     setViewState("editor");
@@ -178,19 +178,19 @@ function Overview() {
   const handleDeleteDeck = async (id: number) => {
     showConfirm("Excluir Deck", "Tem certeza que deseja excluir este deck?", async () => {
       if (user) {
-          try {
-             const token = localStorage.getItem("starky_token");
-             await fetch(`${API_URL}/decks/${id}`, {
-                 method: "DELETE",
-                 headers: { Authorization: `Bearer ${token}` }
-             });
-             setDecks(decks.filter((d) => d.id !== id));
-          } catch(err) {
-              console.error(err);
-              showAlert("Erro", "Erro ao excluir");
-          }
-      } else {
+        try {
+          const token = localStorage.getItem("starky_token");
+          await fetch(`${API_URL}/decks/${id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` }
+          });
           setDecks(decks.filter((d) => d.id !== id));
+        } catch (err) {
+          console.error(err);
+          showAlert("Erro", "Erro ao excluir");
+        }
+      } else {
+        setDecks(decks.filter((d) => d.id !== id));
       }
     });
   };
@@ -215,27 +215,27 @@ function Overview() {
     );
 
     if (user) {
-        try {
-            const token = localStorage.getItem("starky_token");
-            // Chamada API (Disparar e esquecer ou tratar erro)
-            await fetch(`${API_URL}/cards/${card.id}`, {
-                method: "PUT",
-                headers: { 
-                     "Content-Type": "application/json",
-                     Authorization: `Bearer ${token}` 
-                },
-                body: JSON.stringify({
-                    difficulty: card.difficulty,
-                    nextReviewDate: card.nextReviewDate,
-                    interval: card.interval,
-                    lastReviewed: card.lastReviewed
-                })
-            });
-            // Também atualizar lastStudied do deck se necessário? A lógica do backend pode precisar tratar esse gatilho.
-            // Por enquanto, apenas atualizamos o card.
-        } catch (error) {
-            console.error("Falha ao sincronizar progresso do card", error);
-        }
+      try {
+        const token = localStorage.getItem("starky_token");
+        // Chamada API (Disparar e esquecer ou tratar erro)
+        await fetch(`${API_URL}/cards/${card.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            difficulty: card.difficulty,
+            nextReviewDate: card.nextReviewDate,
+            interval: card.interval,
+            lastReviewed: card.lastReviewed
+          })
+        });
+        // Também atualizar lastStudied do deck se necessário? A lógica do backend pode precisar tratar esse gatilho.
+        // Por enquanto, apenas atualizamos o card.
+      } catch (error) {
+        console.error("Falha ao sincronizar progresso do card", error);
+      }
     }
 
     // Atualiza também o deck ativo síncronamente para a UI refletir
@@ -272,18 +272,18 @@ function Overview() {
   const handleDeleteCategory = async (catName: string) => {
     showConfirm("Excluir Categoria", `ATENÇÃO: Isso excluirá a categoria "${catName}" e TODOS os decks dentro dela. Continuar?`, async () => {
       if (user) {
-         try {
-             const token = localStorage.getItem("starky_token");
-             await fetch(`${API_URL}/categories/${encodeURIComponent(catName)}`, {
-                 method: "DELETE",
-                 headers: { Authorization: `Bearer ${token}` }
-             });
-             // Optimistic update
-             setDecks(decks.filter((d) => d.category !== catName));
-         } catch(err) {
-             console.error("Erro ao excluir categoria", err);
-             showAlert("Erro", "Erro ao excluir categoria");
-         }
+        try {
+          const token = localStorage.getItem("starky_token");
+          await fetch(`${API_URL}/categories/${encodeURIComponent(catName)}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          // Optimistic update
+          setDecks(decks.filter((d) => d.category !== catName));
+        } catch (err) {
+          console.error("Erro ao excluir categoria", err);
+          showAlert("Erro", "Erro ao excluir categoria");
+        }
       } else {
         setDecks(decks.filter((d) => d.category !== catName));
       }
@@ -293,37 +293,162 @@ function Overview() {
   const handleUpdateCategory = async (oldName: string, newName: string) => {
     if (newName.trim() && newName !== oldName) {
       if (user) {
-          try {
-              const token = localStorage.getItem("starky_token");
-              await fetch(`${API_URL}/categories/${encodeURIComponent(oldName)}`, {
-                  method: "PUT",
-                  headers: { 
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${token}` 
-                  },
-                  body: JSON.stringify({ newName })
-              });
-              // Optimistic Update
-              setDecks(
-                decks.map((d) =>
-                  d.category === oldName ? { ...d, category: newName } : d
-                )
-              );
-          } catch(err) {
-              console.error("Erro ao renomear categoria", err);
-              showAlert("Erro", "Erro ao atualizar categoria");
-          }
+        try {
+          const token = localStorage.getItem("starky_token");
+          await fetch(`${API_URL}/categories/${encodeURIComponent(oldName)}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ newName })
+          });
+          // Optimistic Update
+          setDecks(
+            decks.map((d) =>
+              d.category === oldName ? { ...d, category: newName } : d
+            )
+          );
+        } catch (err) {
+          console.error("Erro ao renomear categoria", err);
+          showAlert("Erro", "Erro ao atualizar categoria");
+        }
       } else {
         setDecks(
-            decks.map((d) =>
+          decks.map((d) =>
             d.category === oldName ? { ...d, category: newName } : d
-            )
+          )
         );
       }
     }
   };
 
   // TROCA DE VISUALIZAÇÃO
+
+  // --- EXPORT MODE ---
+  const [isSelectionMode, setIsSelectionMode] = useState(false);
+  const [selectedDeckIds, setSelectedDeckIds] = useState<number[]>([]);
+
+  const handleToggleSelectionMode = () => {
+    setIsSelectionMode(!isSelectionMode);
+    setSelectedDeckIds([]); // Reset
+  };
+
+  const handleToggleDeckSelection = (id: number) => {
+    setSelectedDeckIds(prev =>
+      prev.includes(id)
+        ? prev.filter(d => d !== id)
+        : [...prev, id]
+    );
+  };
+
+  const handleExportConfirm = () => {
+    const decksToExport = decks.filter(d => selectedDeckIds.includes(d.id));
+
+    if (decksToExport.length === 0) return;
+
+    const exportData = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      decks: decksToExport.map(d => ({
+        title: d.title,
+        category: d.category,
+        cards: d.cards.map(c => ({
+          question: c.question,
+          answer: c.answer
+        }))
+      }))
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `starky-export-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showNotification(`${decksToExport.length} decks exportados com sucesso!`);
+    setIsSelectionMode(false);
+    setSelectedDeckIds([]);
+  };
+
+  // --- IMPORT MODE ---
+  const handleImportDecks = async (file: File) => {
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const text = e.target?.result as string;
+        if (!text) return;
+
+        const data = JSON.parse(text);
+        if (!data.decks || !Array.isArray(data.decks)) {
+          showAlert("Arquivo inválido", "O arquivo JSON não segue o formato esperado (falta array 'decks').");
+          return;
+        }
+
+        const decksToImport = data.decks;
+        let successCount = 0;
+        const token = localStorage.getItem("starky_token");
+
+        if (!token) {
+          showAlert("Erro", "Você precisa estar logado para importar.");
+          return;
+        }
+
+        showNotification(`Importando ${decksToImport.length} decks...`, "info");
+
+        // Process serially to check results
+        for (const deck of decksToImport) {
+          try {
+            // Ensure valid payload for creation
+            const payload = {
+              title: deck.title,
+              category: deck.category || "Importados",
+              cards: deck.cards // Backend expects checks card structure
+            };
+
+            const res = await fetch(`${API_URL}/decks`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+              },
+              body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+              successCount++;
+            }
+          } catch (err) {
+            console.error("Failed to import deck", deck.title, err);
+          }
+        }
+
+        // Refresh list
+        if (successCount > 0) {
+          const res = await fetch(`${API_URL}/decks`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (res.ok) {
+            const newData = await res.json();
+            setDecks(newData);
+          }
+          showNotification(`${successCount} decks importados com sucesso!`);
+        } else {
+          showAlert("Erro na importação", "Não foi possível importar os decks.");
+        }
+
+      } catch (error) {
+        console.error(error);
+        showAlert("Erro", "Falha ao ler o arquivo.");
+      }
+    };
+    reader.readAsText(file);
+  };
+
   if (viewState === "editor") {
     return (
       <DeckEditor
@@ -340,8 +465,8 @@ function Overview() {
 
   if (viewState === "study" && activeDeck) {
     const studyDeck = {
-        ...activeDeck,
-        cards: studySessionCards
+      ...activeDeck,
+      cards: studySessionCards
     };
 
     return (
@@ -371,12 +496,12 @@ function Overview() {
           onMenuClick={() => setIsMobileMenuOpen(true)}
         />
       </div>
-      <Sidebar 
-        activeTab={activeTab} 
+      <Sidebar
+        activeTab={activeTab}
         setActiveTab={(tab) => {
-            setActiveTab(tab);
-            setIsMobileMenuOpen(false); // Close on selection
-        }} 
+          setActiveTab(tab);
+          setIsMobileMenuOpen(false); // Close on selection
+        }}
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
       />
@@ -386,6 +511,11 @@ function Overview() {
           <OverviewHeader
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
+            isSelectionMode={isSelectionMode}
+            onToggleSelectionMode={handleToggleSelectionMode}
+            onExportConfirm={handleExportConfirm}
+            selectedCount={selectedDeckIds.length}
+            onImport={handleImportDecks}
           />
         </div>
         <div className="flex-1 overflow-y-auto p-6 md:p-10 bg-dot-pattern">
@@ -401,6 +531,9 @@ function Overview() {
                 onStudyDeck={handleStudyDeck}
                 onUpdateCategory={handleUpdateCategory}
                 onDeleteCategory={handleDeleteCategory}
+                isSelectionMode={isSelectionMode}
+                selectedDeckIds={selectedDeckIds}
+                onToggleDeckSelection={handleToggleDeckSelection}
               />
             )}
 
@@ -418,16 +551,15 @@ function Overview() {
 
         {toastConfig.show && (
           <div className="fixed bottom-6 right-6 bg-zinc-900 border border-zinc-800 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-slide-up z-50">
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center border ${
-                toastConfig.type === 'success' 
-                ? 'bg-green-900/30 border-green-500/20 text-green-500' 
-                : 'bg-blue-900/30 border-blue-500/20 text-blue-500'
-            }`}>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center border ${toastConfig.type === 'success'
+              ? 'bg-green-900/30 border-green-500/20 text-green-500'
+              : 'bg-blue-900/30 border-blue-500/20 text-blue-500'
+              }`}>
               {toastConfig.type === 'success' ? <CheckCircle className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
             </div>
             <div>
               <span className="font-semibold text-sm">
-                  {toastConfig.type === 'success' ? 'Sucesso' : 'Aviso'}
+                {toastConfig.type === 'success' ? 'Sucesso' : 'Aviso'}
               </span>
               <p className="text-xs text-zinc-400">{toastConfig.message}</p>
             </div>
@@ -473,15 +605,15 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
   ) => {
     setCards(cards.map((c) => {
       if (c.id === id) {
-          return { 
-              ...c, 
-              [field]: value,
-              // Resetar status de revisão para o card aparecer novamente
-              // Use null para garantir que o JSON envie o valor e o backend limpe o campo
-              nextReviewDate: null,
-              lastReviewed: null,
-              interval: null
-          };
+        return {
+          ...c,
+          [field]: value,
+          // Resetar status de revisão para o card aparecer novamente
+          // Use null para garantir que o JSON envie o valor e o backend limpe o campo
+          nextReviewDate: null,
+          lastReviewed: null,
+          interval: null
+        };
       }
       return c;
     }));

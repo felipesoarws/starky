@@ -36,11 +36,11 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
   ];
 
   const { isAuthenticated } = useAuth();
-  
+
   const addDeckToDash = (deckName: string) => {
     if (!isAuthenticated) {
-        showAlert("Acesso Restrito", "Crie uma conta gratuita para salvar este deck na sua biblioteca!");
-        return;
+      showAlert("Acesso Restrito", "Crie uma conta gratuita para salvar este deck na sua biblioteca!");
+      return;
     }
 
     const selectedDeck = savedDecks.find((deck) => deck.title === deckName);
@@ -70,12 +70,40 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
       title: selectedDeck.title,
       category: selectedDeck.category,
       // No ID, so it is treated as creation
-      id: 0, 
+      id: 0,
       lastStudied: "Nunca",
       cards: normalizedCards,
     };
 
     onAddDeck(normalizedDeck);
+  };
+
+  const handleDownloadDeck = (deckTitle: string) => {
+    const selectedDeck = savedDecks.find((deck) => deck.title === deckTitle);
+    if (!selectedDeck) return;
+
+    const exportData = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      decks: [{
+        title: selectedDeck.title,
+        category: selectedDeck.category,
+        cards: selectedDeck.cards.map((c: any) => ({
+          question: c.question,
+          answer: c.answer
+        }))
+      }]
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `starky-community-${selectedDeck.title.toLowerCase().replace(/\s+/g, '-')}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -99,14 +127,13 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
                 <div className="flex justify-between items-center mb-4">
                   <div className="h-2 w-10 rounded-full bg-zinc-800 group-hover:bg-accent/50 transition-colors"></div>
                   <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <a href={deck.file} download>
-                      <button
-                        className="p-1.5 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-lg"
-                        title="Baixar Deck"
-                      >
-                        <Download className="w-4 h-4" />
-                      </button>
-                    </a>
+                    <button
+                      onClick={() => handleDownloadDeck(deck.title)}
+                      className="p-1.5 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-lg"
+                      title="Baixar JSON (Importável)"
+                    >
+                      <Download className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
                 <div className="flex items-center justify-start gap-2">

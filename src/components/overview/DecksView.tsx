@@ -14,7 +14,7 @@ import {
 import { Button } from "../ui/Button";
 import type { Deck } from "./types";
 import { useNavigate } from "react-router";
-  
+
 interface DecksViewProps {
   decks: Deck[];
   isLocked: boolean;
@@ -24,6 +24,9 @@ interface DecksViewProps {
   onStudyDeck: (deck: Deck) => void;
   onUpdateCategory: (oldName: string, newName: string) => void;
   onDeleteCategory: (categoryName: string) => void;
+  isSelectionMode?: boolean;
+  selectedDeckIds?: number[];
+  onToggleDeckSelection?: (id: number) => void;
 }
 
 const DecksView = ({
@@ -35,6 +38,9 @@ const DecksView = ({
   onStudyDeck,
   onUpdateCategory,
   onDeleteCategory,
+  isSelectionMode = false,
+  selectedDeckIds = [],
+  onToggleDeckSelection,
 }: DecksViewProps) => {
   const navigate = useNavigate();
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
@@ -168,80 +174,103 @@ const DecksView = ({
                 // Lógica de revisão
                 const now = new Date();
                 const cardsToReview = deck.cards.filter(c => !c.nextReviewDate || new Date(c.nextReviewDate) <= now).length;
-                
+
                 let statusText = "";
                 let statusColor = "text-zinc-500";
-                
+
                 if (cardsToReview > 0) {
-                    statusText = `${cardsToReview} para revisar hoje`;
-                    statusColor = "text-yellow-500";
+                  statusText = `${cardsToReview} para revisar hoje`;
+                  statusColor = "text-yellow-500";
                 } else {
-                    const nextDate = deck.cards
-                        .map(c => c.nextReviewDate ? new Date(c.nextReviewDate) : null)
-                        .filter((d): d is Date => d !== null && d > now)
-                        .sort((a,b) => a.getTime() - b.getTime())[0];
-                    
-                    if (nextDate) {
-                        const day = nextDate.getDate().toString().padStart(2, '0');
-                        const month = (nextDate.getMonth() + 1).toString().padStart(2, '0');
-                        const hours = nextDate.getHours().toString().padStart(2, '0');
-                        const minutes = nextDate.getMinutes().toString().padStart(2, '0');
-                        statusText = `Próxima: ${day}/${month} às ${hours}:${minutes}`;
-                    } else {
-                        statusText = "Tudo em dia!";
-                        statusColor = "text-green-500";
-                    }
+                  const nextDate = deck.cards
+                    .map(c => c.nextReviewDate ? new Date(c.nextReviewDate) : null)
+                    .filter((d): d is Date => d !== null && d > now)
+                    .sort((a, b) => a.getTime() - b.getTime())[0];
+
+                  if (nextDate) {
+                    const day = nextDate.getDate().toString().padStart(2, '0');
+                    const month = (nextDate.getMonth() + 1).toString().padStart(2, '0');
+                    const hours = nextDate.getHours().toString().padStart(2, '0');
+                    const minutes = nextDate.getMinutes().toString().padStart(2, '0');
+                    statusText = `Próxima: ${day}/${month} às ${hours}:${minutes}`;
+                  } else {
+                    statusText = "Tudo em dia!";
+                    statusColor = "text-green-500";
+                  }
                 }
 
+                const isSelected = selectedDeckIds.includes(deck.id);
+
                 return (
-                <div
-                  key={deck.id}
-                  className="group relative bg-zinc-900 border border-zinc-800 rounded-3xl p-6 hover:border-zinc-700 hover:shadow-xl hover:shadow-black/50 transition-all flex flex-col justify-between h-full min-h-[200px] w-[20rem] md:min-w-[20rem]"
-                >
-                  <div>
-                    <div className="flex justify-between items-center mb-4">
-                      <div className="h-2 w-10 rounded-full bg-zinc-800 group-hover:bg-accent/50 transition-colors"></div>
-                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={() => onEditDeck(deck)}
-                          className="p-1.5 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-lg"
-                          title="Editar Deck"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => onDeleteDeck(deck.id)}
-                          className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-zinc-800 rounded-lg"
-                          title="Excluir Deck"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                  <div
+                    key={deck.id}
+                    onClick={() => {
+                      if (isSelectionMode && onToggleDeckSelection) {
+                        onToggleDeckSelection(deck.id);
+                      }
+                    }}
+                    className={`group relative bg-zinc-900 border rounded-3xl p-6 transition-all flex flex-col justify-between h-full min-h-[200px] w-[20rem] md:min-w-[20rem] ${isSelectionMode
+                        ? "cursor-pointer hover:bg-zinc-800/50"
+                        : "hover:border-zinc-700 hover:shadow-xl hover:shadow-black/50"
+                      } ${isSelected ? "border-accent bg-accent/5 ring-1 ring-accent" : "border-zinc-800"
+                      }`}
+                  >
+                    {isSelectionMode && (
+                      <div className="absolute top-4 right-4 z-10 p-1">
+                        <div className={`w-6 h-6 rounded-full border flex items-center justify-center transition-colors ${isSelected ? "bg-accent border-accent text-white" : "border-zinc-600 bg-zinc-900/50"
+                          }`}>
+                          {isSelected && <CheckCircle className="w-4 h-4" />}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className={isSelectionMode ? "pointer-events-none opacity-80" : ""}>
+                      <div className="flex justify-between items-center mb-4">
+                        <div className="h-2 w-10 rounded-full bg-zinc-800 group-hover:bg-accent/50 transition-colors"></div>
+                        {!isSelectionMode && (
+                          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button
+                              onClick={(e) => { e.stopPropagation(); onEditDeck(deck); }}
+                              className="p-1.5 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-lg"
+                              title="Editar Deck"
+                            >
+                              <Edit2 className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); onDeleteDeck(deck.id); }}
+                              className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-zinc-800 rounded-lg"
+                              title="Excluir Deck"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">
+                        {deck.title}
+                      </h3>
+                      <div className="text-sm text-zinc-400 mb-2 flex items-center gap-2">
+                        <Library className="w-4 h-4" /> {deck.cards.length} cards
+                      </div>
+                      <div className={`text-xs font-mono flex items-center gap-2 ${statusColor}`}>
+                        <Clock className="w-3 h-3" />
+                        {statusText}
                       </div>
                     </div>
 
-                    <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">
-                      {deck.title}
-                    </h3>
-                    <div className="text-sm text-zinc-400 mb-2 flex items-center gap-2">
-                        <Library className="w-4 h-4" /> {deck.cards.length} cards
-                    </div>
-                     <div className={`text-xs font-mono flex items-center gap-2 ${statusColor}`}>
-                        <Clock className="w-3 h-3" />
-                         {statusText}
+                    <div className={`mt-6 ${isSelectionMode ? "pointer-events-none opacity-50" : ""}`}>
+                      <Button
+                        className="w-full justify-between group/btn"
+                        onClick={(e) => { e.stopPropagation(); onStudyDeck(deck); }}
+                      >
+                        Estudar Agora{" "}
+                        <ChevronRight className="w-4 h-4 text-white/50 group-hover/btn:translate-x-1 transition-transform" />
+                      </Button>
                     </div>
                   </div>
-
-                    <div className="mt-6">
-                    <Button 
-                      className="w-full justify-between group/btn"
-                      onClick={() => onStudyDeck(deck)}
-                    >
-                      Estudar Agora{" "}
-                      <ChevronRight className="w-4 h-4 text-white/50 group-hover/btn:translate-x-1 transition-transform" />
-                    </Button>
-                  </div>
-                </div>
-              )})}
+                )
+              })}
             </div>
           </div>
         );
