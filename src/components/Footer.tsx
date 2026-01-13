@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
               </div>
               <span className="text-lg font-bold text-white">Starky</span>
             </div>
-            <p className="text-zinc-500 text-sm leading-relaxed">
+            <p className="text-zinc-500 text-sm leading-relaxed lg:leading-[1.2vw] lg:text-[.9vw]">
               A plataforma intuitiva de repetição espaçada. Aprenda mais rápido,
               lembre por mais tempo e domine qualquer assunto com facilidade.
             </p>
@@ -21,8 +21,8 @@ export const Footer: React.FC = () => {
 
           <div className="flex items-start justify-between gap-15 lg:gap-30">
             <div>
-              <h4 className="font-semibold text-white mb-6">Aprender</h4>
-              <ul className="space-y-4 text-sm text-zinc-500">
+              <h4 className="font-medium text-white mb-6">Aprender</h4>
+              <ul className="space-y-2 text-sm text-zinc-500 lg:leading-[1.2vw] lg:text-[.9vw]">
                 <li>
                   <Link to="/overview?tab=library" className="hover:text-accent transition-colors">
                     Explorar Decks
@@ -48,8 +48,8 @@ export const Footer: React.FC = () => {
             </div>
 
             <div>
-              <h4 className="font-semibold text-white mb-6">Legal</h4>
-              <ul className="space-y-4 text-sm text-zinc-500">
+              <h4 className="font-medium text-white mb-6">Legal</h4>
+              <ul className="space-y-2 text-sm text-zinc-500 lg:leading-[1.2vw] lg:text-[.9vw]">
                 <li>
                   <Link to="/privacy" className="hover:text-accent transition-colors">
                     Política de Privacidade

@@ -28,7 +28,7 @@ const Features = () => {
               ajudar você a lembrar.
             </span>
           </h2>
-          <p className="text-lg text-zinc-400 lg:mx-[16vw]">
+          <p className="text-lg text-zinc-400 lg:mx-[15vw] lg:leading-[1.2vw] lg:text-[1.1vw]">
             O Starky combina o poder da recordação ativa com agendamento
             inteligente para garantir que você nunca esqueça o que aprendeu.
           </p>
@@ -46,7 +46,7 @@ const Features = () => {
               <h3 className="text-3xl font-bold mb-4 text-white ">
                 Algoritmo de Revisão Adaptativo
               </h3>
-              <p className="text-zinc-400 text-lg max-w-md">
+              <p className="text-zinc-400 text-lg max-w-md lg:leading-[1.2vw]">
                 Avalie a dificuldade de um card e o Starky agendará
                 automaticamente o momento perfeito para sua próxima revisão. Não
                 perca tempo revisando o que você já sabe.
@@ -89,7 +89,7 @@ const Features = () => {
               <h3 className="text-xl font-semibold mb-3 text-white">
                 Decks Prontos
               </h3>
-              <p className="text-zinc-400">
+              <p className="text-zinc-400 lg:leading-[1vw]">
                 Comece a aprender com decks da comunidade de alta qualidade.
               </p>
             </div>
@@ -153,8 +153,8 @@ const FeatureCard = ({
     <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-(--accent-color)">
       {icon}
     </div>
-    <h3 className="text-xl font-semibold mb-3 text-white">{title}</h3>
-    <p className="text-zinc-400 leading-relaxed">{description}</p>
+    <h3 className="text-xl font-semibold mb-3 text-white ">{title}</h3>
+    <p className="text-zinc-400 leading-relaxed lg:leading-[1.1vw]">{description}</p>
   </div>
 );
 
