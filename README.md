@@ -39,4 +39,4 @@ Este projeto é open source e está disponível sob a [Licença MIT](LICENSE).
 
 ## 📝 Autor
 
-- **Felipe Soares** - [felipesoarws](https://github.com/felipesoarws)
+- **Felipe Soares** - [GitHub](https://github.com/felipesoarws) / [LinkedIn](https://www.linkedin.com/in/felipesoarws/)
