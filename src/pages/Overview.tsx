@@ -37,18 +37,18 @@ function Overview() {
     return "decks_view";
   });
 
-  // Estados gerais de visualização
+  // estados gerais de visualização
   const [viewState, setViewState] = useState<"dashboard" | "study" | "editor">(
     "dashboard"
   );
 
-  // Estados de pesquisa de decks/categorias
+  // estados de pesquisa de decks/categorias
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Estados gerais dos decks
+  // estados gerais dos decks
   const [decks, setDecks] = useState<Deck[]>([]);
 
-  // Carregar decks quando o usuário mudar
+  // carregar decks quando o usuário mudar
   useEffect(() => {
     const loadDecks = async () => {
       if (user) {
@@ -65,7 +65,7 @@ function Overview() {
           console.error("Falha ao carregar decks", error);
         }
       } else {
-        // Modo visitante (dados efêmeros)
+        // modo visitante (dados efêmeros)
         setDecks([]);
       }
     };
@@ -76,7 +76,7 @@ function Overview() {
 
   const [activeDeck, setActiveDeck] = useState<Deck | null>(null);
 
-  // Snapshot dos cards para a sessão de estudo (evita que cards sumam ao atualizar data)
+  // snapshot dos cards pra sessão de estudo (evita que cards sumam ao atualizar data)
   const [studySessionCards, setStudySessionCards] = useState<Card[]>([]);
 
   const filteredDecks = decks.filter(
@@ -87,7 +87,7 @@ function Overview() {
       deck.title.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
   );
 
-  // Estado de notificação (Toast)
+  // estado de notificação (toast)
   const [toastConfig, setToastConfig] = useState<{
     show: boolean;
     message: string;
@@ -103,22 +103,22 @@ function Overview() {
     setTimeout(() => setToastConfig(prev => ({ ...prev, show: false })), 3000);
   };
 
-  // FUNÇÕES DOS DECKS
+  // funções dos decks
   const handleSaveDeck = async (savedDeck: Deck) => {
     if (user) {
       try {
         const token = localStorage.getItem("starky_token");
-        // Only treat as update if ID is truthy (not 0) AND exists in current list
+        // só trata como atualização se o id for verdadeiro (não 0) e existir na lista atual
         const isUpdate = !!savedDeck.id && decks.some(d => d.id === savedDeck.id);
 
         let url = `${API_URL}/decks`;
         let method = "POST";
 
-        // Nota: A lógica permite criar novo deck mesmo se ID estiver presente (se veio do fluxo de criação local com Date.now())
-        // Mas se corresponder a um ID real do DB (do estado decks), é uma atualização.
-        // Precisamos ter cuidado com colisão de ID entre Date.now() e ID serial do DB.
-        // IDs do DB geralmente são inteiros pequenos. Date.now() é enorme.
-        // Vamos supor que se existir no estado 'decks' atual, é uma atualização.
+        // nota: a lógica permite criar novo deck mesmo se id estiver presente (se veio do fluxo de criação local com date.now())
+        // mas se corresponder a um id real do db (do estado decks), é uma atualização
+        // precisamos ter cuidado com colisão de id entre date.now() e id serial do db
+        // ids do db geralmente são inteiros pequenos. date.now() é enorme
+        // vamos supor que se existir no estado 'decks' atual, é uma atualização
 
         if (isUpdate) {
           url = `${API_URL}/decks/${savedDeck.id}`;
@@ -150,7 +150,7 @@ function Overview() {
         showAlert("Erro", "Erro de conexão");
       }
     } else {
-      // Lógica de Visitante
+      // lógica de visitante
       const exists = decks.find((d) => d.id === savedDeck.id);
       if (exists) {
         setDecks(decks.map((d) => (d.id === savedDeck.id ? savedDeck : d)));
@@ -166,8 +166,8 @@ function Overview() {
 
   const startEditingDeck = (deck: Deck | null) => {
     if (!isAuthenticated) {
-      // Bloqueio extra caso UI falhe, mas a UI já deve bloquear.
-      // Alert user
+      // bloqueio extra caso ui falhe, mas a ui já deve bloquear
+      // avisa o usuário
       showAlert("Acesso Restrito", "Você precisa estar logado para criar/editar decks personalizados.");
       return;
     }
@@ -200,7 +200,7 @@ function Overview() {
   };
 
   const handleUpdateCardInDeck = async (deckId: number, card: Card) => {
-    // Atualização Otimista
+    // atualização otimista
     setDecks((prevDecks) =>
       prevDecks.map((d) => {
         if (d.id === deckId) {
@@ -217,7 +217,7 @@ function Overview() {
     if (user) {
       try {
         const token = localStorage.getItem("starky_token");
-        // Chamada API (Disparar e esquecer ou tratar erro)
+        // chamada api (disparar e esquecer ou tratar erro)
         await fetch(`${API_URL}/cards/${card.id}`, {
           method: "PUT",
           headers: {
@@ -231,14 +231,13 @@ function Overview() {
             lastReviewed: card.lastReviewed
           })
         });
-        // Também atualizar lastStudied do deck se necessário? A lógica do backend pode precisar tratar esse gatilho.
-        // Por enquanto, apenas atualizamos o card.
+
       } catch (error) {
         console.error("Falha ao sincronizar progresso do card", error);
       }
     }
 
-    // Atualiza também o deck ativo síncronamente para a UI refletir
+    // atualiza também o deck ativo síncronamente pra ui refletir
     if (activeDeck && activeDeck.id === deckId) {
       setActiveDeck((prev) => {
         if (!prev) return null;
@@ -252,10 +251,10 @@ function Overview() {
 
 
   const handleStudyDeck = (deck: Deck) => {
-    // Verificar se há cards para revisar agora
+    // verificar se há cards pra revisar agora
     const cardsToReview = deck.cards.filter((card) => {
-      if (!card.nextReviewDate) return true; // Nunca estudado
-      return new Date(card.nextReviewDate) <= new Date(); // Vencido
+      if (!card.nextReviewDate) return true; // nunca estudado
+      return new Date(card.nextReviewDate) <= new Date(); // vencido
     });
 
     if (cardsToReview.length === 0) {
@@ -263,12 +262,12 @@ function Overview() {
       return;
     }
 
-    setStudySessionCards(cardsToReview); // Congela a lista para a sessão
+    setStudySessionCards(cardsToReview); // congela a lista pra sessão
     setActiveDeck(deck);
     setViewState("study");
   };
 
-  // FUNÇÕES DAS CATEGGORIAS
+  // funções das categorias
   const handleDeleteCategory = async (catName: string) => {
     showConfirm("Excluir Categoria", `ATENÇÃO: Isso excluirá a categoria "${catName}" e TODOS os decks dentro dela. Continuar?`, async () => {
       if (user) {
@@ -278,7 +277,7 @@ function Overview() {
             method: "DELETE",
             headers: { Authorization: `Bearer ${token}` }
           });
-          // Optimistic update
+          // atualização otimista
           setDecks(decks.filter((d) => d.category !== catName));
         } catch (err) {
           console.error("Erro ao excluir categoria", err);
@@ -303,7 +302,7 @@ function Overview() {
             },
             body: JSON.stringify({ newName })
           });
-          // Optimistic Update
+          // atualização otimista
           setDecks(
             decks.map((d) =>
               d.category === oldName ? { ...d, category: newName } : d
@@ -323,15 +322,15 @@ function Overview() {
     }
   };
 
-  // TROCA DE VISUALIZAÇÃO
+  // troca de visualização
 
-  // --- EXPORT MODE ---
+  // --- modo exportação ---
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedDeckIds, setSelectedDeckIds] = useState<number[]>([]);
 
   const handleToggleSelectionMode = () => {
     setIsSelectionMode(!isSelectionMode);
-    setSelectedDeckIds([]); // Reset
+    setSelectedDeckIds([]); // reset
   };
 
   const handleToggleDeckSelection = (id: number) => {
@@ -375,7 +374,7 @@ function Overview() {
     setSelectedDeckIds([]);
   };
 
-  // --- IMPORT MODE ---
+  // --- modo importação ---
   const handleImportDecks = async (file: File) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
@@ -400,14 +399,14 @@ function Overview() {
 
         showNotification(`Importando ${decksToImport.length} decks...`, "info");
 
-        // Process serially to check results
+        // processa em série pra verificar resultados
         for (const deck of decksToImport) {
           try {
-            // Ensure valid payload for creation
+            // garante payload válido pra criação
             const payload = {
               title: deck.title,
               category: deck.category || "Importados",
-              cards: deck.cards // Backend expects checks card structure
+              cards: deck.cards // backend espera checar estrutura do card
             };
 
             const res = await fetch(`${API_URL}/decks`, {
@@ -427,7 +426,7 @@ function Overview() {
           }
         }
 
-        // Refresh list
+        // atualiza lista
         if (successCount > 0) {
           const res = await fetch(`${API_URL}/decks`, {
             headers: { Authorization: `Bearer ${token}` }
@@ -485,7 +484,7 @@ function Overview() {
     );
   }
 
-  // FILTRO DE BUSCA
+  // filtro de busca
 
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row overflow-hidden relative">
@@ -500,7 +499,7 @@ function Overview() {
         activeTab={activeTab}
         setActiveTab={(tab) => {
           setActiveTab(tab);
-          setIsMobileMenuOpen(false); // Close on selection
+          setIsMobileMenuOpen(false); // fecha na seleção
         }}
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
@@ -527,7 +526,7 @@ function Overview() {
         </div>
         <div className="flex-1 overflow-y-auto p-6 md:p-10 bg-dot-pattern">
           <div className="max-w-6xl mx-auto pb-20">
-            {/* Decks  */}
+            {/* decks */}
             {(activeTab === "decks_view" || activeTab === "decks_locked") && (
               <DecksView
                 decks={filteredDecks}
@@ -544,12 +543,12 @@ function Overview() {
               />
             )}
 
-            {/* Library  */}
+            {/* library */}
             {activeTab === "library" && (
               <LibraryView decks={filteredDecks} onAddDeck={handleSaveDeck} />
             )}
 
-            {/* Stats  */}
+            {/* stats */}
             {(activeTab === "stats_view" || activeTab === "stats_locked") && (
               <StatsView isLocked={!isAuthenticated} />
             )}
@@ -580,11 +579,11 @@ function Overview() {
 export default Overview;
 
 // ----------------------------------------------------------------------
-// SUB COMPONENTE: EDITOR DE DECKS (GERENCIAR DECKS E SUAS INFORMAÇÕES)
+// sub componente: editor de decks (gerenciar decks e suas informações)
 // ----------------------------------------------------------------------
 
 interface DeckEditorProps {
-  deck: Deck | null; /* Se for null é para entrar no modo de criação de deck */
+  deck: Deck | null; /* se for null é pra entrar no modo de criação de deck */
   onSave: (deck: Deck) => void;
   onCancel: () => void;
   showAlert: (title: string, description?: string) => void;
@@ -595,7 +594,7 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
   const [category, setCategory] = useState(deck?.category || "");
   const [cards, setCards] = useState<Card[]>(deck?.cards || []);
 
-  // Controladores dos cards
+  // controladores dos cards
   const handleAddCard = () => {
     const newCard: Card = {
       id: Date.now(),
@@ -615,8 +614,8 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
         return {
           ...c,
           [field]: value,
-          // Resetar status de revisão para o card aparecer novamente
-          // Use null para garantir que o JSON envie o valor e o backend limpe o campo
+          // resetar status de revisão pro card aparecer novamente
+          // use null pra garantir que o json envie o valor e o backend limpe o campo
           nextReviewDate: null,
           lastReviewed: null,
           interval: null

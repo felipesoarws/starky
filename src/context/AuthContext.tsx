@@ -37,7 +37,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(localStorage.getItem("starky_token"));
   const [isLoading, setIsLoading] = useState(true);
 
-  // Carregar sessão na inicialização
+  // carregar sessão na inicialização
   useEffect(() => {
     const initAuth = async () => {
       const storedToken = localStorage.getItem("starky_token");
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           const res = await fetch(`${API_URL}/auth/me`, {
             headers: { Authorization: `Bearer ${storedToken}` }
           });
-          
+
           if (res.ok) {
             const userData = await res.json();
             setUser(userData);
@@ -55,8 +55,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
             logout();
           }
         } catch (error) {
-           console.error("Falha na verificação de autenticação", error);
-           logout();
+          console.error("Falha na verificação de autenticação", error);
+          logout();
         }
       }
       setIsLoading(false);
@@ -83,7 +83,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setToken(data.token);
       setUser(data.user);
       localStorage.setItem("starky_token", data.token);
-      
+
       setIsLoading(false);
       return true;
     } catch (error) {
@@ -128,11 +128,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      isAuthenticated: !!user, 
-      login, 
-      register, 
+    <AuthContext.Provider value={{
+      user,
+      isAuthenticated: !!user,
+      login,
+      register,
       logout,
       isLoading,
       token

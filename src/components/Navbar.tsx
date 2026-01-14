@@ -32,7 +32,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
       .slice(0, 2)
       .join('')
       .toUpperCase();
-}
+  }
 
   return (
     <header
@@ -51,7 +51,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           </span>
         </div>
 
-        {/* Desktop Header */}
+        {/* header desktop */}
         <nav className="hidden md:flex items-center gap-8">
           <a
             href="#features"
@@ -69,57 +69,57 @@ const Navbar = ({ scrolled }: NavbarProps) => {
 
         <div className="hidden md:flex items-center gap-4">
           {isAuthenticated && user ? (
-               <div className="relative flex items-center justify-between gap-4" ref={profileRef}>
-               
-                  <div 
-                    onClick={() => setIsProfileOpen(!isProfileOpen)}
-                    className="cursor-pointer select-none w-10 h-10 rounded-full bg-linear-to-l from-(--accent-color) to-blue-400 flex items-center justify-center text-sm font-bold text-white border border-white/10 hover:opacity-90 transition-opacity" 
-                    title={user.name}
-                  >
-                    {getInitials(user.name)}
+            <div className="relative flex items-center justify-between gap-4" ref={profileRef}>
+
+              <div
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="cursor-pointer select-none w-10 h-10 rounded-full bg-linear-to-l from-(--accent-color) to-blue-400 flex items-center justify-center text-sm font-bold text-white border border-white/10 hover:opacity-90 transition-opacity"
+                title={user.name}
+              >
+                {getInitials(user.name)}
+              </div>
+
+              <Button size="sm" className="bg-accent">
+                <Link to={"/overview"}>Começar Agora</Link>
+              </Button>
+
+              {/* menu de sair */}
+              {isProfileOpen && (
+                <div className="absolute top-12 right-0 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden animate-fade-in z-50">
+                  <div className="px-4 py-3 border-b border-zinc-800">
+                    <p className="text-sm font-medium text-white truncate">{user.name}</p>
+                    <p className="text-xs text-zinc-500 truncate">{user.email}</p>
                   </div>
 
-                  <Button size="sm" className="bg-accent">
-                    <Link to={"/overview"}>Começar Agora</Link>
-                </Button>
-                   
-                    {/* Logout Dialog/Dropdown */}
-                    {isProfileOpen && (
-                        <div className="absolute top-12 right-0 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden animate-fade-in z-50">
-                             <div className="px-4 py-3 border-b border-zinc-800">
-                                <p className="text-sm font-medium text-white truncate">{user.name}</p>
-                                <p className="text-xs text-zinc-500 truncate">{user.email}</p>
-                            </div>
-                          
-                            <button 
-                                onClick={() => {
-                                    logout();
-                                    setIsProfileOpen(false);
-                                }}
-                                className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-zinc-800 transition-colors flex items-center gap-2"
-                            >
-                                <LogOut className="w-4 h-4" />
-                                Sair da conta
-                            </button>
-                        </div>
-                    )}
-               </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsProfileOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-zinc-800 transition-colors flex items-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sair da conta
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
-             <div className="flex items-center gap-4">
-                <Link
-                    to={"/login"}
-                    className="text-sm font-medium text-zinc-400 hover:text-white"
-                >
-                    Entrar
-                </Link>
-                <Button size="sm" className="bg-accent">
-                    <Link to={"/overview"}>Começar Agora</Link>
-                </Button>
+            <div className="flex items-center gap-4">
+              <Link
+                to={"/login"}
+                className="text-sm font-medium text-zinc-400 hover:text-white"
+              >
+                Entrar
+              </Link>
+              <Button size="sm" className="bg-accent">
+                <Link to={"/overview"}>Começar Agora</Link>
+              </Button>
             </div>
           )}
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* botão do menu mobile */}
         <button
           className="md:hidden text-zinc-400 hover:text-white"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -128,7 +128,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
         </button>
       </div>
 
-      {/* Mobile Header */}
+      {/* header mobile */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-zinc-900 border-b border-zinc-800 p-6 flex flex-col gap-4 animate-fade-in shadow-xl">
           <a
@@ -147,32 +147,32 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           </a>
           <hr className="border-zinc-800" />
           <div className="flex flex-col gap-3">
-             {isAuthenticated ? (
-                 <Button
-                  className="w-full bg-red-900/20 text-red-400 hover:bg-red-900/40 border border-red-900/50"
+            {isAuthenticated ? (
+              <Button
+                className="w-full bg-red-900/20 text-red-400 hover:bg-red-900/40 border border-red-900/50"
+                onClick={() => {
+                  logout();
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                Sair
+              </Button>
+            ) : (
+              <>
+                <Button variant="secondary" className="w-full">
+                  <Link to="/login">Entrar</Link>
+                </Button>
+                <Button
+                  className="w-full"
                   onClick={() => {
-                    logout();
                     setIsMobileMenuOpen(false);
                   }}
                 >
-                 Sair
+                  <Link to={"/overview"}>Começar Agora</Link>
                 </Button>
-             ) : (
-                <>
-                 <Button variant="secondary" className="w-full">
-                    <Link to="/login">Entrar</Link>
-                    </Button>
-                    <Button
-                    className="w-full"
-                    onClick={() => {
-                        setIsMobileMenuOpen(false);
-                    }}
-                    >
-                    <Link to={"/overview"}>Começar Agora</Link>
-                    </Button>
-                </>
-             )}
-           
+              </>
+            )}
+
           </div>
         </div>
       )}

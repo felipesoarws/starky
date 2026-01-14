@@ -3,7 +3,7 @@ import { Button } from "../ui/Button";
 import type { Card, Deck } from "./types";
 import { useAuth } from "../../context/AuthContext";
 
-// Decks prontos
+// decks prontos
 import decksThemes from "../../assets/data/links.json";
 
 import inglesA1 from "../../assets/data/decks/starky_ingles_a1.json";
@@ -69,7 +69,7 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
     const normalizedDeck: Deck = {
       title: selectedDeck.title,
       category: selectedDeck.category,
-      // No ID, so it is treated as creation
+      // sem id, então é tratado como criação
       id: 0,
       lastStudied: "Nunca",
       cards: normalizedCards,

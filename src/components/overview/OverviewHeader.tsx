@@ -56,7 +56,7 @@ const OverviewHeader = ({
     if (file && onImport) {
       onImport(file);
     }
-    // Reset input value so same file can be selected again
+    // reseta o valor do input pra gente conseguir selecionar o mesmo arquivo de novo
     if (event.target) {
       event.target.value = "";
     }
@@ -143,7 +143,7 @@ const OverviewHeader = ({
             </div>
           )}
 
-          {/* Avatar Trigger */}
+          {/* botão do avatar */}
           <div
             onClick={() => setIsProfileOpen(!isProfileOpen)}
             className="cursor-pointer select-none w-8 h-8 rounded-full bg-linear-to-l from-(--accent-color) to-blue-400 flex items-center justify-center text-xs font-bold text-white border border-white/10 hover:opacity-90 transition-opacity"
@@ -152,7 +152,7 @@ const OverviewHeader = ({
             {user ? getInitials(user.name) : "G"}
           </div>
 
-          {/* Logout Dialog/Dropdown */}
+          {/* menu de sair */}
           {isProfileOpen && (
             <div className="absolute top-10 right-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden animate-fade-in z-50">
               <div className="px-4 py-3 border-b border-zinc-800">

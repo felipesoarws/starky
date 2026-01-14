@@ -151,7 +151,7 @@ const DecksView = ({
                 </span>
               </div>
 
-              {/* Ações de categoria */}
+              {/* ações de categoria */}
               <div className="flex items-center md:gap-2">
                 <button
                   onClick={() => startEditCategory(category)}
@@ -168,10 +168,10 @@ const DecksView = ({
               </div>
             </div>
 
-            {/* Grid de decks */}
+            {/* grid de decks */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 gap-y-12">
               {categoryDecks.map((deck) => {
-                // Lógica de revisão
+                // lógica de revisão
                 const now = new Date();
                 const cardsToReview = deck.cards.filter(c => !c.nextReviewDate || new Date(c.nextReviewDate) <= now).length;
 
@@ -210,8 +210,8 @@ const DecksView = ({
                       }
                     }}
                     className={`group relative bg-zinc-900 border rounded-3xl p-6 transition-all flex flex-col justify-between h-full min-h-[200px] w-[20rem] md:min-w-[20rem] ${isSelectionMode
-                        ? "cursor-pointer hover:bg-zinc-800/50"
-                        : "hover:border-zinc-700 hover:shadow-xl hover:shadow-black/50"
+                      ? "cursor-pointer hover:bg-zinc-800/50"
+                      : "hover:border-zinc-700 hover:shadow-xl hover:shadow-black/50"
                       } ${isSelected ? "border-accent bg-accent/5 ring-1 ring-accent" : "border-zinc-800"
                       }`}
                   >
