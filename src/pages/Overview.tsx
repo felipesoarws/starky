@@ -504,6 +504,13 @@ function Overview() {
         }}
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
+
+        // Import/Export Props
+        onImport={handleImportDecks}
+        onExportConfirm={handleExportConfirm}
+        isSelectionMode={isSelectionMode}
+        onToggleSelectionMode={handleToggleSelectionMode}
+        selectedCount={selectedDeckIds.length}
       />
 
       <main className="flex-1 flex flex-col h-screen overflow-hidden">

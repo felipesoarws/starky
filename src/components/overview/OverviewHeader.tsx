@@ -125,11 +125,10 @@ const OverviewHeader = ({
               </Button>
             </div>
           ) : (
-            <>
+            <div className="hidden md:flex items-center gap-3">
               <Button
                 variant="outline"
                 size="sm"
-                className="hidden sm:flex"
                 onClick={handleImportClick}
               >
                 <Upload className="w-4 h-4 mr-2" /> Importar
@@ -137,12 +136,11 @@ const OverviewHeader = ({
               <Button
                 variant="outline"
                 size="sm"
-                className="hidden sm:flex"
                 onClick={onToggleSelectionMode ? onToggleSelectionMode : () => showAlert("Erro", "Função não disponível")}
               >
                 <Download className="w-4 h-4 mr-2" /> Exportar
               </Button>
-            </>
+            </div>
           )}
 
           {/* Avatar Trigger */}

@@ -114,7 +114,7 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
       <p className="text-zinc-400 mb-8">
         Baixe decks prontos criados pela comunidade Starky.
       </p>
-      <div className="flex flex-wrap gap-18 items-start justify-start ">
+      <div className="flex flex-wrap gap-10 items-start justify-center ">
         {decksThemes.map((deck, id) => {
           const isAdded = decks.some((d) => d.title == deck.title);
 
@@ -147,7 +147,7 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
                 <div className="text-sm text-zinc-400 mb-6 flex items-center gap-2">
                   <Library className="w-4 h-4" /> {deck.length} cards
                 </div>
-                <p className="text-left text-[0.8rem] text-zinc-400 mb-6 flex items-center gap-2">
+                <p className="text-left text-[1rem] text-zinc-400 mb-6 flex items-center gap-2">
                   {deck.description}
                 </p>
                 <div>
