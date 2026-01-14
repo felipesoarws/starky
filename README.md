@@ -26,35 +26,6 @@ O Starky é uma aplicação moderna e inteligente de flashcards projetada para a
 - **Build Tool**: Vite
 - **Ícones**: Lucide React
 
-## 🚀 Começando
-
-### Pré-requisitos
-
-- Node.js (v16 ou superior)
-- npm ou yarn
-
-### Instalação
-
-1.  Clone o repositório:
-    ```bash
-    git clone https://github.com/felipesoarws/starky_v2.git
-    ```
-
-2.  Navegue até o diretório do projeto:
-    ```bash
-    cd starky
-    ```
-
-3.  Instale as dependências:
-    ```bash
-    npm install
-    ```
-
-4.  Inicie o servidor de desenvolvimento:
-    ```bash
-    npm run dev
-    ```
-
 ## 📖 Como Usar
 
 1.  **Criar um Deck**: Clique em "Novo Deck" na barra lateral para criar uma coleção de cards.
@@ -65,3 +36,7 @@ O Starky é uma aplicação moderna e inteligente de flashcards projetada para a
 ## 📝 Licença
 
 Este projeto é open source e está disponível sob a [Licença MIT](LICENSE).
+
+## 📝 Autor
+
+- **Felipe Soares** - [felipesoarws](https://github.com/felipesoarws)
