@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "tertiary" | "outline" | "ghost";
+  variant?: "primary" | "secondary" | "tertiary" | "outline" | "ghost" | "logout";
   size?: "sm" | "md" | "lg";
   withArrow?: boolean;
   className?: string;
@@ -29,6 +29,8 @@ export const Button: React.FC<ButtonProps> = ({
       "text-zinc-400 hover:text-white hover:bg-zinc-800 focus:ring-zinc-700",
     tertiary:
       "bg-white text-black hover:bg-white/90 shadow-lg shadow-accent/25 focus:ring-white border border-white",
+    logout:
+      "bg-[red] text-white hover:bg-[red]/90 shadow-lg shadow-[red]/25 focus:ring-[red]",
   };
 
   const sizes = {

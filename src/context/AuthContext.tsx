@@ -12,7 +12,8 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string) => Promise<{ success: boolean; requiresVerification?: boolean; message?: string }>;
+  verifyEmail: (email: string, code: string) => PromiseLike<boolean>;
   logout: () => void;
   isLoading: boolean;
   token: string | null;
@@ -93,13 +94,47 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const register = async (name: string, email: string, password: string): Promise<boolean> => {
+  const register = async (name: string, email: string, password: string): Promise<{ success: boolean; requiresVerification?: boolean; message?: string }> => {
     setIsLoading(true);
     try {
       const res = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setIsLoading(false);
+        return { success: false, message: data.message };
+      }
+
+      if (data.requiresVerification) {
+        setIsLoading(false);
+        return { success: true, requiresVerification: true };
+      }
+
+      setToken(data.token);
+      setUser(data.user);
+      localStorage.setItem("starky_token", data.token);
+
+      setIsLoading(false);
+      return { success: true };
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+      return { success: false, message: "Erro de conexão" };
+    }
+  };
+
+  const verifyEmail = async (email: string, code: string): Promise<boolean> => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/auth/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code })
       });
 
       if (!res.ok) {
@@ -133,6 +168,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       isAuthenticated: !!user,
       login,
       register,
+      verifyEmail,
       logout,
       isLoading,
       token

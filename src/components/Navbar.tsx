@@ -149,7 +149,8 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           <div className="flex flex-col gap-3">
             {isAuthenticated ? (
               <Button
-                className="w-full bg-red-900/20 text-red-400 hover:bg-red-900/40 border border-red-900/50"
+              variant="logout"
+                className="w-full"
                 onClick={() => {
                   logout();
                   setIsMobileMenuOpen(false);

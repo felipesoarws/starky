@@ -88,6 +88,7 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
       decks: [{
         title: selectedDeck.title,
         category: selectedDeck.category,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         cards: selectedDeck.cards.map((c: any) => ({
           question: c.question,
           answer: c.answer
@@ -121,7 +122,7 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
           return (
             <div
               key={id}
-              className="lg:h-[17rem] group relative bg-zinc-900 border border-zinc-800 rounded-3xl p-6 hover:border-zinc-700 hover:shadow-xl hover:shadow-black/50 transition-all flex flex-col justify-between h-full min-h-[200px] w-[20rem] md:min-w-[20rem]"
+              className="lg:h-68 group relative bg-zinc-900 border border-zinc-800 rounded-3xl p-6 hover:border-zinc-700 hover:shadow-xl hover:shadow-black/50 transition-all flex flex-col justify-between h-full min-h-[200px] w-[20rem] md:min-w-[20rem]"
             >
               <div>
                 <div className="flex justify-between items-center mb-4">

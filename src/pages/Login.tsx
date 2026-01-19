@@ -11,9 +11,13 @@ function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  
-  const { login, register, isLoading, isAuthenticated } = useAuth();
+
+  const { login, register, verifyEmail, isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // code verification
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
 
   useEffect(() => {
     document.title = "Starky | " + (isLogin ? "Login" : "Registro");
@@ -29,18 +33,34 @@ function Login() {
     e.preventDefault();
     setError("");
 
+    if (isVerifying) {
+      if (!verificationCode) {
+        setError("Digite o código de verificação.");
+        return;
+      }
+      const success = await verifyEmail(email, verificationCode);
+      if (!success) {
+        setError("Código inválido ou expirado.");
+      }
+      return;
+    }
+
     if (!email || !password || (!isLogin && !name)) {
       setError("Preencha todos os campos.");
       return;
     }
 
-    let success = false;
     if (isLogin) {
-      success = await login(email, password);
+      const success = await login(email, password);
       if (!success) setError("Email ou senha inválidos.");
     } else {
-      success = await register(name, email, password);
-      if (!success) setError("Erro ao registrar. Email pode já estar em uso.");
+      const result = await register(name, email, password);
+      if (!result.success) {
+        setError(result.message || "Erro ao registrar. Email pode já estar em uso.");
+      } else if (result.requiresVerification) {
+        setIsVerifying(true);
+        setError("");
+      }
     }
   };
 
@@ -60,94 +80,134 @@ function Login() {
       </div>
       <div className="p-8 flex flex-col gap-4 lg:w-[60vw] w-full justify-center lg:justify-start">
         <div className="w-full max-w-md mx-auto">
-            <Link to="/">
+          <Link to="/">
             <button className="px-4 text-sm py-2.5 gap-2 text-zinc-500 inline-flex items-center justify-center ring-transparent font-medium transition-all duration-200 focus:outline-none  disabled:opacity-50 disabled:cursor-not-allowed rounded-full hover:text-white mb-8">
-                <ArrowLeft className="w-4 h-4 mr-2" /> Voltar para Home
+              <ArrowLeft className="w-4 h-4 mr-2" /> Voltar para Home
             </button>
-            </Link>
-            
-            <div className="animate-slide-up w-full flex flex-col">
-            <div className="text-center space-y-2 mb-8">
-                <h1 className="text-3xl font-bold">
-                {isLogin ? "Bem-vindo de volta!" : "Crie sua jornada"}
-                </h1>
-                <p className="text-zinc-400">
-                {isLogin
-                    ? "Entre para continuar seus estudos."
-                    : "Comece sua jornada de aprendizado hoje."}
-                </p>
-            </div>
-            
-            <form onSubmit={handleSubmit} className="space-y-4">
-                {!isLogin && (
-                    <div className="space-y-1">
-                        <label className="text-sm font-medium text-zinc-300">Nome</label>
-                        <input 
-                            type="text" 
-                            className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none"
-                            placeholder="Seu nome"
-                            value={name}
-                            onChange={e => setName(e.target.value)}
-                        />
-                    </div>
-                )}
-                
-                <div className="space-y-1">
-                    <label className="text-sm font-medium text-zinc-300">Email</label>
-                    <input 
-                        type="email" 
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none"
-                        placeholder="seu@email.com"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                    />
-                </div>
+          </Link>
 
+          <div className="animate-slide-up w-full flex flex-col">
+            <div className="text-center space-y-2 mb-8">
+              <h1 className="text-3xl font-bold">
+                {isVerifying
+                  ? "Verifique seu email"
+                  : (isLogin ? "Bem-vindo de volta!" : "Crie sua jornada")}
+              </h1>
+
+              {isVerifying && (
+                <p className="text-zinc-400">
+                  Enviamos um código para <span className="text-[1.1rem] text-accent">{email}</span>
+                </p>
+              )}
+
+              {!isVerifying && (
+                <p className="text-zinc-400">
+                  {isLogin ? "Entre para continuar seus estudos." : "Comece sua jornada de aprendizado hoje."}
+                </p>
+              )}
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {isVerifying ? (
                 <div className="space-y-1">
+                  <label className="text-sm font-medium text-zinc-300">Código de Verificação</label>
+                  <input
+                    type="text"
+                    className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none text-center tracking-widest text-lg"
+                    placeholder="0 0 0 0 0 0"
+                    value={verificationCode}
+                    onChange={e => setVerificationCode(e.target.value)}
+                    maxLength={6}
+                  />
+                </div>
+              ) : (
+                <>
+                  {!isLogin && (
+                    <div className="space-y-1">
+                      <label className="text-sm font-medium text-zinc-300">Nome</label>
+                      <input
+                        type="text"
+                        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none"
+                        placeholder="Seu nome"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                      />
+                    </div>
+                  )}
+
+                  <div className="space-y-1">
+                    <label className="text-sm font-medium text-zinc-300">Email</label>
+                    <input
+                      type="email"
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none"
+                      placeholder="seu@email.com"
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
+                      disabled={isVerifying}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
                     <label className="text-sm font-medium text-zinc-300">Senha</label>
                     <div className="relative">
-                        <input 
-                            type={showPassword ? "text" : "password"}
-                            className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none pr-10"
-                            placeholder="••••••••"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-[.22rem] text-zinc-400 hover:text-white transition-colors"
-                        >
-                            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                        </button>
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none pr-10"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-[.22rem] text-zinc-400 hover:text-white transition-colors"
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
                     </div>
+                  </div>
+                </>
+              )}
+
+              {error && (
+                <div className="text-red-400 text-sm bg-red-900/10 p-3 rounded-lg border border-red-900/20">
+                  {error}
                 </div>
+              )}
 
-                {error && (
-                    <div className="text-red-400 text-sm bg-red-900/10 p-3 rounded-lg border border-red-900/20">
-                        {error}
-                    </div>
-                )}
-
-                <Button className="w-full" size="lg" disabled={isLoading}>
-                    {isLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                    {isLogin ? "Entrar" : "Criar Conta"}
-                </Button>
+              <Button className="w-full" size="lg" disabled={isLoading}>
+                {isLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                {isVerifying ? "Verificar" : (isLogin ? "Entrar" : "Criar Conta")}
+              </Button>
             </form>
 
             <div className="mt-6 text-center text-sm text-zinc-500">
-                {isLogin ? "Não tem uma conta? " : "Já tem uma conta? "}
-                <button 
-                    onClick={() => {
-                        setIsLogin(!isLogin);
-                        setError("");
-                    }} 
-                    className="text-accent hover:underline font-medium"
+              {isVerifying ? (
+                <button
+                  onClick={() => {
+                    setIsVerifying(false);
+                    setError("");
+                  }}
+                  className="text-zinc-400 hover:text-white"
                 >
-                    {isLogin ? "Registre-se" : "Faça login"}
+                  Voltar
                 </button>
+              ) : (
+                <>
+                  {isLogin ? "Não tem uma conta? " : "Já tem uma conta? "}
+                  <button
+                    onClick={() => {
+                      setIsLogin(!isLogin);
+                      setError("");
+                    }}
+                    className="text-accent hover:underline font-medium"
+                  >
+                    {isLogin ? "Registre-se" : "Faça login"}
+                  </button>
+                </>
+              )}
             </div>
-            </div>
+          </div>
         </div>
       </div>
     </div>
