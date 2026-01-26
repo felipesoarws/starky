@@ -149,7 +149,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           <div className="flex flex-col gap-3">
             {isAuthenticated ? (
               <Button
-              variant="logout"
+                variant="logout"
                 className="w-full"
                 onClick={() => {
                   logout();

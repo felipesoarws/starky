@@ -56,9 +56,9 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-accent transition-colors">
+                  <Link to="/terms" className="hover:text-accent transition-colors">
                     Termos de Serviço
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

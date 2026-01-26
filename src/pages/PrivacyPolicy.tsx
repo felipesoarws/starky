@@ -17,67 +17,54 @@ const PrivacyPolicy = () => {
 
                 <div className="space-y-12">
                     <section>
-                        <h2 className="text-2xl font-semibold text-white mb-4">1. Introdução</h2>
-                        <p className="leading-relaxed">
-                            Bem-vindo ao Starky. Nós respeitamos sua privacidade e estamos comprometidos em proteger seus dados pessoais.
-                            Esta política de privacidade irá informá-lo sobre como cuidamos de seus dados pessoais quando você visita nosso site
-                            e lhe falar sobre seus direitos de privacidade e como a lei o protege.
+                        <h2 className="text-2xl font-semibold text-white mb-4">1. Visão Geral</h2>
+                        <p className="leading-relaxed text-zinc-400">
+                            Olá! Esta política de privacidade explica como seus dados são tratados no Starky.
+                            Como um projeto desenvolvido por uma única pessoa (<strong className="text-zinc-200">Felipe Soares</strong>), prezo pela simplicidade e transparência.
+                            Não há grandes corporações ou venda de dados aqui. O foco é fornecer uma ferramenta de estudo eficiente.
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-semibold text-white mb-4">2. Dados que Coletamos</h2>
-                        <p className="leading-relaxed mb-4">
-                            Podemos coletar, usar, armazenar e transferir diferentes tipos de dados pessoais sobre você, que agrupamos da seguinte forma:
+                        <h2 className="text-2xl font-semibold text-white mb-4">2. Dados Coletados e Finalidade</h2>
+                        <p className="leading-relaxed mb-4 text-zinc-400">
+                            Coletamos apenas o necessário para o funcionamento do serviço:
                         </p>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li><strong className="text-white">Dados de Identidade:</strong> inclui nome, sobrenome, nome de usuário ou identificador similar.</li>
-                            <li><strong className="text-white">Dados de Contato:</strong> inclui endereço de email.</li>
-                            <li><strong className="text-white">Dados Técnicos:</strong> inclui endereço de protocolo de internet (IP), seus dados de login, tipo e versão do navegador, configuração de fuso horário e localização.</li>
-                            <li><strong className="text-white">Dados de Uso:</strong> inclui informações sobre como você usa nosso site, produtos e serviços (ex: decks criados, tempo de estudo).</li>
+                        <ul className="list-disc pl-6 space-y-2 text-zinc-400">
+                            <li><strong className="text-zinc-200">Email:</strong> Usado exclusivamente para criar sua conta, permitir login e vincular seus dados. Isso possibilita a sincronização do seu progresso entre diferentes dispositivos.</li>
+                            <li><strong className="text-zinc-200">Dados de Estudo:</strong> Decks, flashcards e estatísticas de revisão (fácil/médio/difícil). Estes dados são armazenados em nuvem para que você não perca seu progresso ao trocar de computador ou celular.</li>
                         </ul>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-semibold text-white mb-4">3. Como Usamos Seus Dados</h2>
-                        <p className="leading-relaxed mb-4">
-                            Só usaremos seus dados pessoais quando a lei nos permitir. Mais comumente, usaremos seus dados pessoais nas seguintes circunstâncias:
-                        </p>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li>Para registrar você como novo cliente.</li>
-                            <li>Para fornecer e manter nosso Serviço, incluindo monitorar o uso do nosso Serviço.</li>
-                            <li>Para gerenciar sua conta: para gerenciar seu registro como usuário do Serviço.</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-semibold text-white mb-4">4. Segurança dos Dados</h2>
-                        <p className="leading-relaxed">
-                            Implementamos medidas de segurança apropriadas para impedir que seus dados pessoais sejam acidentalmente perdidos, usados ou acessados de forma não autorizada,
-                            alterados ou divulgados. Além disso, limitamos o acesso aos seus dados pessoais aos funcionários, agentes, contratados e outros terceiros que tenham uma necessidade comercial de saber.
+                        <h2 className="text-2xl font-semibold text-white mb-4">3. Armazenamento e Segurança</h2>
+                        <p className="leading-relaxed text-zinc-400">
+                            Seus dados são armazenados em serviços de banco de dados seguros. Embora eu adote as melhores práticas de desenvolvimento para proteger suas informações,
+                            lembre-se que nenhum serviço na internet é 100% invulnerável. Recomendo não utilizar senhas repetidas de outros serviços importantes (caso venha a ser implementado login com senha) e manter backups pessoais de conteúdos críticos.
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-semibold text-white mb-4">5. Cookies e Tecnologias de Rastreamento</h2>
-                        <p className="leading-relaxed mb-4">
-                            Utilizamos cookies e tecnologias similares (como Google Analytics e Google Tag Manager) para rastrear a atividade em nosso serviço e armazenar certas informações.
+                        <h2 className="text-2xl font-semibold text-white mb-4">4. Compartilhamento de Dados</h2>
+                        <p className="leading-relaxed text-zinc-400">
+                            <strong className="text-zinc-200">Seus dados não são vendidos.</strong> Não compartilhamos suas informações pessoais com terceiros para fins de marketing.
+                            O compartilhamento ocorre apenas com os provedores de infraestrutura técnica (como hospedagem e banco de dados) estritamente para manter o site no ar.
                         </p>
-                        <p className="leading-relaxed mb-4">
-                            Os cookies são arquivos com uma pequena quantidade de dados que podem incluir um identificador exclusivo anônimo.
-                            Você pode instruir seu navegador a recusar todos os cookies ou indicar quando um cookie está sendo enviado.
-                        </p>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li><strong className="text-white">Cookies Essenciais:</strong> Usados para autenticação (login) e segurança.</li>
-                            <li><strong className="text-white">Cookies de Análise:</strong> Usados para coletar informações sobre como você usa o Starky (ex: páginas visitadas, tempo gasto) para nos ajudar a melhorar a plataforma.</li>
-                        </ul>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-semibold text-white mb-4">6. Seus Direitos Legais</h2>
-                        <p className="leading-relaxed">
-                            Sob certas circunstâncias, você tem direitos sob as leis de proteção de dados em relação aos seus dados pessoais, incluindo o direito de solicitar acesso,
-                            correção, apagamento, restrição, transferência, ou de retirar o consentimento.
+                        <h2 className="text-2xl font-semibold text-white mb-4">5. Cookies</h2>
+                        <p className="leading-relaxed text-zinc-400">
+                            Utilizamos cookies locais principalmente para manter sua sessão ativa ("lembrar de mim"), para que você não precise fazer login toda vez que abrir o site.
+                            Não utilizamos cookies invasivos de rastreamento publicitário.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-semibold text-white mb-4">6. Seus Direitos</h2>
+                        <p className="leading-relaxed text-zinc-400">
+                            Você tem total controle sobre seus dados. Se desejar excluir sua conta e todos os dados associados a ela (decks e histórico), basta entrar em contato comigo diretamente.
+                            A exclusão será realizada manualmente e todos os seus registros serão removidos permanentemente do banco de dados.
                         </p>
                     </section>
                 </div>
