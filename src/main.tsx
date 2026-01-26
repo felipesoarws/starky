@@ -1,5 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 
 import App from "./App.tsx";
 import Overview from "./pages/Overview.tsx";
@@ -15,6 +17,7 @@ createRoot(document.getElementById("root")!).render(
   <AuthProvider>
     <DialogProvider>
       <BrowserRouter>
+        <SpeedInsights />
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />
