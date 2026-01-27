@@ -52,3 +52,20 @@ export const cardsRelations = relations(cards, ({ one }) => ({
     references: [decks.id],
   }),
 }));
+
+export const history = pgTable("history", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  deckTitle: text("deck_title").notNull(),
+  cardQuestion: text("card_question").notNull(),
+  cardAnswer: text("card_answer").notNull(),
+  difficulty: text("difficulty").notNull(),
+  reviewedAt: timestamp("reviewed_at").defaultNow(),
+});
+
+export const historyRelations = relations(history, ({ one }) => ({
+  user: one(users, {
+    fields: [history.userId],
+    references: [users.id],
+  }),
+}));

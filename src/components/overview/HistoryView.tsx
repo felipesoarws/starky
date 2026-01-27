@@ -13,7 +13,11 @@ const HistoryView = ({ history, onClearHistory }: HistoryViewProps) => {
   const filteredHistory = history.filter(entry => 
     entry.deckTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
     entry.cardQuestion.toLowerCase().includes(searchTerm.toLowerCase())
-  ).sort((a,b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  ).sort((a,b) => {
+    const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+    const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+    return timeB - timeA;
+  });
 
   return (
     <div className="animate-fade-in space-y-6">

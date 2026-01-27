@@ -109,35 +109,92 @@ function Overview() {
   };
 
   // --- History Logic ---
-  const [history, setHistory] = useState<HistoryEntry[]>(() => {
-      const saved = localStorage.getItem("starky_history");
-      try {
-        return saved ? JSON.parse(saved) : [];
-      } catch (e) {
-        return [];
-      }
-  });
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
 
-  const addToHistory = (deck: Deck, card: Card, difficulty: "easy" | "good" | "medium" | "hard") => {
-      const newEntry: HistoryEntry = {
-          id: Date.now(),
-          timestamp: new Date().toISOString(),
+  // Carregar histórico
+  useEffect(() => {
+    const loadHistory = async () => {
+      if (user) {
+        try {
+          const token = localStorage.getItem("starky_token");
+          const res = await fetch(`${API_URL}/history`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            // Adaptar reviewedAt para timestamp esperado pela UI
+            setHistory(data.map((entry: any) => ({
+                ...entry,
+                timestamp: entry.reviewedAt
+            })));
+          }
+        } catch (error) {
+          console.error("Falha ao carregar histórico", error);
+        }
+      } else {
+        setHistory([]);
+      }
+    };
+    loadHistory();
+  }, [user]);
+
+  const addToHistory = async (deck: Deck, card: Card, difficulty: "easy" | "good" | "medium" | "hard") => {
+      const entryData = {
           deckTitle: deck.title,
           cardQuestion: card.question,
           cardAnswer: card.answer,
           difficulty
       };
-      
-      const newHistory = [newEntry, ...history];
-      setHistory(newHistory);
-      localStorage.setItem("starky_history", JSON.stringify(newHistory));
+
+      if (user) {
+          try {
+              const token = localStorage.getItem("starky_token");
+              const res = await fetch(`${API_URL}/history`, {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`
+                  },
+                  body: JSON.stringify(entryData)
+              });
+              if (res.ok) {
+                  const newEntry = await res.json();
+                  setHistory(prev => [{ ...newEntry, timestamp: newEntry.reviewedAt }, ...prev]);
+              }
+          } catch (error) {
+              console.error("Falha ao salvar no histórico", error);
+          }
+      } else {
+          // Fallback para visitante (ainda local para não perder durante a sessão)
+          const tempEntry: HistoryEntry = {
+              id: Date.now(),
+              timestamp: new Date().toISOString(),
+              ...entryData
+          };
+          setHistory(prev => [tempEntry, ...prev]);
+      }
   };
 
   const clearHistory = () => {
-    showConfirm("Limpar Histórico", "Tem certeza? Isso apagará todo o registro de revisões desta máquina.", () => {
-        setHistory([]);
-        localStorage.removeItem("starky_history");
-        showNotification("Histórico limpo com sucesso.");
+    showConfirm("Limpar Histórico", "Tem certeza? Isso apagará todo o registro de revisões permanentemente.", async () => {
+        if (user) {
+            try {
+                const token = localStorage.getItem("starky_token");
+                const res = await fetch(`${API_URL}/history`, {
+                    method: "DELETE",
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    setHistory([]);
+                    showNotification("Histórico limpo com sucesso.");
+                }
+            } catch (error) {
+                console.error("Falha ao limpar histórico", error);
+            }
+        } else {
+            setHistory([]);
+            showNotification("Histórico limpo.");
+        }
     });
   };
 

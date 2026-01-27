@@ -2,8 +2,8 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { db } from "./db/index.js";
-import { users, decks, cards } from "./db/schema.js";
-import { eq, and } from "drizzle-orm";
+import { users, decks, cards, history } from "./db/schema.js";
+import { eq, and, desc } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Resend } from "resend";
@@ -453,6 +453,55 @@ app.put("/api/categories/:name", authenticateToken, async (req, res) => {
     res.json({ message: "Category updated" });
   } catch (error) {
     console.error(`[PUT /api/categories] Error:`, error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// --- HISTORY ROUTES ---
+
+app.get("/api/history", authenticateToken, async (req, res) => {
+  try {
+    const userId = (req as any).user.id;
+    console.log(`[GET /api/history] Fetching history for user ${userId}`);
+    const userHistory = await db.select().from(history)
+      .where(eq(history.userId, userId))
+      .orderBy(desc(history.reviewedAt));
+    res.json(userHistory);
+  } catch (error) {
+    console.error("[GET /api/history] Error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.post("/api/history", authenticateToken, async (req, res) => {
+  try {
+    const userId = (req as any).user.id;
+    const { deckTitle, cardQuestion, cardAnswer, difficulty } = req.body;
+    console.log(`[POST /api/history] Adding entry for user ${userId}: ${deckTitle}`);
+
+    const [newEntry] = await db.insert(history).values({
+      userId,
+      deckTitle,
+      cardQuestion,
+      cardAnswer,
+      difficulty
+    }).returning();
+
+    res.json(newEntry);
+  } catch (error) {
+    console.error("[POST /api/history] Error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.delete("/api/history", authenticateToken, async (req, res) => {
+  try {
+    const userId = (req as any).user.id;
+    console.log(`[DELETE /api/history] Clearing history for user ${userId}`);
+    await db.delete(history).where(eq(history.userId, userId));
+    res.json({ message: "History cleared" });
+  } catch (error) {
+    console.error("[DELETE /api/history] Error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
