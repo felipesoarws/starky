@@ -76,7 +76,8 @@ function Overview() {
 
 
   const [activeDeck, setActiveDeck] = useState<Deck | null>(null);
-
+  const [showMasteredPopup, setShowMasteredPopup] = useState(false);
+  
   // snapshot dos cards pra sessão de estudo (evita que cards sumam ao atualizar data)
   const [studySessionCards, setStudySessionCards] = useState<Card[]>([]);
 
@@ -474,6 +475,12 @@ function Overview() {
         deck={studyDeck}
         onUpdateCard={(card) => handleUpdateCardInDeck(activeDeck.id, card)}
         onFinish={() => {
+          if (activeDeck) {
+             const isMastered = activeDeck.cards.length > 0 && activeDeck.cards.every(c => c.difficulty === 'easy');
+             if (isMastered) {
+                 setShowMasteredPopup(true);
+             }
+          }
           setViewState("dashboard");
           setActiveDeck(null);
         }}
@@ -485,8 +492,6 @@ function Overview() {
     );
   }
 
-  // filtro de busca
-
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row overflow-hidden relative">
       <SEO 
@@ -494,6 +499,35 @@ function Overview() {
         description="Gerencie seus decks, acompanhe estatísticas e estude com repetição espaçada no Starky."
         canonical="https://starky.app/overview"
       />
+
+      {showMasteredPopup && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+            <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl max-w-md w-full text-center relative animate-slide-up shadow-2xl shadow-emerald-900/20">
+                <button 
+                  onClick={() => setShowMasteredPopup(false)}
+                  className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
+                >
+                    <Trash2 className="w-5 h-5 opacity-0 cursor-default" /> 
+                    {/* Dummy icon for spacing if needed, or just X */}
+                </button>
+                 <div className="w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6 ring-4 ring-emerald-500/20">
+                    <CheckCircle className="w-12 h-12 text-emerald-500" />
+                 </div>
+                 <h2 className="text-3xl font-bold text-white mb-2">Parabéns!</h2>
+                 <p className="text-zinc-400 mb-8 text-lg">
+                    Você dominou este deck! Todos os cards foram marcados como <strong className="text-emerald-400">Fácil</strong>.
+                 </p>
+                 <Button 
+                    size="lg" 
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border-none shadow-lg shadow-emerald-900/50"
+                    onClick={() => setShowMasteredPopup(false)}
+                 >
+                    Continuar
+                 </Button>
+            </div>
+            {/* Confetti effect could go here if we had a library, but simple CSS animation in global css would be better.*/}
+        </div>
+      )}
       <div className="block md:hidden">
         <OverviewHeader
           searchQuery={searchQuery}
@@ -556,7 +590,7 @@ function Overview() {
 
             {/* stats */}
             {(activeTab === "stats_view" || activeTab === "stats_locked") && (
-              <StatsView isLocked={!isAuthenticated} />
+              <StatsView isLocked={!isAuthenticated} decks={decks} />
             )}
           </div>
         </div>

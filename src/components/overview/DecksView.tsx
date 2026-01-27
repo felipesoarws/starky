@@ -252,6 +252,11 @@ const DecksView = ({
                       </h3>
                       <div className="text-sm text-zinc-400 mb-2 flex items-center gap-2">
                         <Library className="w-4 h-4" /> {deck.cards.length} cards
+                        {deck.cards.length > 0 && deck.cards.every(c => c.difficulty === 'easy') && (
+                          <span className="flex items-center gap-1 text-emerald-400 text-xs font-bold bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/20">
+                            <CheckCircle className="w-3 h-3" /> Dominado
+                          </span>
+                        )}
                       </div>
                       <div className={`text-xs font-mono flex items-center gap-2 ${statusColor}`}>
                         <Clock className="w-3 h-3" />

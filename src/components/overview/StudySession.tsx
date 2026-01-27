@@ -44,7 +44,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
     }
   };
 
-  const handleDifficulty = (factor: number) => {
+  const handleDifficulty = (factor: number, difficulty: "easy" | "good" | "medium" | "hard") => {
     const now = new Date();
     const nextDate = new Date(now.getTime() + factor * 60000);
 
@@ -52,17 +52,15 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
       ...currentCard,
       lastReviewed: now,
       nextReviewDate: nextDate.toISOString(),
-      interval: factor
+      interval: factor,
+      difficulty
     }
 
     onUpdateCard(updatedCard);
     handleNext();
   };
 
-  // se o deck estiver vazio (start) ou ficar vazio (fim da sessão filtrada), mostra a tela de conclusão
-  // a validação de "não iniciar deck vazio" é feita no pai, então se chegou aqui vazio, é porque acabou
   if (deck.cards.length === 0 || completed) {
-    // reutiliza a ui de conclusão. poderia extrair pra componente, mas pra manter simples agora:
     return (
       <div className="fixed inset-0 bg-background text-white flex flex-col items-center justify-center p-6  z-50">
         <div className="animate-slide-up flex flex-col items-center max-w-md text-center space-y-6">
@@ -113,7 +111,6 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
           </div>
         </div>
 
-        {/* barra de progresso */}
         <div className="absolute bottom-0 left-0 h-1 bg-blue-500/20 w-full">
           <div
             className="h-full bg-blue-500 transition-all duration-300 ease-out"
@@ -122,10 +119,8 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
         </div>
       </header>
 
-      {/* área central do card */}
       <main className="flex-1 flex items-center justify-center p-4 md:p-6 relative w-full overflow-y-auto">
 
-        {/* container do card */}
         <div
           onClick={() => !isFlipped && setIsFlipped(true)}
           className="w-full max-w-4xl min-h-[50vh] md:min-h-0 md:aspect-video bg-[#121214] md:max-h-[65vh] border border-white/5 rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 cursor-pointer hover:border-white/10 transition-colors shadow-2xl relative group mx-auto my-auto"
@@ -152,8 +147,6 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               </span>
             )}
 
-
-            {/* indicador visual de 'clique para virar' se não virado */}
             {!isFlipped && (
               <div className="animate-pulse mt-6 text-xs translate-y-8 text-zinc-600 whitespace-nowrap lg:translate-y-12">
                 Toque para ver a resposta
@@ -169,7 +162,6 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
 
       </main>
 
-      {/* footer com ações */}
       <footer className="py-6 pb-10 md:py-4 md:pb-8 border-t border-white/5 bg-[#101013] flex items-center justify-center px-4 md:h-[7rem]">
         {!isFlipped ? (
           <Button
@@ -186,28 +178,28 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               time="1m"
               textColor="red"
               color="bg-zinc-900 border-zinc-800 hover:border-red-700 hover:bg-red-800/20"
-              onClick={() => handleDifficulty(1)}
+              onClick={() => handleDifficulty(1, 'hard')}
             />
             <DifficultyButton
               label="Médio"
               time="10m"
               textColor="yellow"
               color="bg-zinc-900 border-zinc-800 hover:border-yellow-700 hover:bg-yellow-800/20"
-              onClick={() => handleDifficulty(10)}
+              onClick={() => handleDifficulty(10, 'medium')}
             />
             <DifficultyButton
               label="Bom"
               time="2d"
               textColor="blue"
               color="bg-zinc-900 border-zinc-800 hover:border-blue-700 hover:bg-blue-800/20"
-              onClick={() => handleDifficulty(2880)}
+              onClick={() => handleDifficulty(2880, 'good')}
             />
             <DifficultyButton
               label="Fácil"
               time="4d"
               textColor="green"
               color="bg-zinc-900 border-zinc-800 hover:border-green-700 hover:bg-green-800/20"
-              onClick={() => handleDifficulty(5760)}
+              onClick={() => handleDifficulty(5760, 'easy')}
             />
           </div>
         )}

@@ -28,7 +28,9 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-helmet-async": "^2.0.5",
+    "react-is": "^19.2.4",
     "react-router": "^7.9.6",
+    "recharts": "^3.7.0",
     "resend": "^6.8.0",
     "tailwindcss": "^4.1.17",
     "tsx": "^4.21.0"
