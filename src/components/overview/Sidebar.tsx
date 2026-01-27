@@ -1,4 +1,4 @@
-import { BarChart3, Eye, LampDesk, Library, LogOut, X, Download, Upload } from "lucide-react";
+import { BarChart3, Eye, LampDesk, Library, LogOut, X, Download, Upload, History } from "lucide-react";
 import React, { useRef } from "react";
 import type { TabType } from "./types";
 import { Link, useNavigate } from "react-router";
@@ -135,6 +135,13 @@ const Sidebar = ({
             className={getButtonClass("stats_view")}
           >
             <BarChart3 className="w-4 h-4" /> Estatísticas
+          </button>
+
+          <button
+            onClick={() => setActiveTab("history")}
+            className={getButtonClass("history")}
+          >
+            <History className="w-4 h-4" /> Histórico
           </button>
 
           {/* só no mobile: utils de importar/exportar */}

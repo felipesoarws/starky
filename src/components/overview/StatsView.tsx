@@ -75,7 +75,10 @@ const ActivityHeatmap = ({ activityDates }: { activityDates: Set<string> }) => {
       
       <div className="flex gap-1 overflow-x-auto pb-2">
         {weeks.map((week, colIndex) => (
-          <div key={colIndex} className="flex flex-col gap-1">
+          <div 
+            key={colIndex} 
+            className={`${colIndex < 9 ? "hidden md:flex" : "flex"} flex-col gap-1`}
+          >
             {week.map((dateStr, rowIndex) => (
                 <div 
                   key={rowIndex}
@@ -98,7 +101,7 @@ const ActivityHeatmap = ({ activityDates }: { activityDates: Set<string> }) => {
   );
 }
 
-const COLORS = ['#9ca3af', '#f97316', '#10b981'];
+const COLORS = ['#9ca3af', '#3b45f2', '#10b981'];
 
 const StatsView = ({ isLocked, decks = [] }: StatsViewProps) => {
   const navigate = useNavigate();

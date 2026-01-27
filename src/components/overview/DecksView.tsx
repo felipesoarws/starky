@@ -200,6 +200,7 @@ const DecksView = ({
                 }
 
                 const isSelected = selectedDeckIds.includes(deck.id);
+                const isMastered = deck.cards.length > 0 && deck.cards.every(c => c.difficulty === 'easy');
 
                 return (
                   <div
@@ -209,10 +210,14 @@ const DecksView = ({
                         onToggleDeckSelection(deck.id);
                       }
                     }}
-                    className={`group relative bg-zinc-900 border rounded-3xl p-6 transition-all flex flex-col justify-between h-full min-h-[200px] w-[20rem] md:min-w-[20rem] ${isSelectionMode
+                    className={`group relative border rounded-3xl p-6 transition-all flex flex-col justify-between h-full min-h-[200px] w-[20rem] md:min-w-[20rem] ${isSelectionMode
                       ? "cursor-pointer hover:bg-zinc-800/50"
-                      : "hover:border-zinc-700 hover:shadow-xl hover:shadow-black/50"
-                      } ${isSelected ? "border-accent bg-accent/5 ring-1 ring-accent" : "border-zinc-800"
+                      : "hover:shadow-xl hover:shadow-black/50"
+                      } ${isSelected 
+                        ? "border-accent bg-accent/5 ring-1 ring-accent" 
+                        : isMastered
+                            ? "bg-emerald-400/10 border-emerald-400/20 hover:border-emerald-400/40"
+                            : "bg-zinc-900 border-zinc-800 hover:border-zinc-700" 
                       }`}
                   >
                     {isSelectionMode && (
@@ -226,19 +231,19 @@ const DecksView = ({
 
                     <div className={isSelectionMode ? "pointer-events-none opacity-80" : ""}>
                       <div className="flex justify-between items-center mb-4">
-                        <div className="h-2 w-10 rounded-full bg-zinc-800 group-hover:bg-accent/50 transition-colors"></div>
+                        <div className={`h-2 w-10 rounded-full transition-colors ${isMastered ? "bg-emerald-500/30 group-hover:bg-emerald-400" : "bg-zinc-800 group-hover:bg-accent/50"}`}></div>
                         {!isSelectionMode && (
                           <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                             <button
                               onClick={(e) => { e.stopPropagation(); onEditDeck(deck); }}
-                              className="p-1.5 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-lg"
+                              className={`p-1.5 rounded-lg ${isMastered ? "text-emerald-200/50 hover:text-white hover:bg-emerald-'500/20" : "text-zinc-500 hover:text-white hover:bg-zinc-800"}`}
                               title="Editar Deck"
                             >
                               <Edit2 className="w-4 h-4" />
                             </button>
                             <button
                               onClick={(e) => { e.stopPropagation(); onDeleteDeck(deck.id); }}
-                              className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-zinc-800 rounded-lg"
+                              className={`p-1.5 rounded-lg ${isMastered ? "text-emerald-200/50 hover:text-red-400 hover:bg-emerald-500/20" : "text-zinc-500 hover:text-red-400 hover:bg-zinc-800"}`}
                               title="Excluir Deck"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -247,12 +252,12 @@ const DecksView = ({
                         )}
                       </div>
 
-                      <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">
+                      <h3 className={`text-xl font-bold mb-2 line-clamp-2 ${isMastered ? "text-emerald-50" : "text-white"}`}>
                         {deck.title}
                       </h3>
-                      <div className="text-sm text-zinc-400 mb-2 flex items-center gap-2">
+                      <div className={`text-sm mb-2 flex items-center gap-2 ${isMastered ? "text-emerald-200/60" : "text-zinc-400"}`}>
                         <Library className="w-4 h-4" /> {deck.cards.length} cards
-                        {deck.cards.length > 0 && deck.cards.every(c => c.difficulty === 'easy') && (
+                        {isMastered && (
                           <span className="flex items-center gap-1 text-emerald-400 text-xs font-bold bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/20">
                             <CheckCircle className="w-3 h-3" /> Dominado
                           </span>

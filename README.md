@@ -8,15 +8,19 @@ O Starky é uma aplicação moderna e inteligente de flashcards projetada para a
 
 - **🧠 Sistema de Repetição Espaçada (SRS)**: Algoritmo inteligente que agenda revisões com base em quão bem você conhece cada card (Fácil, Médio, Difícil).
 
-- **☁️ Sincronização**: Todo o seu progresso fica salvo no email criado, permitindo acesso de qualquer dispositivo.
+- **🏆 Decks Dominados**: Visualize claramente quais decks você já domina completamente. Decks com 100% de aproveitamento ganham destaque visual e efeitos especiais.
+
+- **📜 Histórico Detalhado**: Consulte o histórico completo de todas as suas sessões de estudo, com detalhes de cada card revisado e dificuldade escolhida.
+
+- **📊 Estatísticas Avançadas**: Acompanhe seu ritmo com um Heatmap de atividade diária, gráficos de distribuição de cards e previsões de revisão.
+
+- **🌍 Biblioteca Comunitária**: Baixe decks prontos da comunidade e personalize-os livremente (adicione, remova ou edite qualquer pergunta).
+
+- **☁️ Sincronização**: Todo o seu progresso fica salvo na nuvem, permitindo acesso de qualquer dispositivo.
 
 - **🎨 UI com Dark Mode**: Uma interface elegante, minimalista e livre de distrações, projetada para longas sessões de estudo.
 
-- **⏱️ Cronômetro de Sessão**: Acompanhe seu tempo por sessão com um cronômetro integrado.
-
-- **📊 Acompanhamento de Progresso**: Feedback visual sobre o seu domínio de cada deck.
-
-- **📱 Design Responsivo**: Funciona perfeitamente em dispositivos desktop e móveis.
+- **📱 Design Responsivo**: Funciona perfeitamente em dispositivos desktop e móveis, com adaptações inteligentes de interface.
 
 ## 🛠️ Tecnologias Utilizadas
 

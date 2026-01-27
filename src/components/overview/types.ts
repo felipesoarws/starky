@@ -16,9 +16,19 @@ export interface Deck {
   lastStudied?: string;
 }
 
+export interface HistoryEntry {
+  id: number;
+  timestamp: string;
+  deckTitle: string;
+  cardQuestion: string;
+  cardAnswer: string;
+  difficulty: "easy" | "good" | "medium" | "hard";
+}
+
 export type TabType =
   | "decks_view"
   | "decks_locked"
   | "library"
   | "stats_view"
-  | "stats_locked";
+  | "stats_locked"
+  | "history";

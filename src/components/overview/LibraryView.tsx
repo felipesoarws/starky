@@ -55,14 +55,15 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
     }
 
     const normalizedCards = selectedDeck.cards.map((card, idx) => {
-      if ("id" in card) {
-        return card as Card;
-      }
-
+      // Force new IDs to ensure uniqueness and enable editing/deleting
       return {
         id: Date.now() + idx,
         question: card.question,
         answer: card.answer,
+        difficulty: undefined,
+        lastReviewed: null,
+        nextReviewDate: null,
+        interval: 0
       } satisfies Card;
     });
 

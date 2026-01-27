@@ -21,10 +21,13 @@ import {
 } from "lucide-react";
 
 
-import type { Card, Deck, TabType } from "../components/overview/types";
+
+
 import { Button } from "../components/ui/Button";
 
 import { API_URL } from "../config";
+import HistoryView from "../components/overview/HistoryView";
+import type { Card, Deck, TabType, HistoryEntry } from "../components/overview/types";
 
 function Overview() {
   const { user, isAuthenticated } = useAuth();
@@ -103,6 +106,39 @@ function Overview() {
   const showNotification = (message: string, type: "success" | "info" = "success") => {
     setToastConfig({ show: true, message, type });
     setTimeout(() => setToastConfig(prev => ({ ...prev, show: false })), 3000);
+  };
+
+  // --- History Logic ---
+  const [history, setHistory] = useState<HistoryEntry[]>(() => {
+      const saved = localStorage.getItem("starky_history");
+      try {
+        return saved ? JSON.parse(saved) : [];
+      } catch (e) {
+        return [];
+      }
+  });
+
+  const addToHistory = (deck: Deck, card: Card, difficulty: "easy" | "good" | "medium" | "hard") => {
+      const newEntry: HistoryEntry = {
+          id: Date.now(),
+          timestamp: new Date().toISOString(),
+          deckTitle: deck.title,
+          cardQuestion: card.question,
+          cardAnswer: card.answer,
+          difficulty
+      };
+      
+      const newHistory = [newEntry, ...history];
+      setHistory(newHistory);
+      localStorage.setItem("starky_history", JSON.stringify(newHistory));
+  };
+
+  const clearHistory = () => {
+    showConfirm("Limpar Histórico", "Tem certeza? Isso apagará todo o registro de revisões desta máquina.", () => {
+        setHistory([]);
+        localStorage.removeItem("starky_history");
+        showNotification("Histórico limpo com sucesso.");
+    });
   };
 
   // funções dos decks
@@ -202,6 +238,15 @@ function Overview() {
   };
 
   const handleUpdateCardInDeck = async (deckId: number, card: Card) => {
+    
+    // Add to history if difficulty is present
+    if (card.difficulty) {
+        const deck = decks.find(d => d.id === deckId);
+        if (deck) {
+            addToHistory(deck, card, card.difficulty);
+        }
+    }
+
     // atualização otimista
     setDecks((prevDecks) =>
       prevDecks.map((d) => {
@@ -404,11 +449,21 @@ function Overview() {
         // processa em série pra verificar resultados
         for (const deck of decksToImport) {
           try {
-            // garante payload válido pra criação
+            // garante payload válido pra criação e ids novos para evitar conflitos
             const payload = {
               title: deck.title,
               category: deck.category || "Importados",
-              cards: deck.cards // backend espera checar estrutura do card
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              cards: deck.cards.map((c: any, idx: number) => ({
+                id: Date.now() + idx, // Gera novos IDs para garantir unicidade e edição correta
+                question: c.question,
+                answer: c.answer,
+                // reseta status de estudo
+                lastReviewed: null,
+                nextReviewDate: null,
+                interval: 0, 
+                difficulty: undefined
+              }))
             };
 
             const res = await fetch(`${API_URL}/decks`, {
@@ -592,6 +647,11 @@ function Overview() {
             {(activeTab === "stats_view" || activeTab === "stats_locked") && (
               <StatsView isLocked={!isAuthenticated} decks={decks} />
             )}
+
+            {/* history */}
+            {activeTab === "history" && (
+                <HistoryView history={history} onClearHistory={clearHistory} />
+            )}
           </div>
         </div>
 
@@ -658,7 +718,8 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
           // use null pra garantir que o json envie o valor e o backend limpe o campo
           nextReviewDate: null,
           lastReviewed: null,
-          interval: null
+          interval: null,
+          difficulty: undefined
         };
       }
       return c;
@@ -786,6 +847,18 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
               </div>
 
               <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="md:col-span-2">
+                    {card.difficulty === 'easy' && (
+                        <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 mb-4 flex items-start gap-3 animate-fade-in">
+                            <div className="text-yellow-500 mt-0.5">⚠️</div>
+                            <div className="text-xs text-yellow-200">
+                                <strong className="block text-yellow-500 mb-1">Atenção</strong>
+                                Este card está marcado como <span className="text-emerald-400 font-bold">Dominado</span>. 
+                                Qualquer alteração reiniciará seu progresso de aprendizado.
+                            </div>
+                        </div>
+                    )}
+                </div>
                 <div>
                   <label className="text-xs font-semibold text-zinc-500 mb-1 block uppercase">
                     Pergunta
