@@ -237,7 +237,7 @@ const StatsView = ({ isLocked, decks = [] }: StatsViewProps) => {
                     dataKey="value"
                     stroke="none"
                     >
-                    {stats.distribution.map((entry, index) => (
+                    {stats.distribution.map((_, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                     </Pie>
