@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SEO from "./components/SEO";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Features from "./components/Features";
@@ -21,6 +22,11 @@ function App() {
 
   return (
     <div className="min-h-screen bg-(--accent-background) text-(--accent-primary-text) selection:bg-(--accent-color) selection:text-(--accent-primary-text)">
+      <SEO 
+        title="Starky | Domine qualquer assunto com Repetição Espaçada"
+        description="O Starky ajuda você a memorizar conceitos a longo prazo. Crie flashcards, acompanhe seu progresso e deixe nosso algoritmo inteligente decidir quando revisar."
+        canonical="https://starky.app/"
+      />
       <Navbar scrolled={scrolled} />
       <main>
         <Hero />

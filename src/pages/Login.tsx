@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SEO from "../components/SEO";
 import { ArrowLeft, LampDesk, Loader2, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
@@ -18,10 +19,6 @@ function Login() {
   // code verification
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
-
-  useEffect(() => {
-    document.title = "Starky | " + (isLogin ? "Login" : "Registro");
-  }, [isLogin]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -66,6 +63,11 @@ function Login() {
 
   return (
     <div className="min-h-screen bg-background text-white flex">
+      <SEO 
+        title={`Starky | ${isLogin ? "Login" : "Registro"}`}
+        description="Acesse sua conta ou crie uma nova para começar a dominar qualquer assunto com Starky."
+        canonical="https://starky.app/login"
+      />
       <div className="hidden lg:flex lg:w-[40vw] bg-zinc-900 border-r border-zinc-800 relative overflow-hidden items-center justify-center p-12 select-none pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/10 blur-[100px] rounded-full pointer-events-none" />
         <div className="absolute inset-0 bg-dot-pattern opacity-50" />

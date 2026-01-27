@@ -1,9 +1,15 @@
 import { ArrowLeft, Instagram, Github, Linkedin } from "lucide-react";
+import SEO from "../components/SEO";
 import { Link } from "react-router";
 
 const TermsOfService = () => {
     return (
         <div className="min-h-screen bg-black text-zinc-300 p-8 font-sans">
+            <SEO 
+                title="Starky | Termos de Serviço"
+                description="Leia nossos termos de serviço para entender as regras de uso do Starky."
+                canonical="https://starky.app/terms"
+            />
             <div className="max-w-4xl mx-auto">
                 <div className="mb-12">
                     <Link to="/">

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import SEO from "../components/SEO";
 import { useSearchParams } from "react-router";
 import Sidebar from "../components/overview/Sidebar";
 import OverviewHeader from "../components/overview/OverviewHeader";
@@ -488,6 +489,11 @@ function Overview() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row overflow-hidden relative">
+      <SEO 
+        title="Starky | Visão Geral"
+        description="Gerencie seus decks, acompanhe estatísticas e estude com repetição espaçada no Starky."
+        canonical="https://starky.app/overview"
+      />
       <div className="block md:hidden">
         <OverviewHeader
           searchQuery={searchQuery}

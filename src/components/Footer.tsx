@@ -74,6 +74,7 @@ export const Footer: React.FC = () => {
               href="https://www.instagram.com/devf____/"
               target="_blank"
               className="text-zinc-500 hover:text-accent transition-colors"
+              aria-label="Instagram"
             >
               <Instagram className="w-5 h-5" />
             </a>
@@ -81,6 +82,7 @@ export const Footer: React.FC = () => {
               href="https://github.com/felipesoarws/"
               target="_blank"
               className="text-zinc-500 hover:text-accent transition-colors"
+              aria-label="GitHub"
             >
               <Github className="w-5 h-5" />
             </a>
@@ -88,6 +90,7 @@ export const Footer: React.FC = () => {
               href="https://www.linkedin.com/in/felipesoarws/"
               target="_blank"
               className="text-zinc-500 hover:text-accent transition-colors"
+              aria-label="LinkedIn"
             >
               <Linkedin className="w-5 h-5" />
             </a>

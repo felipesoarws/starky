@@ -1,9 +1,15 @@
 import { ArrowLeft, Instagram, Github, Linkedin } from "lucide-react";
+import SEO from "../components/SEO";
 import { Link } from "react-router";
 
 const PrivacyPolicy = () => {
     return (
         <div className="min-h-screen bg-black text-zinc-300 p-8 font-sans">
+            <SEO 
+                title="Starky | Política de Privacidade"
+                description="Leia nossa política de privacidade e saiba como o Starky protege seus dados."
+                canonical="https://starky.app/privacy"
+            />
             <div className="max-w-4xl mx-auto">
                 <div className="mb-12">
                     <Link to="/">

@@ -123,6 +123,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
         <button
           className="md:hidden text-zinc-400 hover:text-white"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Abrir menu"
         >
           {isMobileMenuOpen ? <X /> : <Menu />}
         </button>

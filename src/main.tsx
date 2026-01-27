@@ -1,4 +1,5 @@
 import { createRoot } from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Routes, Route } from "react-router";
 
 
@@ -14,17 +15,19 @@ import "./index.css";
 import { DialogProvider } from "./context/DialogContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <AuthProvider>
-    <DialogProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/overview" element={<Overview />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsOfService />} />
-        </Routes>
-      </BrowserRouter>
-    </DialogProvider>
-  </AuthProvider>
+  <HelmetProvider>
+    <AuthProvider>
+      <DialogProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/overview" element={<Overview />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+          </Routes>
+        </BrowserRouter>
+      </DialogProvider>
+    </AuthProvider>
+  </HelmetProvider>
 );
