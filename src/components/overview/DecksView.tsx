@@ -27,6 +27,7 @@ interface DecksViewProps {
   isSelectionMode?: boolean;
   selectedDeckIds?: number[];
   onToggleDeckSelection?: (id: number) => void;
+  onImportAnki?: (file: File) => void;
 }
 
 const DecksView = ({
@@ -41,6 +42,7 @@ const DecksView = ({
   isSelectionMode = false,
   selectedDeckIds = [],
   onToggleDeckSelection,
+  onImportAnki
 }: DecksViewProps) => {
   const navigate = useNavigate();
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
@@ -108,9 +110,25 @@ const DecksView = ({
             Você ainda não tem decks
           </h3>
           <p className="text-zinc-500 mb-6">
-            Crie seu primeiro deck para começar.
+            Crie seu primeiro deck para começar ou traga seus decks do Anki.
           </p>
-          <Button onClick={onCreateDeck}>Criar Deck</Button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button onClick={onCreateDeck}>Criar Deck</Button>
+            {onImportAnki && (
+              <Button variant="outline" onClick={() => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.apkg';
+                input.onchange = (e) => {
+                  const file = (e.target as HTMLInputElement).files?.[0];
+                  if (file) onImportAnki(file);
+                };
+                input.click();
+              }}>
+                Importar do Anki
+              </Button>
+            )}
+          </div>
         </div>
       )}
 

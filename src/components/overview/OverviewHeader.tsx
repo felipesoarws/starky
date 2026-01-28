@@ -13,6 +13,7 @@ interface OverviewHeaderProps {
   onExportConfirm?: () => void;
   selectedCount?: number;
   onImport?: (file: File) => void;
+  onImportAnki?: (file: File) => void;
   activeTab?: string;
 }
 
@@ -28,18 +29,26 @@ const OverviewHeader = ({
   onExportConfirm,
   selectedCount = 0,
   onImport,
+  onImportAnki,
   activeTab
 }: OverviewHeaderProps) => {
   const { user, logout } = useAuth();
   const { showAlert } = useDialog();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isImportMenuOpen, setIsImportMenuOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const importMenuRef = useRef<HTMLDivElement>(null);
+  const starkyInputRef = useRef<HTMLInputElement>(null);
+  const ankiInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (profileRef.current && !profileRef.current.contains(target)) {
         setIsProfileOpen(false);
+      }
+      if (importMenuRef.current && !importMenuRef.current.contains(target)) {
+        setIsImportMenuOpen(false);
       }
     };
 
@@ -47,20 +56,26 @@ const OverviewHeader = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleImportClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+  const handleStarkyImport = () => {
+    starkyInputRef.current?.click();
+    setIsImportMenuOpen(false);
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAnkiImport = () => {
+    ankiInputRef.current?.click();
+    setIsImportMenuOpen(false);
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, type: 'starky' | 'anki') => {
     const file = event.target.files?.[0];
-    if (file && onImport) {
-      onImport(file);
+    if (file) {
+      if (type === 'anki' && onImportAnki) {
+        onImportAnki(file);
+      } else if (type === 'starky' && onImport) {
+        onImport(file);
+      }
     }
-    if (event.target) {
-      event.target.value = "";
-    }
+    event.target.value = "";
   };
 
   const getInitials = (name: string) => {
@@ -76,10 +91,17 @@ const OverviewHeader = ({
     <header className="h-16 border-b border-zinc-800 bg-zinc-950/50 flex items-center justify-between px-6 md:px-8 shrink-0 relative z-20">
       <input
         type="file"
-        ref={fileInputRef}
+        ref={starkyInputRef}
         className="hidden"
         accept=".json"
-        onChange={handleFileChange}
+        onChange={(e) => handleFileChange(e, 'starky')}
+      />
+      <input
+        type="file"
+        ref={ankiInputRef}
+        className="hidden"
+        accept=".apkg"
+        onChange={(e) => handleFileChange(e, 'anki')}
       />
       <div className="flex items-center gap-3 text-sm text-zinc-400 w-full md:w-auto">
         <button
@@ -127,14 +149,31 @@ const OverviewHeader = ({
               </Button>
             </div>
           ) : (
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-3 relative" ref={importMenuRef}>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={handleImportClick}
+                onClick={() => setIsImportMenuOpen(!isImportMenuOpen)}
               >
                 <Upload className="w-4 h-4 mr-2" /> Importar
               </Button>
+
+              {isImportMenuOpen && (
+                <div className="absolute top-10 left-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden animate-fade-in z-50">
+                  <button
+                    onClick={handleStarkyImport}
+                    className="w-full text-left px-4 py-3 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors flex items-center gap-2"
+                  >
+                    <Upload className="w-4 h-4" /> Starky (.json)
+                  </button>
+                  <button
+                    onClick={handleAnkiImport}
+                    className="w-full text-left px-4 py-3 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors flex items-center gap-2 border-t border-zinc-800"
+                  >
+                    <Upload className="w-4 h-4" /> Anki (.apkg)
+                  </button>
+                </div>
+              )}
               <Button
                 variant="outline"
                 size="sm"

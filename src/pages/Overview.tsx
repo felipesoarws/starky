@@ -9,6 +9,7 @@ import LibraryView from "../components/overview/LibraryView";
 import StudySession from "../components/overview/StudySession";
 import { useAuth } from "../context/AuthContext";
 import { useDialog } from "../context/DialogContext";
+import { importAnkiDeck } from "../utils/ankiImport";
 
 import {
   ArrowLeft,
@@ -513,6 +514,100 @@ function Overview() {
     reader.readAsText(file);
   };
 
+  const handleImportAnki = async (file: File) => {
+    try {
+      showNotification("Processando arquivo Anki...", "info");
+      const importedDecks = await importAnkiDeck(file);
+
+      if (importedDecks.length === 0) {
+        showAlert("Aviso", "Nenhum card encontrado no arquivo Anki.");
+        return;
+      }
+
+      let successCount = 0;
+      let failCount = 0;
+      let truncated = false;
+      const token = localStorage.getItem("starky_token");
+
+      if (!token) {
+        // Local mode
+        setDecks([...importedDecks, ...decks]);
+        showNotification(`${importedDecks.length} decks importados localmente.`);
+        return;
+      }
+
+      showNotification(`Importando ${importedDecks.length} decks para sua conta...`, "info");
+
+      for (const deck of importedDecks) {
+        try {
+          // Limit cards per deck to 1500 for safety, notify if truncated
+          let cardsToImport = deck.cards;
+          if (cardsToImport.length > 1500) {
+            cardsToImport = cardsToImport.slice(0, 1500);
+            truncated = true;
+          }
+
+          const payload = {
+            title: deck.title,
+            category: deck.category,
+            cards: cardsToImport.map((c, idx) => ({
+              id: Date.now() + idx + Math.random(),
+              question: c.question,
+              answer: c.answer,
+              lastReviewed: null,
+              nextReviewDate: null,
+              interval: 0,
+              difficulty: undefined
+            }))
+          };
+
+          const res = await fetch(`${API_URL}/decks`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.ok) {
+            successCount++;
+          } else {
+            failCount++;
+          }
+        } catch (err) {
+          console.error("Failed to import Anki deck", deck.title, err);
+          failCount++;
+        }
+      }
+
+      if (successCount > 0) {
+        const res = await fetch(`${API_URL}/decks`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const newData = await res.json();
+          setDecks(newData);
+        }
+
+        let msg = `${successCount} decks do Anki importados!`;
+        if (failCount > 0) msg += ` (${failCount} falharam)`;
+        if (truncated) msg += " Alguns decks muito grandes foram limitados a 1500 cards.";
+
+        if (failCount > 0 || truncated) {
+          showAlert("Importação Parcial", msg);
+        } else {
+          showNotification(msg);
+        }
+      } else {
+        showAlert("Erro na importação", "Não foi possível importar nenhum deck do Anki. Tente arquivos menores.");
+      }
+    } catch (error) {
+      console.error(error);
+      showAlert("Erro", "Falha ao processar o arquivo .apkg. Verifique se o arquivo está correto.");
+    }
+  };
+
   if (viewState === "editor") {
     return (
       <DeckEditor
@@ -606,6 +701,7 @@ function Overview() {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         onImport={handleImportDecks}
+        onImportAnki={handleImportAnki}
         onExportConfirm={handleExportConfirm}
         isSelectionMode={isSelectionMode}
         onToggleSelectionMode={handleToggleSelectionMode}
@@ -622,6 +718,7 @@ function Overview() {
             onExportConfirm={handleExportConfirm}
             selectedCount={selectedDeckIds.length}
             onImport={handleImportDecks}
+            onImportAnki={handleImportAnki}
             activeTab={activeTab}
           />
         </div>
@@ -640,6 +737,7 @@ function Overview() {
                 isSelectionMode={isSelectionMode}
                 selectedDeckIds={selectedDeckIds}
                 onToggleDeckSelection={handleToggleDeckSelection}
+                onImportAnki={handleImportAnki}
               />
             )}
 

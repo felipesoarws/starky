@@ -13,6 +13,7 @@ interface SidebarProps {
   isOpen?: boolean;
   onClose?: () => void;
   onImport?: (file: File) => void;
+  onImportAnki?: (file: File) => void;
   onExportStart?: () => void;
   onExportConfirm?: () => void;
   isSelectionMode?: boolean;
@@ -26,6 +27,7 @@ const Sidebar = ({
   isOpen,
   onClose,
   onImport,
+  onImportAnki,
   onExportConfirm,
   isSelectionMode,
   onToggleSelectionMode,
@@ -34,7 +36,9 @@ const Sidebar = ({
   const navigate = useNavigate();
   const { logout } = useAuth();
   const { showConfirm } = useDialog();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showImportOptions, setShowImportOptions] = React.useState(false);
+  const starkyInputRef = useRef<HTMLInputElement>(null);
+  const ankiInputRef = useRef<HTMLInputElement>(null);
 
   const onLogout = () => {
     showConfirm("Sair", "Você deseja deslogar e voltar para a página inicial?", () => {
@@ -43,20 +47,24 @@ const Sidebar = ({
     });
   };
 
-  const handleImportClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+  const handleStarkyImport = () => {
+    starkyInputRef.current?.click();
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAnkiImport = () => {
+    ankiInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, type: 'starky' | 'anki') => {
     const file = event.target.files?.[0];
-    if (file && onImport) {
-      onImport(file);
+    if (file) {
+      if (type === 'anki' && onImportAnki) {
+        onImportAnki(file);
+      } else if (onImport) {
+        onImport(file);
+      }
     }
-    if (event.target) {
-      event.target.value = "";
-    }
+    event.target.value = "";
     if (onClose) onClose();
   };
 
@@ -70,10 +78,17 @@ const Sidebar = ({
     <>
       <input
         type="file"
-        ref={fileInputRef}
+        ref={starkyInputRef}
         className="hidden"
         accept=".json"
-        onChange={handleFileChange}
+        onChange={(e) => handleFileChange(e, 'starky')}
+      />
+      <input
+        type="file"
+        ref={ankiInputRef}
+        className="hidden"
+        accept=".apkg"
+        onChange={(e) => handleFileChange(e, 'anki')}
       />
 
       {isOpen && (
@@ -171,11 +186,33 @@ const Sidebar = ({
             ) : (
               <>
                 <button
-                  onClick={handleImportClick}
-                  className="cursor-pointer w-full flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-900 transition-colors text-sm font-medium"
+                  onClick={() => setShowImportOptions(!showImportOptions)}
+                  className={`cursor-pointer w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors text-sm font-medium ${showImportOptions ? "text-white bg-zinc-900" : "text-zinc-400 hover:text-white hover:bg-zinc-900"}`}
                 >
-                  <Upload className="w-4 h-4" /> Importar
+                  <div className="flex items-center gap-3">
+                    <Upload className="w-4 h-4" /> Importar
+                  </div>
+                  <div className={`transition-transform duration-200 ${showImportOptions ? "rotate-180" : ""}`}>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  </div>
                 </button>
+
+                {showImportOptions && (
+                  <div className="ml-4 pl-4 border-l border-zinc-800 space-y-1 mt-1 animate-fade-in">
+                    <button
+                      onClick={handleStarkyImport}
+                      className="cursor-pointer w-full flex items-center gap-3 px-4 py-2 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-900/50 transition-colors text-xs font-medium"
+                    >
+                      Starky (.json)
+                    </button>
+                    <button
+                      onClick={handleAnkiImport}
+                      className="cursor-pointer w-full flex items-center gap-3 px-4 py-2 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-900/50 transition-colors text-xs font-medium"
+                    >
+                      Anki (.apkg)
+                    </button>
+                  </div>
+                )}
                 <button
                   onClick={() => {
                     if (onToggleSelectionMode) {
