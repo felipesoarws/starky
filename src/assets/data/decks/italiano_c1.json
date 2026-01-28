@@ -1,0 +1,85 @@
+[
+    {
+        "id": 12,
+        "title": "Italiano C1",
+        "category": "Italiano",
+        "lastStudied": "Nunca",
+        "cards": [
+            {
+                "id": 1201,
+                "question": "Traduza: 'Il progetto è andato a buon fine nonostante gli intoppi iniziali.'",
+                "answer": "O projeto foi bem-sucedido apesar dos contratempos iniciais."
+            },
+            {
+                "id": 1202,
+                "question": "Traduza: 'È giunta l'ora di affrontare il toro per le corna.'",
+                "answer": "Chegou a hora de encarar o problema de frente."
+            },
+            {
+                "id": 1203,
+                "question": "Complete: 'Il successo dipende ____ dalla tua dedizione.' (muito)',",
+                "answer": "molto"
+            },
+            {
+                "id": 1204,
+                "question": "Traduza: 'Il suo discorso è stato estremamente persuasivo.'",
+                "answer": "O discurso dele foi extremamente persuasivo."
+            },
+            {
+                "id": 1205,
+                "question": "Traduza: 'Non riesco a cogliere appieno il nocciolo della questione.'",
+                "answer": "Não consigo entender completamente o cerne da questão."
+            },
+            {
+                "id": 1206,
+                "question": "Complete: 'Ha fatto tabula ____.' (recomeçou do zero)",
+                "answer": "rasa"
+            },
+            {
+                "id": 1207,
+                "question": "Traduza: 'È indispensabile mitigare le ripercussioni della crisi.'",
+                "answer": "É indispensável mitigar as repercussões da crise."
+            },
+            {
+                "id": 1208,
+                "question": "Traduza: 'Ha una dote innata nel risolvere i conflitti.'",
+                "answer": "Tem um dom inato para resolver conflitos."
+            },
+            {
+                "id": 1209,
+                "question": "Complete: 'I risultati sono ____ ogni aspettativa.' (acima de)',",
+                "answer": "oltre"
+            },
+            {
+                "id": 1210,
+                "question": "Traduza: 'Sono rimasto sbalordito dalla notizia.'",
+                "answer": "Fiquei pasmo/estupefato com a notícia."
+            },
+            {
+                "id": 1211,
+                "question": "Traduza: 'La causa scatenante rimane tuttora un mistero.'",
+                "answer": "A causa determinante continua sendo um mistério até hoje."
+            },
+            {
+                "id": 1212,
+                "question": "Complete: 'Dobbiamo ____ alle regole stabilite.' (seguir/conformar-se)',",
+                "answer": "attenerci"
+            },
+            {
+                "id": 1213,
+                "question": "Traduza: 'La società sta attraversando un cambiamento epocale.'",
+                "answer": "A sociedade está passando por uma mudança de época."
+            },
+            {
+                "id": 1214,
+                "question": "Traduza: 'Non dire gatto se não ce l'hai nel sacco.'",
+                "answer": "Não conte com a vitória antes do tempo."
+            },
+            {
+                "id": 1215,
+                "question": "Complete: 'È stato raggiunto un accordo all'____.' (unanimidade)',",
+                "answer": "unanimità"
+            }
+        ]
+    }
+]

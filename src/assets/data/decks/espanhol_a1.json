@@ -1,0 +1,85 @@
+[
+    {
+        "id": 4,
+        "title": "Espanhol A1",
+        "category": "Espanhol",
+        "lastStudied": "Nunca",
+        "cards": [
+            {
+                "id": 401,
+                "question": "Traduza: 'Hola, ¿cómo estás?'",
+                "answer": "Olá, como você está?"
+            },
+            {
+                "id": 402,
+                "question": "Traduza: '¡Mucho gusto!'",
+                "answer": "Muito prazer!"
+            },
+            {
+                "id": 403,
+                "question": "Complete: 'Yo ____ estudiante.' (sou)",
+                "answer": "soy"
+            },
+            {
+                "id": 404,
+                "question": "Traduza: '¿Dónde está el baño?'",
+                "answer": "Onde fica o banheiro?"
+            },
+            {
+                "id": 405,
+                "question": "Traduza: 'Quisiera un vaso de agua, por favor.'",
+                "answer": "Gostaria de um copo de água, por favor."
+            },
+            {
+                "id": 406,
+                "question": "Complete: 'Ella ____ médica.' (é)",
+                "answer": "es"
+            },
+            {
+                "id": 407,
+                "question": "Traduza: 'No entiendo.'",
+                "answer": "Não entendo."
+            },
+            {
+                "id": 408,
+                "question": "Traduza: '¿Cómo te llamas?'",
+                "answer": "Como você se chama?"
+            },
+            {
+                "id": 409,
+                "question": "Traduza: '¡Buenos días, que tengas un buen día!'",
+                "answer": "Bom dia, tenha um bom dia!"
+            },
+            {
+                "id": 410,
+                "question": "Complete: '¿____ hablas español?' (Você...?)",
+                "answer": "Tú"
+            },
+            {
+                "id": 411,
+                "question": "Traduza: 'Tengo hambre.'",
+                "answer": "Tenho fome."
+            },
+            {
+                "id": 412,
+                "question": "Traduza: '¿Cuánto cuesta esto?'",
+                "answer": "Quanto custa isto?"
+            },
+            {
+                "id": 413,
+                "question": "Complete: 'Vivo ____ Brasil.' (em)",
+                "answer": "en"
+            },
+            {
+                "id": 414,
+                "question": "Traduza: 'Mi familia es muy grande.'",
+                "answer": "Minha família é muito grande."
+            },
+            {
+                "id": 415,
+                "question": "Traduza: '¡Hasta luego!'",
+                "answer": "Até logo!"
+            }
+        ]
+    }
+]

@@ -1,0 +1,85 @@
+[
+    {
+        "id": 11,
+        "title": "Italiano B1",
+        "category": "Italiano",
+        "lastStudied": "Nunca",
+        "cards": [
+            {
+                "id": 1101,
+                "question": "Traduza: 'Studio l'italiano da tre anni.'",
+                "answer": "Estudo italiano há três anos."
+            },
+            {
+                "id": 1102,
+                "question": "Traduza: 'Se fossi in te, non ci andrei.'",
+                "answer": "Se eu fosse você, não iria lá."
+            },
+            {
+                "id": 1103,
+                "question": "Complete: 'Mi interessa ____ imparare nuove lingue.' (em)",
+                "answer": "molto"
+            },
+            {
+                "id": 1104,
+                "question": "Traduza: 'Non vedo l'ora di vederti.'",
+                "answer": "Mal posso esperar para te ver."
+            },
+            {
+                "id": 1105,
+                "question": "Traduza: 'Sebbene piovesse, siamo usciti.'",
+                "answer": "Embora chovesse, nós saímos."
+            },
+            {
+                "id": 1106,
+                "question": "Complete: 'Dovresti ____ l'ombrello.' (pegar)',",
+                "answer": "prendere"
+            },
+            {
+                "id": 1107,
+                "question": "Traduza: 'Sono abituato ad alzarmi presto.'",
+                "answer": "Estou acostumado a acordar cedo."
+            },
+            {
+                "id": 1108,
+                "question": "Traduza: 'Potrebbe dirmi come arrivare alla stazione?'",
+                "answer": "Poderia me dizer como chegar à estação?"
+            },
+            {
+                "id": 1109,
+                "question": "Complete: 'Questo è il libro più ____ che abbia mai letto.' (interessante)",
+                "answer": "interessante"
+            },
+            {
+                "id": 1110,
+                "question": "Traduza: 'Magari avessi più tempo libero.'",
+                "answer": "Quem dera eu tivesse mais tempo livre."
+            },
+            {
+                "id": 1111,
+                "question": "Traduza: 'Abbiamo già finito i compiti.'",
+                "answer": "Já terminamos os temas."
+            },
+            {
+                "id": 1112,
+                "question": "Complete: 'Lui è molto più ____ di suo fratello.' (alto)",
+                "answer": "alto"
+            },
+            {
+                "id": 1113,
+                "question": "Traduza: 'Non mi dispiace aspettare.'",
+                "answer": "Não me importo de esperar."
+            },
+            {
+                "id": 1114,
+                "question": "Traduza: 'Il tempo migliora di giorno in giorno.'",
+                "answer": "O tempo melhora dia após dia."
+            },
+            {
+                "id": 1115,
+                "question": "Complete: 'Ti chiamerò non appena ____.' (eu chegar)",
+                "answer": "arriverò"
+            }
+        ]
+    }
+]

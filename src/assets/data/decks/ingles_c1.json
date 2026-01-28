@@ -1,0 +1,85 @@
+[
+    {
+        "id": 3,
+        "title": "Inglês C1",
+        "category": "Inglês",
+        "lastStudied": "Nunca",
+        "cards": [
+            {
+                "id": 301,
+                "question": "Traduza: 'The project was successful despite the initial setbacks.'",
+                "answer": "O projeto foi bem-sucedido apesar dos contratempos iniciais."
+            },
+            {
+                "id": 302,
+                "question": "Traduza: 'It's high time we addressed the elephant in the room.'",
+                "answer": "Já passou da hora de abordarmos o problema óbvio que ninguém quer discutir."
+            },
+            {
+                "id": 303,
+                "question": "Complete: 'The outcome was contingent ____ the new funding.' (de/em)",
+                "answer": "upon / on"
+            },
+            {
+                "id": 304,
+                "question": "Traduza: 'Her arguments were both cogent and persuasive.'",
+                "answer": "Os argumentos dela foram convincentes e persuasivos."
+            },
+            {
+                "id": 305,
+                "question": "Traduza: 'I'm afraid I can't quite grasp the gist of his lecture.'",
+                "answer": "Receio que não consiga captar a essência da palestra dele."
+            },
+            {
+                "id": 306,
+                "question": "Complete: 'He took a ____ leap of faith.' (grande/arriscado)",
+                "answer": "huge / bold"
+            },
+            {
+                "id": 307,
+                "question": "Traduza: 'The company needs to mitigate the risks associated with the expansion.'",
+                "answer": "A empresa precisa mitigar os riscos associados à expansão."
+            },
+            {
+                "id": 308,
+                "question": "Traduza: 'She has a knack for making people feel at ease.'",
+                "answer": "Ela tem um dom para fazer as pessoas se sentirem à vontade."
+            },
+            {
+                "id": 309,
+                "question": "Complete: 'The results were ____ far from being conclusive.' (muito)",
+                "answer": "very / far"
+            },
+            {
+                "id": 310,
+                "question": "Traduza: 'I was taken aback by his sudden outburst.'",
+                "answer": "Fiquei surpreso/perplexo com o desabafo repentino dele."
+            },
+            {
+                "id": 311,
+                "question": "Traduza: 'The underlying cause of the problem remains elusive.'",
+                "answer": "A causa subjacente do problema continua sendo difícil de identificar."
+            },
+            {
+                "id": 312,
+                "question": "Complete: 'We must abide ____ the rules of the organization.' (seguir/cumprir)",
+                "answer": "by"
+            },
+            {
+                "id": 313,
+                "question": "Traduza: 'The city's infrastructure is undergoing extensive renovation.'",
+                "answer": "A infraestrutura da cidade está passando por uma renovação extensiva."
+            },
+            {
+                "id": 314,
+                "question": "Traduza: 'He's always prone to exaggerating his achievements.'",
+                "answer": "Ele é sempre propenso a exagerar suas conquistas."
+            },
+            {
+                "id": 315,
+                "question": "Complete: 'The decision was made with the ____ of the board.' (consenso/acordo)",
+                "answer": "consensus / agreement"
+            }
+        ]
+    }
+]

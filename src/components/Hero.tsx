@@ -9,33 +9,33 @@ import { useNavigate } from "react-router";
 
 const HERO_CARDS = [
   {
-    category: "Geografia",
-    question: "Qual a capital da França?",
-    answer: "Paris",
+    category: "Inglês",
+    question: "Como se diz 'Olá' em inglês?",
+    answer: "Hello",
     color: "text-blue-400",
     bg: "bg-blue-500/10",
     border: "border-blue-500/20"
   },
   {
-    category: "Ciência",
-    question: "Qual o símbolo químico do Ouro?",
-    answer: "Au",
+    category: "Espanhol",
+    question: "Como se diz 'Obrigado' em espanhol?",
+    answer: "Gracias",
     color: "text-yellow-400",
     bg: "bg-yellow-500/10",
     border: "border-yellow-500/20"
   },
   {
-    category: "História",
-    question: "Em que ano o homem pisou na Lua?",
-    answer: "1969",
+    category: "Francês",
+    question: "Como se diz 'Adeus' em francês?",
+    answer: "Au revoir",
     color: "text-red-400",
     bg: "bg-red-500/10",
     border: "border-red-500/20"
   },
   {
-    category: "Cinema",
-    question: "Quem dirigiu o filme 'Interestelar'?",
-    answer: "Christopher Nolan",
+    category: "Italiano",
+    question: "Como se diz 'Por favor' em italiano?",
+    answer: "Per favore",
     color: "text-purple-400",
     bg: "bg-purple-500/10",
     border: "border-purple-500/20"

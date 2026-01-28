@@ -1,0 +1,85 @@
+[
+    {
+        "id": 7,
+        "title": "Francês A1",
+        "category": "Francês",
+        "lastStudied": "Nunca",
+        "cards": [
+            {
+                "id": 701,
+                "question": "Traduza: 'Bonjour, comment allez-vous ?'",
+                "answer": "Olá, como vai você?"
+            },
+            {
+                "id": 702,
+                "question": "Traduza: 'Enchanté !'",
+                "answer": "Prazer em conhecê-lo!"
+            },
+            {
+                "id": 703,
+                "question": "Complete: 'Je ____ étudiant.' (sou)",
+                "answer": "suis"
+            },
+            {
+                "id": 704,
+                "question": "Traduza: 'Où sont les toilettes ?'",
+                "answer": "Onde fica o banheiro?"
+            },
+            {
+                "id": 705,
+                "question": "Traduza: 'Je voudrais de l'eau, s'il vous plaît.'",
+                "answer": "Eu gostaria de água, por favor."
+            },
+            {
+                "id": 706,
+                "question": "Complete: 'Elle ____ médecin.' (é)",
+                "answer": "est"
+            },
+            {
+                "id": 707,
+                "question": "Traduza: 'Je ne comprends pas.'",
+                "answer": "Eu não entendo."
+            },
+            {
+                "id": 708,
+                "question": "Traduza: 'Comment vous appelez-vous ?'",
+                "answer": "Como você se chama?"
+            },
+            {
+                "id": 709,
+                "question": "Traduza: 'Bonne journée !'",
+                "answer": "Tenha um bom dia!"
+            },
+            {
+                "id": 710,
+                "question": "Complete: '____ parlez-vous français ?' (Vocês...?)",
+                "answer": "Est-ce que"
+            },
+            {
+                "id": 711,
+                "question": "Traduza: 'J'ai faim.'",
+                "answer": "Estou com fome."
+            },
+            {
+                "id": 712,
+                "question": "Traduza: 'C'est combien ?'",
+                "answer": "Quanto custa?"
+            },
+            {
+                "id": 713,
+                "question": "Complete: 'J'habite ____ Brésil.' (no)",
+                "answer": "au"
+            },
+            {
+                "id": 714,
+                "question": "Traduza: 'J'ai une grande famille.'",
+                "answer": "Eu tenho uma família grande."
+            },
+            {
+                "id": 715,
+                "question": "Traduza: 'À bientôt !'",
+                "answer": "Até breve!"
+            }
+        ]
+    }
+]

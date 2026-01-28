@@ -1,14 +1,14 @@
-import { BookOpen, Clapperboard, Globe, Microscope } from "lucide-react";
+import { Globe } from "lucide-react";
 
 const subjects = [
-  { name: "Geografia Geral", icon: <Globe className="w-4 h-4 text-blue-400" /> },
-  { name: "Ciência e Natureza", icon: <Microscope className="w-4 h-4 text-green-400" /> },
-  { name: "História Mundial", icon: <BookOpen className="w-4 h-4 text-red-400" /> },
-  { name: "Cinema e Cultura Pop", icon: <Clapperboard className="w-4 h-4 text-purple-400" /> },
-  { name: "Inglês A1", icon: <Globe className="w-4 h-4 text-indigo-400" /> },
-  { name: "Astronomia", icon: <Microscope className="w-4 h-4 text-yellow-400" /> },
-  { name: "Literatura", icon: <BookOpen className="w-4 h-4 text-orange-400" /> },
-  { name: "Tecnologia", icon: <Microscope className="w-4 h-4 text-cyan-400" /> },
+  { name: "Inglês", icon: <Globe className="w-4 h-4 text-blue-400" /> },
+  { name: "Espanhol", icon: <Globe className="w-4 h-4 text-yellow-400" /> },
+  { name: "Francês", icon: <Globe className="w-4 h-4 text-red-500" /> },
+  { name: "Italiano", icon: <Globe className="w-4 h-4 text-green-500" /> },
+  { name: "Alemão", icon: <Globe className="w-4 h-4 text-orange-400" /> },
+  { name: "Japonês", icon: <Globe className="w-4 h-4 text-purple-400" /> },
+  { name: "Coreano", icon: <Globe className="w-4 h-4 text-pink-400" /> },
+  { name: "Árabe", icon: <Globe className="w-4 h-4 text-emerald-400" /> },
 ];
 
 const marqueeItems = [...subjects, ...subjects];

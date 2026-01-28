@@ -1,0 +1,85 @@
+[
+    {
+        "id": 8,
+        "title": "Francês B1",
+        "category": "Francês",
+        "lastStudied": "Nunca",
+        "cards": [
+            {
+                "id": 801,
+                "question": "Traduza: 'J'étudie le français depuis trois ans.'",
+                "answer": "Eu estudo francês há três anos."
+            },
+            {
+                "id": 802,
+                "question": "Traduza: 'Si j'étais toi, je n'irais pas.'",
+                "answer": "Se eu fosse você, não iria."
+            },
+            {
+                "id": 803,
+                "question": "Complete: 'Je m'intéresse ____ l'apprentissage des langues.' (ao)",
+                "answer": "à"
+            },
+            {
+                "id": 804,
+                "question": "Traduza: 'J'ai hâte de vous voir.'",
+                "answer": "Mal posso esperar para ver vocês."
+            },
+            {
+                "id": 805,
+                "question": "Traduza: 'Bien qu'il pleuve, nous sortons.'",
+                "answer": "Embora esteja chovendo, nós vamos sair."
+            },
+            {
+                "id": 806,
+                "question": "Complete: 'Tu devrais ____ ton parapluie.' (pegar)',",
+                "answer": "prendre"
+            },
+            {
+                "id": 807,
+                "question": "Traduza: 'Je suis habitué à me lever tôt.'",
+                "answer": "Estou acostumado a acordar cedo."
+            },
+            {
+                "id": 808,
+                "question": "Traduza: 'Pourriez-vous me dire comment aller à la gare ?'",
+                "answer": "Você poderia me dizer como chegar à estação?"
+            },
+            {
+                "id": 809,
+                "question": "Complete: 'C'est le livre le plus ____ que j'aie jamais lu.' (interessante)",
+                "answer": "intéressant"
+            },
+            {
+                "id": 810,
+                "question": "Traduza: 'Si seulement j'avais plus de temps libre.'",
+                "answer": "Se ao menos eu tivesse mais tempo livre."
+            },
+            {
+                "id": 811,
+                "question": "Traduza: 'Nous avons déjà fini nos devoirs.'",
+                "answer": "Nós já terminamos nossos temas."
+            },
+            {
+                "id": 812,
+                "question": "Complete: 'Il est beaucoup plus ____ que son frère.' (alto)",
+                "answer": "grand"
+            },
+            {
+                "id": 813,
+                "question": "Traduza: 'Ça ne me dérange pas d'attendre.'",
+                "answer": "Não me importo de esperar."
+            },
+            {
+                "id": 814,
+                "question": "Traduza: 'Le temps s'améliore de jour en jour.'",
+                "answer": "O tempo está melhorando dia após dia."
+            },
+            {
+                "id": 815,
+                "question": "Complete: 'Je t'appellerai dès que j'____.' (eu chegar)",
+                "answer": "arriverai"
+            }
+        ]
+    }
+]

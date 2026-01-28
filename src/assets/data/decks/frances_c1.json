@@ -1,0 +1,85 @@
+[
+    {
+        "id": 9,
+        "title": "Francês C1",
+        "category": "Francês",
+        "lastStudied": "Nunca",
+        "cards": [
+            {
+                "id": 901,
+                "question": "Traduza: 'Le projet a abouti en dépit des obstacles initiaux.'",
+                "answer": "O projeto foi concluído apesar dos obstáculos iniciais."
+            },
+            {
+                "id": 902,
+                "question": "Traduza: 'Il est grand temps de mettre les points sur les i.'",
+                "answer": "Já passou da hora de esclarecer bem as coisas."
+            },
+            {
+                "id": 903,
+                "question": "Complete: 'La réussite dépend ____ de votre persévérance.' (muito)',",
+                "answer": "souvent"
+            },
+            {
+                "id": 904,
+                "question": "Traduza: 'Son discours était particulièrement probant.'",
+                "answer": "O discurso dele foi particularmente convincente."
+            },
+            {
+                "id": 905,
+                "question": "Traduza: 'Je n'arrive pas à saisir le fond de sa pensée.'",
+                "answer": "Não consigo entender o cerne do pensamento dele."
+            },
+            {
+                "id": 906,
+                "question": "Complete: 'Il a fait volte-____.' (uma mudança brusca de opinião)",
+                "answer": "face"
+            },
+            {
+                "id": 907,
+                "question": "Traduza: 'Il faut impérativement pallier les carences du système.'",
+                "answer": "É imperativo suprir as carências do sistema."
+            },
+            {
+                "id": 908,
+                "question": "Traduza: 'Elle a le don de désamorcer les conflits.'",
+                "answer": "Ela tem o dom de desarmar conflitos."
+            },
+            {
+                "id": 909,
+                "question": "Complete: 'Les résultats sont ____ de tout reproche.' (isentos/acima de qualquer suspeita)',",
+                "answer": "exempts"
+            },
+            {
+                "id": 910,
+                "question": "Traduza: 'J'ai été sidéré par la nouvelle.'",
+                "answer": "Fiquei pasmo com a notícia."
+            },
+            {
+                "id": 911,
+                "question": "Traduza: 'La cause profonde du malaise reste floue.'",
+                "answer": "A causa profunda do mal-estar permanece vaga/incerta."
+            },
+            {
+                "id": 912,
+                "question": "Complete: 'Nous devons nous ____ aux règles établies.' (submeter/seguir)',",
+                "answer": "conformer"
+            },
+            {
+                "id": 913,
+                "question": "Traduza: 'L'économie subit une mutation profonde.'",
+                "answer": "A economia está passando por uma mudança profunda."
+            },
+            {
+                "id": 914,
+                "question": "Traduza: 'Il ne faut pas vendre la peau de l'ours avant de l'avoir tué.'",
+                "answer": "Não se deve contar com a vitória antes do tempo."
+            },
+            {
+                "id": 915,
+                "question": "Complete: 'Un accord a été trouvé à ____.' (unanimidade)',",
+                "answer": "l'unanimité"
+            }
+        ]
+    }
+]

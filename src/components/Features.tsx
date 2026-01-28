@@ -96,25 +96,25 @@ const Features = () => {
 
             <div className="mt-6 space-y-3">
               <div className="p-3 bg-zinc-800 border border-zinc-700 rounded-lg flex items-center gap-3">
-                <div className="w-8 h-8 rounded bg-orange-900/30 flex items-center justify-center text-orange-500 font-bold text-xs">
-                  HTML
-                </div>
-                <div className="text-sm font-medium text-zinc-300">HTML5</div>
-              </div>
-              <div className="p-3 bg-zinc-800 border border-zinc-700 rounded-lg flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-blue-900/30 flex items-center justify-center text-blue-500 font-bold text-xs">
-                  CSS
-                </div>
-                <div className="text-sm font-medium text-zinc-300">
-                  CSS & Flexbox
-                </div>
-              </div>
-              <div className="p-3 bg-zinc-800 border border-zinc-700 rounded-lg flex items-center gap-3">
-                <div className="w-8 h-8 rounded bg-violet-900/30 flex items-center justify-center text-violet-500 font-bold text-xs">
                   EN
                 </div>
+                <div className="text-sm font-medium text-zinc-300">Inglês A1 - C1</div>
+              </div>
+              <div className="p-3 bg-zinc-800 border border-zinc-700 rounded-lg flex items-center gap-3">
+                <div className="w-8 h-8 rounded bg-yellow-900/30 flex items-center justify-center text-yellow-500 font-bold text-xs">
+                  ES
+                </div>
                 <div className="text-sm font-medium text-zinc-300">
-                  Inglês A1 - C2
+                  Espanhol A1 - C1
+                </div>
+              </div>
+              <div className="p-3 bg-zinc-800 border border-zinc-700 rounded-lg flex items-center gap-3">
+                <div className="w-8 h-8 rounded bg-red-900/30 flex items-center justify-center text-red-500 font-bold text-xs">
+                  FR
+                </div>
+                <div className="text-sm font-medium text-zinc-300">
+                  Francês A1 - C1
                 </div>
               </div>
             </div>

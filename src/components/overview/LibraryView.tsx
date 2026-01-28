@@ -5,14 +5,18 @@ import { useAuth } from "../../context/AuthContext";
 
 import decksThemes from "../../assets/data/links.json";
 
-import inglesA1 from "../../assets/data/decks/starky_ingles_a1.json";
-import inglesB1 from "../../assets/data/decks/starky_ingles_b1.json";
-import inglesC1 from "../../assets/data/decks/starky_ingles_c1.json";
-import ingles_corporativo from "../../assets/data/decks/starky_ingles_corporativo.json";
-import geografia from "../../assets/data/decks/starky_geografia.json";
-import ciencia from "../../assets/data/decks/starky_ciencia.json";
-import historia from "../../assets/data/decks/starky_historia.json";
-import cinema from "../../assets/data/decks/starky_cinema.json";
+import inglesA1 from "../../assets/data/decks/ingles_a1.json";
+import inglesB1 from "../../assets/data/decks/ingles_b1.json";
+import inglesC1 from "../../assets/data/decks/ingles_c1.json";
+import espanholA1 from "../../assets/data/decks/espanhol_a1.json";
+import espanholB1 from "../../assets/data/decks/espanhol_b1.json";
+import espanholC1 from "../../assets/data/decks/espanhol_c1.json";
+import francesA1 from "../../assets/data/decks/frances_a1.json";
+import francesB1 from "../../assets/data/decks/frances_b1.json";
+import francesC1 from "../../assets/data/decks/frances_c1.json";
+import italianoA1 from "../../assets/data/decks/italiano_a1.json";
+import italianoB1 from "../../assets/data/decks/italiano_b1.json";
+import italianoC1 from "../../assets/data/decks/italiano_c1.json";
 
 interface LibraryViewProps {
   decks: Deck[];
@@ -27,11 +31,15 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
     inglesA1[0],
     inglesB1[0],
     inglesC1[0],
-    ingles_corporativo[0],
-    geografia[0],
-    ciencia[0],
-    historia[0],
-    cinema[0],
+    espanholA1[0],
+    espanholB1[0],
+    espanholC1[0],
+    francesA1[0],
+    francesB1[0],
+    francesC1[0],
+    italianoA1[0],
+    italianoB1[0],
+    italianoC1[0],
   ];
 
   const { isAuthenticated } = useAuth();
@@ -65,13 +73,20 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
       } satisfies Card;
     });
 
+    let language = "pt-BR";
+    const titleLower = selectedDeck.title.toLowerCase();
+    if (titleLower.includes("inglês")) language = "en-US";
+    else if (titleLower.includes("espanhol")) language = "es-ES";
+    else if (titleLower.includes("francês")) language = "fr-FR";
+    else if (titleLower.includes("italiano")) language = "it-IT";
+
     const normalizedDeck: Deck = {
       title: selectedDeck.title,
       category: selectedDeck.category,
       id: 0,
       lastStudied: "Nunca",
       cards: normalizedCards,
-      language: selectedDeck.title.toLowerCase().includes("inglês") ? "en-US" : "pt-BR",
+      language,
     };
 
     onAddDeck(normalizedDeck);

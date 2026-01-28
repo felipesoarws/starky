@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
-import { Menu, X, LampDesk, LogOut } from "lucide-react";
+import { Menu, X, LampDesk, LogOut, GithubIcon } from "lucide-react";
 import { Button } from "./ui/Button";
 import { useAuth } from "../context/AuthContext";
 
@@ -64,6 +64,23 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           >
             Decks
           </a>
+          <a
+            href="https://docs.starky.app.br"
+            target="_blank"
+            className="text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+          >
+            Docs
+          </a>
+          <div className='bg-zinc-800 rounded-full p-2 cursor-pointer hover:bg-zinc-700 transition-colors'>
+            <a
+              href="https://github.com/felipesoarws/starky"
+              target="_blank"
+              className="text-sm font-medium text-white"
+            >
+              <GithubIcon className="w-4 h-4" />
+            </a>
+          </div>
+
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
@@ -128,6 +145,15 @@ const Navbar = ({ scrolled }: NavbarProps) => {
 
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-zinc-900 border-b border-zinc-800 p-6 flex flex-col gap-4 animate-fade-in shadow-xl">
+          <div className='bg-zinc-800 rounded-full p-2 cursor-pointer hover:bg-zinc-700 transition-colors w-fit'>
+            <a
+              href="https://github.com/felipesoarws/starky"
+              target="_blank"
+              className="text-sm font-medium text-white"
+            >
+              <GithubIcon className="w-4 h-4" />
+            </a>
+          </div>
           <a
             href="#features"
             className="text-base font-medium text-zinc-400 hover:text-accent"
@@ -142,6 +168,14 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           >
             Decks
           </a>
+          <a
+            href="https://docs.starky.app.br"
+            target="_blank"
+            className="text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+          >
+            Docs
+          </a>
+
           <hr className="border-zinc-800" />
           <div className="flex flex-col gap-3">
             {isAuthenticated ? (

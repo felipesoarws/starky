@@ -1,0 +1,85 @@
+[
+    {
+        "id": 5,
+        "title": "Espanhol B1",
+        "category": "Espanhol",
+        "lastStudied": "Nunca",
+        "cards": [
+            {
+                "id": 501,
+                "question": "Traduza: 'Llevo tres años estudiando español.'",
+                "answer": "Estudo espanhol há três anos."
+            },
+            {
+                "id": 502,
+                "question": "Traduza: 'Si yo fuera tú, no lo haría.'",
+                "answer": "Se eu fosse você, não faria isso."
+            },
+            {
+                "id": 503,
+                "question": "Complete: 'Estoy interesado ____ aprender cosas nuevas.' (em)",
+                "answer": "en"
+            },
+            {
+                "id": 504,
+                "question": "Traduza: 'Tengo muchas ganas de verte.'",
+                "answer": "Tenho muita vontade de te ver."
+            },
+            {
+                "id": 505,
+                "question": "Traduza: 'Aunque llovía, decidimos salir.'",
+                "answer": "Embora chovesse, decidimos sair."
+            },
+            {
+                "id": 506,
+                "question": "Complete: 'Deberías ____ el paraguas.' (levar)',",
+                "answer": "llevar"
+            },
+            {
+                "id": 507,
+                "question": "Traduza: 'Estoy acostumbrado a madrugar.'",
+                "answer": "Estou acostumado a acordar cedo."
+            },
+            {
+                "id": 508,
+                "question": "Traduza: '¿Podría decirme cómo llegar a la estación, por favor?'",
+                "answer": "Poderia me dizer como chegar à estação, por favor?"
+            },
+            {
+                "id": 509,
+                "question": "Complete: 'Este es el libro más ____ que he leído.' (interessante)",
+                "answer": "interesante"
+            },
+            {
+                "id": 510,
+                "question": "Traduza: 'Ojalá tuviera más tiempo libre.'",
+                "answer": "Quem dera eu tivesse mais tempo livre."
+            },
+            {
+                "id": 511,
+                "question": "Traduza: 'Ya hemos terminado con la tarea.'",
+                "answer": "Já terminamos o dever de casa."
+            },
+            {
+                "id": 512,
+                "question": "Complete: 'Él es mucho más ____ que su hermano.' (alto)",
+                "answer": "alto"
+            },
+            {
+                "id": 513,
+                "question": "Traduza: 'No me importa esperar un poco.'",
+                "answer": "Não me importo de esperar um pouco."
+            },
+            {
+                "id": 514,
+                "question": "Traduza: 'Cada vez entiendo mejor el idioma.'",
+                "answer": "Cada vez entendo melhor o idioma."
+            },
+            {
+                "id": 515,
+                "question": "Complete: 'Te llamaré en cuanto ____.' (eu chegar)",
+                "answer": "llegue"
+            }
+        ]
+    }
+]

@@ -1,0 +1,85 @@
+[
+    {
+        "id": 1,
+        "title": "Inglês A1",
+        "category": "Inglês",
+        "lastStudied": "Nunca",
+        "cards": [
+            {
+                "id": 101,
+                "question": "Traduza: 'Hello, how are you?'",
+                "answer": "Olá, como você está?"
+            },
+            {
+                "id": 102,
+                "question": "Traduza: 'Nice to meet you!'",
+                "answer": "Prazer em conhecer você!"
+            },
+            {
+                "id": 103,
+                "question": "Complete: 'I ____ a student.' (Sou/Estou)",
+                "answer": "am"
+            },
+            {
+                "id": 104,
+                "question": "Traduza: 'Where is the bathroom?'",
+                "answer": "Onde fica o banheiro?"
+            },
+            {
+                "id": 105,
+                "question": "Traduza: 'Can I have some water, please?'",
+                "answer": "Pode me dar um pouco de água, por favor?"
+            },
+            {
+                "id": 106,
+                "question": "Complete: 'She ____ a doctor.' (é)",
+                "answer": "is"
+            },
+            {
+                "id": 107,
+                "question": "Traduza: 'I don't understand.'",
+                "answer": "Eu não entendo."
+            },
+            {
+                "id": 108,
+                "question": "Traduza: 'What is your name?'",
+                "answer": "Qual é o seu nome?"
+            },
+            {
+                "id": 109,
+                "question": "Traduza: 'Good morning, have a nice day!'",
+                "answer": "Bom dia, tenha um bom dia!"
+            },
+            {
+                "id": 110,
+                "question": "Complete: '____ you speak English?' (Você fala...?)",
+                "answer": "Do"
+            },
+            {
+                "id": 111,
+                "question": "Traduza: 'I am hungry.'",
+                "answer": "Estou com fome."
+            },
+            {
+                "id": 112,
+                "question": "Traduza: 'How much is this?'",
+                "answer": "Quanto custa isto?"
+            },
+            {
+                "id": 113,
+                "question": "Complete: 'I live ____ Brazil.' (em)",
+                "answer": "in"
+            },
+            {
+                "id": 114,
+                "question": "Traduza: 'I have a big family.'",
+                "answer": "Eu tenho uma família grande."
+            },
+            {
+                "id": 115,
+                "question": "Traduza: 'See you later!'",
+                "answer": "Até mais tarde!"
+            }
+        ]
+    }
+]

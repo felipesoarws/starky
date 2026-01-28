@@ -2,57 +2,85 @@
   {
     "title": "Inglês A1",
     "category": "Inglês",
-    "description": "20 cards sobre inglês iniciante.",
-    "length": 20,
-    "file": "./src/assets/data/decks/starky_ingles_a1.json"
+    "description": "15 cards sobre inglês iniciante.",
+    "length": 15,
+    "file": "./src/assets/data/decks/ingles_a1.json"
   },
   {
     "title": "Inglês B1",
     "category": "Inglês",
-    "description": "20 cards sobre inglês intermediário.",
-    "length": 20,
-    "file": "./src/assets/data/decks/starky_ingles_b1.json"
+    "description": "15 cards sobre inglês intermediário.",
+    "length": 15,
+    "file": "./src/assets/data/decks/ingles_b1.json"
   },
   {
     "title": "Inglês C1",
     "category": "Inglês",
-    "description": "20 cards sobre inglês avançado.",
-    "length": 20,
-    "file": "./src/assets/data/decks/starky_ingles_c1.json"
+    "description": "15 cards sobre inglês avançado.",
+    "length": 15,
+    "file": "./src/assets/data/decks/ingles_c1.json"
   },
   {
-    "title": "Inglês Corporativo",
-    "category": "Inglês",
-    "description": "20 cards sobre termos e situações comuns no ambiente corporativo.",
-    "length": 20,
-    "file": "./src/assets/data/decks/starky_ingles_corporativo.json"
+    "title": "Espanhol A1",
+    "category": "Espanhol",
+    "description": "15 cards sobre espanhol iniciante.",
+    "length": 15,
+    "file": "./src/assets/data/decks/espanhol_a1.json"
   },
   {
-    "title": "Geografia Geral",
-    "category": "Geografia",
-    "description": "Capitais, países e curiosidades geográficas.",
-    "length": 20,
-    "file": "./src/assets/data/decks/starky_geografia.json"
+    "title": "Espanhol B1",
+    "category": "Espanhol",
+    "description": "15 cards sobre espanhol intermediário.",
+    "length": 15,
+    "file": "./src/assets/data/decks/espanhol_b1.json"
   },
   {
-    "title": "Ciência e Natureza",
-    "category": "Ciência",
-    "description": "Física, química, biologia e astronomia.",
-    "length": 20,
-    "file": "./src/assets/data/decks/starky_ciencia.json"
+    "title": "Espanhol C1",
+    "category": "Espanhol",
+    "description": "15 cards sobre espanhol avançado.",
+    "length": 15,
+    "file": "./src/assets/data/decks/espanhol_c1.json"
   },
   {
-    "title": "História Mundial",
-    "category": "História",
-    "description": "Grandes eventos e personalidades da história.",
-    "length": 20,
-    "file": "./src/assets/data/decks/starky_historia.json"
+    "title": "Francês A1",
+    "category": "Francês",
+    "description": "15 cards sobre francês iniciante.",
+    "length": 15,
+    "file": "./src/assets/data/decks/frances_a1.json"
   },
   {
-    "title": "Cinema e Cultura Pop",
-    "category": "Cinema",
-    "description": "Filmes, diretores e curiosidades pop.",
-    "length": 20,
-    "file": "./src/assets/data/decks/starky_cinema.json"
+    "title": "Francês B1",
+    "category": "Francês",
+    "description": "15 cards sobre francês intermediário.",
+    "length": 15,
+    "file": "./src/assets/data/decks/frances_b1.json"
+  },
+  {
+    "title": "Francês C1",
+    "category": "Francês",
+    "description": "15 cards sobre francês avançado.",
+    "length": 15,
+    "file": "./src/assets/data/decks/frances_c1.json"
+  },
+  {
+    "title": "Italiano A1",
+    "category": "Italiano",
+    "description": "15 cards sobre italiano iniciante.",
+    "length": 15,
+    "file": "./src/assets/data/decks/italiano_a1.json"
+  },
+  {
+    "title": "Italiano B1",
+    "category": "Italiano",
+    "description": "15 cards sobre italiano intermediário.",
+    "length": 15,
+    "file": "./src/assets/data/decks/italiano_b1.json"
+  },
+  {
+    "title": "Italiano C1",
+    "category": "Italiano",
+    "description": "15 cards sobre italiano avançado.",
+    "length": 15,
+    "file": "./src/assets/data/decks/italiano_c1.json"
   }
 ]

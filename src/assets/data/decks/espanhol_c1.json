@@ -1,0 +1,85 @@
+[
+    {
+        "id": 6,
+        "title": "Espanhol C1",
+        "category": "Espanhol",
+        "lastStudied": "Nunca",
+        "cards": [
+            {
+                "id": 601,
+                "question": "Traduza: 'A pesar de los pesares, salimos adelante.'",
+                "answer": "Apesar dos pesares, seguimos em frente."
+            },
+            {
+                "id": 602,
+                "question": "Traduza: 'Va siendo hora de que tomemos cartas en el asunto.'",
+                "answer": "Está passando da hora de tomarmos uma atitude em relação ao assunto."
+            },
+            {
+                "id": 603,
+                "question": "Complete: 'El éxito depende ____ esfuerzo constante.' (de/do)",
+                "answer": "del"
+            },
+            {
+                "id": 604,
+                "question": "Traduza: 'Sus argumentos resultaron sumamente convincentes.'",
+                "answer": "Seus argumentos foram extremamente convincentes."
+            },
+            {
+                "id": 605,
+                "question": "Traduza: 'No acabo de captar el trasfondo de su discurso.'",
+                "answer": "Não consigo captar o pano de fundo do discurso dele."
+            },
+            {
+                "id": 606,
+                "question": "Complete: 'Dio un giro de ____ grados a su vida.' (180)",
+                "answer": "ciento ochenta"
+            },
+            {
+                "id": 607,
+                "question": "Traduza: 'Es imprescindible mitigar el impacto ambiental de la fábrica.'",
+                "answer": "É imprescindível mitigar o impacto ambiental da fábrica."
+            },
+            {
+                "id": 608,
+                "question": "Traduza: 'Tiene un don especial para lidiar con situaciones críticas.'",
+                "answer": "Tem um dom especial para lidar com situações críticas."
+            },
+            {
+                "id": 609,
+                "question": "Complete: 'Los datos son ____ fiables.' (muito)',",
+                "answer": "muy / sumamente"
+            },
+            {
+                "id": 610,
+                "question": "Traduza: 'Me quedé de piedra al oír la noticia.'",
+                "answer": "Fiquei chocado/perplexo ao ouvir a notícia."
+            },
+            {
+                "id": 611,
+                "question": "Traduza: 'La raíz del problema es todavía una incógnita.'",
+                "answer": "A raiz do problema ainda é uma incógnita."
+            },
+            {
+                "id": 612,
+                "question": "Complete: 'Debemos acatar ____ las normas vigentes.' (obedecer)',",
+                "answer": "todas"
+            },
+            {
+                "id": 613,
+                "question": "Traduza: 'La infraestructura urbana está sufriendo un deterioro notable.'",
+                "answer": "A infraestrutura urbana está sofrendo uma deterioração notável."
+            },
+            {
+                "id": 614,
+                "question": "Traduza: 'Suele andar con rodeos en vez de ir al grano.'",
+                "answer": "Costuma ficar enrolando em vez de ir direto ao ponto."
+            },
+            {
+                "id": 615,
+                "question": "Complete: 'Se llegó a un acuerdo por ____.' (consenso)',",
+                "answer": "consenso"
+            }
+        ]
+    }
+]

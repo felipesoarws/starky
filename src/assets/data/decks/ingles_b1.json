@@ -1,0 +1,85 @@
+[
+    {
+        "id": 2,
+        "title": "Inglês B1",
+        "category": "Inglês",
+        "lastStudied": "Nunca",
+        "cards": [
+            {
+                "id": 201,
+                "question": "Traduza: 'I have been studying English for three years.'",
+                "answer": "Eu estudo inglês há três anos."
+            },
+            {
+                "id": 202,
+                "question": "Traduza: 'If I were you, I would go to the party.'",
+                "answer": "Se eu fosse você, eu iria à festa."
+            },
+            {
+                "id": 203,
+                "question": "Complete: 'She's interested ____ learning new languages.' (em)",
+                "answer": "in"
+            },
+            {
+                "id": 204,
+                "question": "Traduza: 'I look forward to hearing from you.'",
+                "answer": "Fico no aguardo de notícias suas."
+            },
+            {
+                "id": 205,
+                "question": "Traduza: 'Although it was raining, they went for a walk.'",
+                "answer": "Embora estivesse chovendo, eles foram caminhar."
+            },
+            {
+                "id": 206,
+                "question": "Complete: 'You should ____ your umbrella.' (levar)",
+                "answer": "take / bring"
+            },
+            {
+                "id": 207,
+                "question": "Traduza: 'I'm used to waking up early.'",
+                "answer": "Eu estou acostumado a acordar cedo."
+            },
+            {
+                "id": 208,
+                "question": "Traduza: 'Could you please tell me how to get to the station?'",
+                "answer": "Você poderia me dizer como chegar à estação, por favor?"
+            },
+            {
+                "id": 209,
+                "question": "Complete: 'This is the most ____ book I've ever read.' (interessante)",
+                "answer": "interesting"
+            },
+            {
+                "id": 210,
+                "question": "Traduza: 'I wish I had more time to travel.'",
+                "answer": "Eu gostaria de ter mais tempo para viajar."
+            },
+            {
+                "id": 211,
+                "question": "Traduza: 'They have already finished their homework.'",
+                "answer": "Eles já terminaram o dever de casa."
+            },
+            {
+                "id": 212,
+                "question": "Complete: 'He is much ____ than his brother.' (mais alto)",
+                "answer": "taller"
+            },
+            {
+                "id": 213,
+                "question": "Traduza: 'I don't mind waiting if you're busy.'",
+                "answer": "Eu não me importo de esperar se você estiver ocupado."
+            },
+            {
+                "id": 214,
+                "question": "Traduza: 'The weather is getting better and better.'",
+                "answer": "O tempo está ficando cada vez melhor."
+            },
+            {
+                "id": 215,
+                "question": "Complete: 'I'll call you as soon as I ____.' (chegar)",
+                "answer": "arrive / get there"
+            }
+        ]
+    }
+]

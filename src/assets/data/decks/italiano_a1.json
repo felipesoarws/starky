@@ -1,0 +1,85 @@
+[
+    {
+        "id": 10,
+        "title": "Italiano A1",
+        "category": "Italiano",
+        "lastStudied": "Nunca",
+        "cards": [
+            {
+                "id": 1001,
+                "question": "Traduza: 'Ciao, come stai?'",
+                "answer": "Olá, como você está?"
+            },
+            {
+                "id": 1002,
+                "question": "Traduza: 'Piacere di conoscerti!'",
+                "answer": "Prazer em conhecê-lo!"
+            },
+            {
+                "id": 1003,
+                "question": "Complete: 'Io ____ uno studente.' (sou)",
+                "answer": "sono"
+            },
+            {
+                "id": 1004,
+                "question": "Traduza: 'Dov'è il bagno?'",
+                "answer": "Onde fica o banheiro?"
+            },
+            {
+                "id": 1005,
+                "question": "Traduza: 'Vorrei un bicchiere d'acqua, per favore.'",
+                "answer": "Eu gostaria de um copo de água, por favor."
+            },
+            {
+                "id": 1006,
+                "question": "Complete: 'Lei ____ un medico.' (é)",
+                "answer": "è"
+            },
+            {
+                "id": 1007,
+                "question": "Traduza: 'Non capisco.'",
+                "answer": "Não entendo."
+            },
+            {
+                "id": 1008,
+                "question": "Traduza: 'Come ti chiami?'",
+                "answer": "Como você se chama?"
+            },
+            {
+                "id": 1009,
+                "question": "Traduza: 'Buongiorno, buona giornata!'",
+                "answer": "Bom dia, tenha um bom dia!"
+            },
+            {
+                "id": 1010,
+                "question": "Complete: '____ parli italiano?' (Você...?)",
+                "answer": "Tu"
+            },
+            {
+                "id": 1011,
+                "question": "Traduza: 'Ho fame.'",
+                "answer": "Estou com fome."
+            },
+            {
+                "id": 1012,
+                "question": "Traduza: 'Quanto costa?'",
+                "answer": "Quanto custa?"
+            },
+            {
+                "id": 1013,
+                "question": "Complete: 'Vivo ____ Brasile.' (no)",
+                "answer": "in"
+            },
+            {
+                "id": 1014,
+                "question": "Traduza: 'Ho una famiglia grande.'",
+                "answer": "Tenho uma família grande."
+            },
+            {
+                "id": 1015,
+                "question": "Traduza: 'A dopo!'",
+                "answer": "Até logo/depois!"
+            }
+        ]
+    }
+]
