@@ -18,6 +18,7 @@ export const decks = pgTable("decks", {
   category: text("category").notNull(),
   userId: integer("user_id").references(() => users.id).notNull(),
   isPublic: boolean("is_public").default(false),
+  language: text("language").default("pt-BR"),
   createdAt: timestamp("created_at").defaultNow(),
   lastStudied: timestamp("last_studied"),
 });

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { ArrowLeft, Clock, CheckCircle } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { ArrowLeft, Clock, CheckCircle, Volume2 } from "lucide-react";
 import { Button } from "../ui/Button";
 import type { Deck, Card } from "./types";
 
@@ -26,6 +26,51 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
       return () => clearInterval(timer);
     }
   }, [completed]);
+
+  const handleSpeak = useCallback((text: string) => {
+    if (!window.speechSynthesis) return;
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    const speak = () => {
+      if (deck.language) {
+        const voices = window.speechSynthesis.getVoices();
+
+        // 1. Procurar combinação exata (ex: en-US)
+        let voice = voices.find(v => v.lang === deck.language);
+
+        // 2. Procurar apenas o prefixo (ex: en)
+        if (!voice) {
+          const langPrefix = deck.language.split('-')[0];
+          voice = voices.find(v => v.lang.startsWith(langPrefix));
+        }
+
+        // 3. Casos especiais para nomes de vozes (alguns navegadores usam sub-tags diferentes)
+        if (!voice && deck.language.startsWith('en')) {
+          voice = voices.find(v => v.name.toLowerCase().includes('english') || v.lang.includes('en'));
+        }
+
+        if (voice) {
+          utterance.voice = voice;
+          utterance.lang = voice.lang; // Importante: usar o lang da voz encontrada
+        } else {
+          utterance.lang = deck.language;
+        }
+      }
+      window.speechSynthesis.speak(utterance);
+    };
+
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length === 0) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        speak();
+        window.speechSynthesis.onvoiceschanged = null;
+      };
+    } else {
+      speak();
+    }
+  }, [deck.language]);
 
   const formatTime = (totalSeconds: number) => {
     const minutes = Math.floor(totalSeconds / 60);
@@ -137,15 +182,28 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               </span>
             )}
 
-            {isFlipped ? (
-              <span key={`content-answer-${currentIndex}`} className="animate-slide-up text-lg md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-relaxed block break-words">
-                {currentCard.answer}
-              </span>
-            ) : (
-              <span key={`content-question-${currentIndex}`} className="animate-slide-up text-lg md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-relaxed block break-words">
-                {currentCard.question}
-              </span>
-            )}
+            <div className="relative group/text">
+              {isFlipped ? (
+                <span key={`content-answer-${currentIndex}`} className="animate-slide-up text-lg md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-relaxed block break-words pr-8">
+                  {currentCard.answer}
+                </span>
+              ) : (
+                <span key={`content-question-${currentIndex}`} className="animate-slide-up text-lg md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-relaxed block break-words pr-8">
+                  {currentCard.question}
+                </span>
+              )}
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSpeak(isFlipped ? currentCard.answer : currentCard.question);
+                }}
+                className="absolute top-1/2 -right-2 -translate-y-1/2 p-3 text-zinc-600 hover:text-blue-500 transition-colors bg-white/5 rounded-full md:opacity-0 group-hover/text:opacity-100"
+                title="Ouvir"
+              >
+                <Volume2 className="w-4 h-4 md:w-6 md:h-6" />
+              </button>
+            </div>
 
             {!isFlipped && (
               <div className="animate-pulse mt-6 text-xs translate-y-8 text-zinc-600 whitespace-nowrap lg:translate-y-12">

@@ -213,11 +213,11 @@ const DecksView = ({
                     className={`group relative border rounded-3xl p-6 transition-all flex flex-col justify-between h-full min-h-[200px] w-[20rem] md:min-w-[20rem] ${isSelectionMode
                       ? "cursor-pointer hover:bg-zinc-800/50"
                       : "hover:shadow-xl hover:shadow-black/50"
-                      } ${isSelected 
-                        ? "border-accent bg-accent/5 ring-1 ring-accent" 
+                      } ${isSelected
+                        ? "border-accent bg-accent/5 ring-1 ring-accent"
                         : isMastered
-                            ? "bg-emerald-400/10 border-emerald-400/20 hover:border-emerald-400/40"
-                            : "bg-zinc-900 border-zinc-800 hover:border-zinc-700" 
+                          ? "bg-emerald-400/10 border-emerald-400/20 hover:border-emerald-400/40"
+                          : "bg-zinc-900 border-zinc-800 hover:border-zinc-700"
                       }`}
                   >
                     {isSelectionMode && (
@@ -257,6 +257,11 @@ const DecksView = ({
                       </h3>
                       <div className={`text-sm mb-2 flex items-center gap-2 ${isMastered ? "text-emerald-200/60" : "text-zinc-400"}`}>
                         <Library className="w-4 h-4" /> {deck.cards.length} cards
+                        {deck.language && (
+                          <span className="text-[10px] font-bold bg-zinc-800 text-zinc-500 px-2 py-0.5 rounded uppercase border border-white/5">
+                            {deck.language.split("-")[0]}
+                          </span>
+                        )}
                         {isMastered && (
                           <span className="flex items-center gap-1 text-emerald-400 text-xs font-bold bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/20">
                             <CheckCircle className="w-3 h-3" /> Dominado

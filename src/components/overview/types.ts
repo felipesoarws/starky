@@ -13,6 +13,7 @@ export interface Deck {
   title: string;
   category: string;
   cards: Card[];
+  language?: string;
   lastStudied?: string;
 }
 

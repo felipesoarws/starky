@@ -80,7 +80,7 @@ function Overview() {
 
   const [activeDeck, setActiveDeck] = useState<Deck | null>(null);
   const [showMasteredPopup, setShowMasteredPopup] = useState(false);
-  
+
   // snapshot dos cards pra sessão de estudo (evita que cards sumam ao atualizar data)
   const [studySessionCards, setStudySessionCards] = useState<Card[]>([]);
 
@@ -124,8 +124,8 @@ function Overview() {
             const data = await res.json();
             // Adaptar reviewedAt para timestamp esperado pela UI
             setHistory(data.map((entry: any) => ({
-                ...entry,
-                timestamp: entry.reviewedAt
+              ...entry,
+              timestamp: entry.reviewedAt
             })));
           }
         } catch (error) {
@@ -139,62 +139,62 @@ function Overview() {
   }, [user]);
 
   const addToHistory = async (deck: Deck, card: Card, difficulty: "easy" | "good" | "medium" | "hard") => {
-      const entryData = {
-          deckTitle: deck.title,
-          cardQuestion: card.question,
-          cardAnswer: card.answer,
-          difficulty
-      };
+    const entryData = {
+      deckTitle: deck.title,
+      cardQuestion: card.question,
+      cardAnswer: card.answer,
+      difficulty
+    };
 
-      if (user) {
-          try {
-              const token = localStorage.getItem("starky_token");
-              const res = await fetch(`${API_URL}/history`, {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${token}`
-                  },
-                  body: JSON.stringify(entryData)
-              });
-              if (res.ok) {
-                  const newEntry = await res.json();
-                  setHistory(prev => [{ ...newEntry, timestamp: newEntry.reviewedAt }, ...prev]);
-              }
-          } catch (error) {
-              console.error("Falha ao salvar no histórico", error);
-          }
-      } else {
-          // Fallback para visitante (ainda local para não perder durante a sessão)
-          const tempEntry: HistoryEntry = {
-              id: Date.now(),
-              timestamp: new Date().toISOString(),
-              ...entryData
-          };
-          setHistory(prev => [tempEntry, ...prev]);
+    if (user) {
+      try {
+        const token = localStorage.getItem("starky_token");
+        const res = await fetch(`${API_URL}/history`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(entryData)
+        });
+        if (res.ok) {
+          const newEntry = await res.json();
+          setHistory(prev => [{ ...newEntry, timestamp: newEntry.reviewedAt }, ...prev]);
+        }
+      } catch (error) {
+        console.error("Falha ao salvar no histórico", error);
       }
+    } else {
+      // Fallback para visitante (ainda local para não perder durante a sessão)
+      const tempEntry: HistoryEntry = {
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        ...entryData
+      };
+      setHistory(prev => [tempEntry, ...prev]);
+    }
   };
 
   const clearHistory = () => {
     showConfirm("Limpar Histórico", "Tem certeza? Isso apagará todo o registro de revisões permanentemente.", async () => {
-        if (user) {
-            try {
-                const token = localStorage.getItem("starky_token");
-                const res = await fetch(`${API_URL}/history`, {
-                    method: "DELETE",
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                if (res.ok) {
-                    setHistory([]);
-                    showNotification("Histórico limpo com sucesso.");
-                }
-            } catch (error) {
-                console.error("Falha ao limpar histórico", error);
-            }
-        } else {
+      if (user) {
+        try {
+          const token = localStorage.getItem("starky_token");
+          const res = await fetch(`${API_URL}/history`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (res.ok) {
             setHistory([]);
-            showNotification("Histórico limpo.");
+            showNotification("Histórico limpo com sucesso.");
+          }
+        } catch (error) {
+          console.error("Falha ao limpar histórico", error);
         }
+      } else {
+        setHistory([]);
+        showNotification("Histórico limpo.");
+      }
     });
   };
 
@@ -295,13 +295,13 @@ function Overview() {
   };
 
   const handleUpdateCardInDeck = async (deckId: number, card: Card) => {
-    
+
     // Add to history if difficulty is present
     if (card.difficulty) {
-        const deck = decks.find(d => d.id === deckId);
-        if (deck) {
-            addToHistory(deck, card, card.difficulty);
-        }
+      const deck = decks.find(d => d.id === deckId);
+      if (deck) {
+        addToHistory(deck, card, card.difficulty);
+      }
     }
 
     // atualização otimista
@@ -518,7 +518,7 @@ function Overview() {
                 // reseta status de estudo
                 lastReviewed: null,
                 nextReviewDate: null,
-                interval: 0, 
+                interval: 0,
                 difficulty: undefined
               }))
             };
@@ -577,7 +577,7 @@ function Overview() {
   }
 
   if (viewState === "study" && activeDeck) {
-    const studyDeck = {
+    const studyDeck: Deck = {
       ...activeDeck,
       cards: studySessionCards
     };
@@ -588,10 +588,10 @@ function Overview() {
         onUpdateCard={(card) => handleUpdateCardInDeck(activeDeck.id, card)}
         onFinish={() => {
           if (activeDeck) {
-             const isMastered = activeDeck.cards.length > 0 && activeDeck.cards.every(c => c.difficulty === 'easy');
-             if (isMastered) {
-                 setShowMasteredPopup(true);
-             }
+            const isMastered = activeDeck.cards.length > 0 && activeDeck.cards.every(c => c.difficulty === 'easy');
+            if (isMastered) {
+              setShowMasteredPopup(true);
+            }
           }
           setViewState("dashboard");
           setActiveDeck(null);
@@ -606,7 +606,7 @@ function Overview() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row overflow-hidden relative">
-      <SEO 
+      <SEO
         title="Starky | Visão Geral"
         description="Gerencie seus decks, acompanhe estatísticas e estude com repetição espaçada no Starky."
         canonical="https://starky.app/overview"
@@ -614,30 +614,30 @@ function Overview() {
 
       {showMasteredPopup && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-            <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl max-w-md w-full text-center relative animate-slide-up shadow-2xl shadow-emerald-900/20">
-                <button 
-                  onClick={() => setShowMasteredPopup(false)}
-                  className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
-                >
-                    <Trash2 className="w-5 h-5 opacity-0 cursor-default" /> 
-                    {/* Dummy icon for spacing if needed, or just X */}
-                </button>
-                 <div className="w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6 ring-4 ring-emerald-500/20">
-                    <CheckCircle className="w-12 h-12 text-emerald-500" />
-                 </div>
-                 <h2 className="text-3xl font-bold text-white mb-2">Parabéns!</h2>
-                 <p className="text-zinc-400 mb-8 text-lg">
-                    Você dominou este deck! Todos os cards foram marcados como <strong className="text-emerald-400">Fácil</strong>.
-                 </p>
-                 <Button 
-                    size="lg" 
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border-none shadow-lg shadow-emerald-900/50"
-                    onClick={() => setShowMasteredPopup(false)}
-                 >
-                    Continuar
-                 </Button>
+          <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl max-w-md w-full text-center relative animate-slide-up shadow-2xl shadow-emerald-900/20">
+            <button
+              onClick={() => setShowMasteredPopup(false)}
+              className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
+            >
+              <Trash2 className="w-5 h-5 opacity-0 cursor-default" />
+              {/* Dummy icon for spacing if needed, or just X */}
+            </button>
+            <div className="w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6 ring-4 ring-emerald-500/20">
+              <CheckCircle className="w-12 h-12 text-emerald-500" />
             </div>
-            {/* Confetti effect could go here if we had a library, but simple CSS animation in global css would be better.*/}
+            <h2 className="text-3xl font-bold text-white mb-2">Parabéns!</h2>
+            <p className="text-zinc-400 mb-8 text-lg">
+              Você dominou este deck! Todos os cards foram marcados como <strong className="text-emerald-400">Fácil</strong>.
+            </p>
+            <Button
+              size="lg"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border-none shadow-lg shadow-emerald-900/50"
+              onClick={() => setShowMasteredPopup(false)}
+            >
+              Continuar
+            </Button>
+          </div>
+          {/* Confetti effect could go here if we had a library, but simple CSS animation in global css would be better.*/}
         </div>
       )}
       <div className="block md:hidden">
@@ -707,7 +707,7 @@ function Overview() {
 
             {/* history */}
             {activeTab === "history" && (
-                <HistoryView history={history} onClearHistory={clearHistory} />
+              <HistoryView history={history} onClearHistory={clearHistory} />
             )}
           </div>
         </div>
@@ -749,6 +749,7 @@ interface DeckEditorProps {
 export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProps) => {
   const [title, setTitle] = useState(deck?.title || "");
   const [category, setCategory] = useState(deck?.category || "");
+  const [language, setLanguage] = useState(deck?.language || "pt-BR");
   const [cards, setCards] = useState<Card[]>(deck?.cards || []);
 
   // controladores dos cards
@@ -807,6 +808,7 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
       title,
       category,
       cards,
+      language,
       lastStudied: deck?.lastStudied || "Nunca",
     };
 
@@ -869,6 +871,25 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
               placeholder="Ex: Programação"
             />
           </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-zinc-400 mb-2">
+              Idioma do Áudio (TTS)
+            </label>
+            <select
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent focus:border-accent outline-none transition-all appearance-none cursor-pointer"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+            >
+              <option value="pt-BR">Português (Brasil)</option>
+              <option value="en-US">Inglês (EUA)</option>
+              <option value="en-GB">Inglês (UK)</option>
+              <option value="es-ES">Espanhol (Espanha)</option>
+              <option value="fr-FR">Francês</option>
+              <option value="de-DE">Alemão</option>
+              <option value="it-IT">Italiano</option>
+              <option value="ja-JP">Japonês</option>
+            </select>
+          </div>
         </div>
 
         <div className="mb-6 flex items-center justify-between">
@@ -905,16 +926,16 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
 
               <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
-                    {card.difficulty === 'easy' && (
-                        <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 mb-4 flex items-start gap-3 animate-fade-in">
-                            <div className="text-yellow-500 mt-0.5">⚠️</div>
-                            <div className="text-xs text-yellow-200">
-                                <strong className="block text-yellow-500 mb-1">Atenção</strong>
-                                Este card está marcado como <span className="text-emerald-400 font-bold">Dominado</span>. 
-                                Qualquer alteração reiniciará seu progresso de aprendizado.
-                            </div>
-                        </div>
-                    )}
+                  {card.difficulty === 'easy' && (
+                    <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 mb-4 flex items-start gap-3 animate-fade-in">
+                      <div className="text-yellow-500 mt-0.5">⚠️</div>
+                      <div className="text-xs text-yellow-200">
+                        <strong className="block text-yellow-500 mb-1">Atenção</strong>
+                        Este card está marcado como <span className="text-emerald-400 font-bold">Dominado</span>.
+                        Qualquer alteração reiniciará seu progresso de aprendizado.
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label className="text-xs font-semibold text-zinc-500 mb-1 block uppercase">

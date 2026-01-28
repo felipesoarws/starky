@@ -245,11 +245,12 @@ app.post("/api/decks", authenticateToken, async (req, res) => {
   try {
     const userId = (req as any).user.id;
     console.log(`[POST /api/decks] Creating deck for user ${userId}`, req.body);
-    const { title, category, cards: initialCards } = req.body;
+    const { title, category, language, cards: initialCards } = req.body;
 
     const [newDeck] = await db.insert(decks).values({
       title,
       category,
+      language: language || "pt-BR",
       userId,
     }).returning();
 
@@ -283,7 +284,7 @@ app.put("/api/decks/:id", authenticateToken, async (req, res) => {
   try {
     const userId = (req as any).user.id;
     const deckId = parseInt(req.params.id);
-    const { title, category, cards: incomingCards, lastStudied } = req.body;
+    const { title, category, language, cards: incomingCards, lastStudied } = req.body;
 
     console.log(`[PUT /api/decks/${deckId}] Updating deck`, req.body);
 
@@ -304,60 +305,48 @@ app.put("/api/decks/:id", authenticateToken, async (req, res) => {
     await db.update(decks).set({
       title: title || deck.title,
       category: category || deck.category,
+      language: language || deck.language,
       lastStudied: parsedLastStudied
     }).where(eq(decks.id, deckId));
 
     if (incomingCards && Array.isArray(incomingCards)) {
+      // 1. Obter IDs dos cards atuais no banco
+      const existingCardsInDb = await db.select({ id: cards.id }).from(cards).where(eq(cards.deckId, deckId));
+      const dbCardIds = existingCardsInDb.map(c => c.id);
+
+      // 2. Identificar quais cards foram removidos (estão no banco mas não no payload)
+      const incomingCardIds = incomingCards.map(c => c.id).filter(id => id && id <= 2147483647);
+      const idsToDelete = dbCardIds.filter(id => !incomingCardIds.includes(id));
+
+      if (idsToDelete.length > 0) {
+        // Multi-delete (Drizzle syntax check: inArray is standard)
+        const { inArray } = await import("drizzle-orm");
+        await db.delete(cards).where(and(eq(cards.deckId, deckId), inArray(cards.id, idsToDelete)));
+      }
+
+      // 3. Atualizar ou Inserir cards do payload
       for (const card of incomingCards) {
-        if (card.id && typeof card.id === 'number') {
-          // Check if this ID is a valid DB ID (not a timestamp from legacy/frontend gen)
-          // A timestamp like 1730000000000 is too big for integer usually if serial?
-          // Serial is integer (4 bytes) -> max 2.1 billion.
-          // Timestamp (ms) is 1.7 trillion. 
-          // Postgres 'integer' will overflow if we try to query where id = timestamp.
-          // IMPORTANT: Drizzle 'serial' maps to 'integer'. 
-          // If frontend sends Date.now() as ID, and we try to query `where(eq(cards.id, card.id))`
-          // It might crash because value out of range for integer type in SQL parameter?
-          // Or it might just not find it.
-          // Let's check range. Max int is ~2e9. Date.now() is ~1.7e12.
-          // So yes, passing Date.now() to an integer column query will likely fail or overflow.
-
-          // Heuristic: If ID > 2147483647, it's a temp ID. Insert it as new.
-
-          if (card.id > 2147483647) {
-            // Treat as new
-            await db.insert(cards).values({
-              deckId: deckId,
-              question: card.question,
-              answer: card.answer
-            });
-          } else {
-            // Try update
-            const existing = await db.select().from(cards).where(eq(cards.id, card.id));
-            if (existing.length > 0) {
-              await db.update(cards).set({
-                question: card.question,
-                answer: card.answer,
-                // Update progress fields if they are present in the payload (null resets them)
-                nextReviewDate: card.nextReviewDate === null ? null : (card.nextReviewDate ? new Date(card.nextReviewDate) : undefined),
-                lastReviewed: card.lastReviewed === null ? null : (card.lastReviewed ? new Date(card.lastReviewed) : undefined),
-                interval: card.interval
-              }).where(eq(cards.id, card.id));
-            } else {
-              // Insert
-              await db.insert(cards).values({
-                deckId: deckId,
-                question: card.question,
-                answer: card.answer
-              });
-            }
-          }
+        if (card.id && typeof card.id === 'number' && card.id <= 2147483647) {
+          // Update
+          await db.update(cards).set({
+            question: card.question,
+            answer: card.answer,
+            nextReviewDate: card.nextReviewDate === null ? null : (card.nextReviewDate ? new Date(card.nextReviewDate) : undefined),
+            lastReviewed: card.lastReviewed === null ? null : (card.lastReviewed ? new Date(card.lastReviewed) : undefined),
+            interval: card.interval,
+            difficulty: card.difficulty
+          }).where(eq(cards.id, card.id));
         } else {
-          // No ID, definitely new
+          // Insert (no ID or temporary timestamp ID)
           await db.insert(cards).values({
             deckId: deckId,
             question: card.question,
-            answer: card.answer
+            answer: card.answer,
+            // se vier com progresso (ex: importação), salva também
+            nextReviewDate: card.nextReviewDate ? new Date(card.nextReviewDate) : null,
+            lastReviewed: card.lastReviewed ? new Date(card.lastReviewed) : null,
+            interval: card.interval || 0,
+            difficulty: card.difficulty || null
           });
         }
       }

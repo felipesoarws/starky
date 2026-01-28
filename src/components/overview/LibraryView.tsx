@@ -74,6 +74,7 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
       id: 0,
       lastStudied: "Nunca",
       cards: normalizedCards,
+      language: selectedDeck.title.toLowerCase().includes("inglês") ? "en-US" : "pt-BR",
     };
 
     onAddDeck(normalizedDeck);
