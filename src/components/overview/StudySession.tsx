@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import { ArrowLeft, Clock, CheckCircle, Volume2 } from "lucide-react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { ArrowLeft, Clock, CheckCircle, Volume2, Settings2 } from "lucide-react";
 import { Button } from "../ui/Button";
 import type { Deck, Card } from "./types";
 
@@ -16,6 +16,22 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
   const [completed, setCompleted] = useState(false);
 
   const [seconds, setSeconds] = useState(0);
+  const [qSpeakLang, setQSpeakLang] = useState(deck.language || "en-US");
+  const [aSpeakLang, setASpeakLang] = useState("pt-BR");
+  const [showLangSettings, setShowLangSettings] = useState(false);
+  const settingsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (settingsRef.current && !settingsRef.current.contains(event.target as Node)) {
+        setShowLangSettings(false);
+      }
+    };
+    if (showLangSettings) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showLangSettings]);
 
   useEffect(() => {
     if (!completed) {
@@ -26,33 +42,30 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
     }
   }, [completed]);
 
-  const handleSpeak = useCallback((text: string) => {
+  const handleSpeak = useCallback((text: string, langOverride?: string) => {
     if (!window.speechSynthesis) return;
 
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
+    const targetLang = langOverride || "pt-BR";
 
     const speak = () => {
-      if (deck.language) {
-        const voices = window.speechSynthesis.getVoices();
+      const voices = window.speechSynthesis.getVoices();
 
-        let voice = voices.find(v => v.lang === deck.language);
+      let voice = voices.find(v => v.lang.replace('_', '-') === targetLang);
 
-        if (!voice) {
-          const langPrefix = deck.language.split('-')[0];
-          voice = voices.find(v => v.lang.startsWith(langPrefix));
-        }
-        if (!voice && deck.language.startsWith('en')) {
-          voice = voices.find(v => v.name.toLowerCase().includes('english') || v.lang.includes('en'));
-        }
-
-        if (voice) {
-          utterance.voice = voice;
-          utterance.lang = voice.lang;
-        } else {
-          utterance.lang = deck.language;
-        }
+      if (!voice) {
+        const langPrefix = targetLang.split('-')[0];
+        voice = voices.find(v => v.lang.startsWith(langPrefix));
       }
+
+      if (voice) {
+        utterance.voice = voice;
+        utterance.lang = voice.lang;
+      } else {
+        utterance.lang = targetLang;
+      }
+
       window.speechSynthesis.speak(utterance);
     };
 
@@ -65,7 +78,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
     } else {
       speak();
     }
-  }, [deck.language]);
+  }, []);
 
   const formatTime = (totalSeconds: number) => {
     const minutes = Math.floor(totalSeconds / 60);
@@ -148,6 +161,60 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
           <div className="font-bold text-zinc-400">
             <span className="text-white">{currentIndex + 1}</span> / {deck.cards.length}
           </div>
+
+          <div className="relative" ref={settingsRef}>
+            <button
+              onClick={() => setShowLangSettings(!showLangSettings)}
+              className="p-2 text-zinc-400 hover:text-white rounded-full hover:bg-white/5 transition-colors"
+              title="Configurações de Áudio"
+            >
+              <Settings2 className="w-4 h-4 md:w-5 md:h-5" />
+            </button>
+
+            {showLangSettings && (
+              <div className="absolute top-12 right-0 w-64 bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl p-4 z-50 animate-fade-in">
+                <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4">Idioma do Áudio</h3>
+
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-[10px] text-zinc-400 mb-2 uppercase">Pergunta</p>
+                    <div className="flex bg-zinc-950 p-1 rounded-lg">
+                      <button
+                        onClick={() => setQSpeakLang(deck.language || "en-US")}
+                        className={`flex-1 text-[10px] py-1.5 rounded-md transition-all ${qSpeakLang !== 'pt-BR' ? 'bg-blue-600 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                      >
+                        Nativo
+                      </button>
+                      <button
+                        onClick={() => setQSpeakLang("pt-BR")}
+                        className={`flex-1 text-[10px] py-1.5 rounded-md transition-all ${qSpeakLang === 'pt-BR' ? 'bg-blue-600 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                      >
+                        Português
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] text-zinc-400 mb-2 uppercase">Resposta</p>
+                    <div className="flex bg-zinc-950 p-1 rounded-lg">
+                      <button
+                        onClick={() => setASpeakLang(deck.language || "en-US")}
+                        className={`flex-1 text-[10px] py-1.5 rounded-md transition-all ${aSpeakLang !== 'pt-BR' ? 'bg-blue-600 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                      >
+                        Nativo
+                      </button>
+                      <button
+                        onClick={() => setASpeakLang("pt-BR")}
+                        className={`flex-1 text-[10px] py-1.5 rounded-md transition-all ${aSpeakLang === 'pt-BR' ? 'bg-blue-600 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                      >
+                        Português
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="absolute bottom-0 left-0 h-1 bg-blue-500/20 w-full">
@@ -178,7 +245,9 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleSpeak(isFlipped ? currentCard.answer : currentCard.question);
+                  const text = isFlipped ? currentCard.answer : currentCard.question;
+                  const cleanText = text.replace(/^(Traduza:|Complete:)\s*/i, "").replace(/['"“”]/g, "");
+                  handleSpeak(cleanText, isFlipped ? aSpeakLang : qSpeakLang);
                 }}
                 className="p-3 text-zinc-500 hover:text-blue-500 transition-colors bg-white/5 rounded-full z-200"
                 title="Ouvir"
