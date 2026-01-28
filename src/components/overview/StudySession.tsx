@@ -18,7 +18,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
   const [seconds, setSeconds] = useState(0);
   const [qSpeakLang, setQSpeakLang] = useState(deck.language || "en-US");
   const [aSpeakLang, setASpeakLang] = useState("pt-BR");
-  const [showLangSettings, setShowLangSettings] = useState(false);
+  const [showLangSettings, setShowLangSettings] = useState(() => window.innerWidth >= 768);
   const settingsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,6 +41,9 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
       return () => clearInterval(timer);
     }
   }, [completed]);
+
+
+
 
   const handleSpeak = useCallback((text: string, langOverride?: string) => {
     if (!window.speechSynthesis) return;
@@ -113,6 +116,43 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
     handleNext();
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (completed) return;
+
+      if (e.code === "Space") {
+        e.preventDefault();
+        if (!isFlipped) {
+          setIsFlipped(true);
+        }
+      } else if (isFlipped) {
+        switch (e.key) {
+          case "1":
+            handleDifficulty(1, "hard");
+            break;
+          case "2":
+            handleDifficulty(10, "medium");
+            break;
+          case "3":
+            handleDifficulty(2880, "good");
+            break;
+          case "4":
+            handleDifficulty(5760, "easy");
+            break;
+        }
+      }
+
+      if (e.key === "s") {
+        const text = isFlipped ? currentCard.answer : currentCard.question;
+        const cleanText = text.replace(/^(Traduza:|Complete:)\s*/i, "").replace(/['"“”]/g, "");
+        handleSpeak(cleanText, isFlipped ? aSpeakLang : qSpeakLang);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [completed, isFlipped, currentIndex, currentCard, aSpeakLang, qSpeakLang, handleSpeak]);
+
   if (deck.cards.length === 0 || completed) {
     return (
       <div className="fixed inset-0 bg-background text-white flex flex-col items-center justify-center p-6  z-50">
@@ -172,7 +212,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
             </button>
 
             {showLangSettings && (
-              <div className="absolute top-12 right-0 w-64 bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl p-4 z-50 animate-fade-in">
+              <div className="absolute top-12 right-0 w-64 bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl p-4 z-50 animate-fade-in lg:top-[5.5vw]">
                 <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4">Idioma do Áudio</h3>
 
                 <div className="space-y-4">
@@ -250,7 +290,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
                   handleSpeak(cleanText, isFlipped ? aSpeakLang : qSpeakLang);
                 }}
                 className="p-3 text-zinc-500 hover:text-blue-500 transition-colors bg-white/5 rounded-full z-200"
-                title="Ouvir"
+                title="Ouvir (s)"
               >
                 <Volume2 className="w-5 h-5 md:w-6 md:h-6" />
               </button>
@@ -272,7 +312,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
 
             {!isFlipped && (
               <div className="animate-pulse mt-6 text-xs translate-y-8 text-zinc-600 whitespace-nowrap lg:translate-y-12">
-                Toque para ver a resposta
+                Pressione <span className="font-bold border border-zinc-700 rounded px-1 min-w-[20px] inline-block text-center mr-1">Espaço</span> para ver a resposta
               </div>
             )}
 
@@ -301,6 +341,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               textColor="red"
               color="bg-zinc-900 border-zinc-800 hover:border-red-700 hover:bg-red-800/20"
               onClick={() => handleDifficulty(1, 'hard')}
+              shortcut="1"
             />
             <DifficultyButton
               label="Médio"
@@ -308,6 +349,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               textColor="yellow"
               color="bg-zinc-900 border-zinc-800 hover:border-yellow-700 hover:bg-yellow-800/20"
               onClick={() => handleDifficulty(10, 'medium')}
+              shortcut="2"
             />
             <DifficultyButton
               label="Bom"
@@ -315,6 +357,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               textColor="blue"
               color="bg-zinc-900 border-zinc-800 hover:border-blue-700 hover:bg-blue-800/20"
               onClick={() => handleDifficulty(2880, 'good')}
+              shortcut="3"
             />
             <DifficultyButton
               label="Fácil"
@@ -322,6 +365,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               textColor="green"
               color="bg-zinc-900 border-zinc-800 hover:border-green-700 hover:bg-green-800/20"
               onClick={() => handleDifficulty(5760, 'easy')}
+              shortcut="4"
             />
           </div>
         )}
@@ -330,12 +374,17 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
   );
 }
 
-function DifficultyButton({ label, time, textColor, color, onClick }: { label: string, time: string, textColor: string, color: string, onClick: () => void }) {
+function DifficultyButton({ label, time, textColor, color, onClick, shortcut }: { label: string, time: string, textColor: string, color: string, onClick: () => void, shortcut?: string }) {
   return (
     <button
       onClick={onClick}
-      className={`h-15 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${color} group active:scale-95`}
+      className={`h-15 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all relative ${color} group active:scale-95`}
     >
+      {shortcut && (
+        <span className="absolute top-1 right-2 text-[10px] font-mono text-zinc-600 border border-zinc-800 rounded px-1 min-w-[16px] text-center hidden md:block">
+          {shortcut}
+        </span>
+      )}
       <span className="text-sm font-bold text-zinc-300 group-hover:text-white">{label}</span>
       <span className={`text-[10px] font-mono text-zinc-600 group-hover:text-${textColor}-500`}>{time}</span>
     </button>
