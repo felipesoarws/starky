@@ -15,7 +15,6 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
   const [isFlipped, setIsFlipped] = useState(false);
   const [completed, setCompleted] = useState(false);
 
-  // estado do timer
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
@@ -37,23 +36,19 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
       if (deck.language) {
         const voices = window.speechSynthesis.getVoices();
 
-        // 1. Procurar combinação exata (ex: en-US)
         let voice = voices.find(v => v.lang === deck.language);
 
-        // 2. Procurar apenas o prefixo (ex: en)
         if (!voice) {
           const langPrefix = deck.language.split('-')[0];
           voice = voices.find(v => v.lang.startsWith(langPrefix));
         }
-
-        // 3. Casos especiais para nomes de vozes (alguns navegadores usam sub-tags diferentes)
         if (!voice && deck.language.startsWith('en')) {
           voice = voices.find(v => v.name.toLowerCase().includes('english') || v.lang.includes('en'));
         }
 
         if (voice) {
           utterance.voice = voice;
-          utterance.lang = voice.lang; // Importante: usar o lang da voz encontrada
+          utterance.lang = voice.lang;
         } else {
           utterance.lang = deck.language;
         }
@@ -122,7 +117,6 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
           </div>
 
           <div className="flex items-center gap-3 w-full pt-4">
-
             <Button onClick={onFinish} size="md" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white border-none">
               Concluir
             </Button>
@@ -165,13 +159,11 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
       </header>
 
       <main className="flex-1 flex items-center justify-center p-4 md:p-6 relative w-full overflow-y-auto">
-
         <div
           onClick={() => !isFlipped && setIsFlipped(true)}
-          className="w-full max-w-4xl min-h-[50vh] md:min-h-0 md:aspect-video bg-[#121214] md:max-h-[65vh] border border-white/5 rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 cursor-pointer hover:border-white/10 transition-colors shadow-2xl relative group mx-auto my-auto"
+          className="relative w-full max-w-4xl min-h-[50vh] md:min-h-0 md:aspect-video bg-[#121214] md:max-h-[65vh] border border-white/5 rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 cursor-pointer hover:border-white/10 transition-colors shadow-2xl relative group mx-auto my-auto"
         >
           <div className="text-center max-w-2xl w-full">
-
             {isFlipped ? (
               <span key={`label-answer-${currentIndex}`} className="animate-slide-up text-[10px] font-bold tracking-[0.2em] text-blue-500 uppercase mb-4 md:mb-6 block">
                 Resposta
@@ -182,27 +174,31 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               </span>
             )}
 
-            <div className="relative group/text">
-              {isFlipped ? (
-                <span key={`content-answer-${currentIndex}`} className="animate-slide-up text-lg md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-relaxed block break-words pr-8">
-                  {currentCard.answer}
-                </span>
-              ) : (
-                <span key={`content-question-${currentIndex}`} className="animate-slide-up text-lg md:text-2xl lg:text-3xl font-medium text-zinc-100 leading-relaxed block break-words pr-8">
-                  {currentCard.question}
-                </span>
-              )}
-
+            <div className="absolute top-4 right-4">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleSpeak(isFlipped ? currentCard.answer : currentCard.question);
                 }}
-                className="absolute top-1/2 -right-2 -translate-y-1/2 p-3 text-zinc-600 hover:text-blue-500 transition-colors bg-white/5 rounded-full md:opacity-0 group-hover/text:opacity-100"
+                className="p-3 text-zinc-500 hover:text-blue-500 transition-colors bg-white/5 rounded-full z-200"
                 title="Ouvir"
               >
-                <Volume2 className="w-4 h-4 md:w-6 md:h-6" />
+                <Volume2 className="w-5 h-5 md:w-6 md:h-6" />
               </button>
+            </div>
+
+            <div>
+              <div className="max-h-[35vh] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-transparent pr-2 pt-2">
+                {isFlipped ? (
+                  <span key={`content-answer-${currentIndex}`} className="animate-slide-up text-lg md:text-2xl font-medium text-zinc-100 leading-relaxed block break-words">
+                    {currentCard.answer}
+                  </span>
+                ) : (
+                  <span key={`content-question-${currentIndex}`} className="animate-slide-up text-lg md:text-3xl  font-medium text-zinc-100 leading-relaxed block break-words">
+                    {currentCard.question}
+                  </span>
+                )}
+              </div>
             </div>
 
             {!isFlipped && (
@@ -217,7 +213,6 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
             )}
           </div>
         </div>
-
       </main>
 
       <footer className="py-6 pb-10 md:py-4 md:pb-8 border-t border-white/5 bg-[#101013] flex items-center justify-center px-4 md:h-[7rem]">
@@ -266,7 +261,6 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
   );
 }
 
-// subcomponente de botão de dificuldade
 function DifficultyButton({ label, time, textColor, color, onClick }: { label: string, time: string, textColor: string, color: string, onClick: () => void }) {
   return (
     <button

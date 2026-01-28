@@ -38,7 +38,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(localStorage.getItem("starky_token"));
   const [isLoading, setIsLoading] = useState(true);
 
-  // carregar sessão na inicialização
   useEffect(() => {
     const initAuth = async () => {
       const storedToken = localStorage.getItem("starky_token");

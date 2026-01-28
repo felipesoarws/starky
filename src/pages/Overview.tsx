@@ -20,9 +20,6 @@ import {
   Trash2,
 } from "lucide-react";
 
-
-
-
 import { Button } from "../components/ui/Button";
 
 import { API_URL } from "../config";
@@ -41,18 +38,13 @@ function Overview() {
     return "decks_view";
   });
 
-  // estados gerais de visualização
   const [viewState, setViewState] = useState<"dashboard" | "study" | "editor">(
     "dashboard"
   );
 
-  // estados de pesquisa de decks/categorias
   const [searchQuery, setSearchQuery] = useState<string>("");
-
-  // estados gerais dos decks
   const [decks, setDecks] = useState<Deck[]>([]);
 
-  // carregar decks quando o usuário mudar
   useEffect(() => {
     const loadDecks = async () => {
       if (user) {
@@ -69,19 +61,14 @@ function Overview() {
           console.error("Falha ao carregar decks", error);
         }
       } else {
-        // modo visitante (dados efêmeros)
         setDecks([]);
       }
     };
     loadDecks();
   }, [user]);
 
-
-
   const [activeDeck, setActiveDeck] = useState<Deck | null>(null);
   const [showMasteredPopup, setShowMasteredPopup] = useState(false);
-
-  // snapshot dos cards pra sessão de estudo (evita que cards sumam ao atualizar data)
   const [studySessionCards, setStudySessionCards] = useState<Card[]>([]);
 
   const filteredDecks = decks.filter(
@@ -92,7 +79,6 @@ function Overview() {
       deck.title.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
   );
 
-  // estado de notificação (toast)
   const [toastConfig, setToastConfig] = useState<{
     show: boolean;
     message: string;
@@ -108,10 +94,8 @@ function Overview() {
     setTimeout(() => setToastConfig(prev => ({ ...prev, show: false })), 3000);
   };
 
-  // --- History Logic ---
   const [history, setHistory] = useState<HistoryEntry[]>([]);
 
-  // Carregar histórico
   useEffect(() => {
     const loadHistory = async () => {
       if (user) {
@@ -122,7 +106,6 @@ function Overview() {
           });
           if (res.ok) {
             const data = await res.json();
-            // Adaptar reviewedAt para timestamp esperado pela UI
             setHistory(data.map((entry: any) => ({
               ...entry,
               timestamp: entry.reviewedAt
@@ -165,7 +148,6 @@ function Overview() {
         console.error("Falha ao salvar no histórico", error);
       }
     } else {
-      // Fallback para visitante (ainda local para não perder durante a sessão)
       const tempEntry: HistoryEntry = {
         id: Date.now(),
         timestamp: new Date().toISOString(),
@@ -198,22 +180,14 @@ function Overview() {
     });
   };
 
-  // funções dos decks
   const handleSaveDeck = async (savedDeck: Deck) => {
     if (user) {
       try {
         const token = localStorage.getItem("starky_token");
-        // só trata como atualização se o id for verdadeiro (não 0) e existir na lista atual
         const isUpdate = !!savedDeck.id && decks.some(d => d.id === savedDeck.id);
 
         let url = `${API_URL}/decks`;
         let method = "POST";
-
-        // nota: a lógica permite criar novo deck mesmo se id estiver presente (se veio do fluxo de criação local com date.now())
-        // mas se corresponder a um id real do db (do estado decks), é uma atualização
-        // precisamos ter cuidado com colisão de id entre date.now() e id serial do db
-        // ids do db geralmente são inteiros pequenos. date.now() é enorme
-        // vamos supor que se existir no estado 'decks' atual, é uma atualização
 
         if (isUpdate) {
           url = `${API_URL}/decks/${savedDeck.id}`;
@@ -245,7 +219,6 @@ function Overview() {
         showAlert("Erro", "Erro de conexão");
       }
     } else {
-      // lógica de visitante
       const exists = decks.find((d) => d.id === savedDeck.id);
       if (exists) {
         setDecks(decks.map((d) => (d.id === savedDeck.id ? savedDeck : d)));
@@ -261,8 +234,6 @@ function Overview() {
 
   const startEditingDeck = (deck: Deck | null) => {
     if (!isAuthenticated) {
-      // bloqueio extra caso ui falhe, mas a ui já deve bloquear
-      // avisa o usuário
       showAlert("Acesso Restrito", "Você precisa estar logado para criar/editar decks personalizados.");
       return;
     }
@@ -295,8 +266,6 @@ function Overview() {
   };
 
   const handleUpdateCardInDeck = async (deckId: number, card: Card) => {
-
-    // Add to history if difficulty is present
     if (card.difficulty) {
       const deck = decks.find(d => d.id === deckId);
       if (deck) {
@@ -304,14 +273,13 @@ function Overview() {
       }
     }
 
-    // atualização otimista
     setDecks((prevDecks) =>
       prevDecks.map((d) => {
         if (d.id === deckId) {
           return {
             ...d,
             cards: d.cards.map((c) => (c.id === card.id ? card : c)),
-            lastStudied: new Date().toLocaleDateString(), // UI format
+            lastStudied: new Date().toLocaleDateString(),
           };
         }
         return d;
@@ -321,7 +289,6 @@ function Overview() {
     if (user) {
       try {
         const token = localStorage.getItem("starky_token");
-        // chamada api (disparar e esquecer ou tratar erro)
         await fetch(`${API_URL}/cards/${card.id}`, {
           method: "PUT",
           headers: {
@@ -335,13 +302,11 @@ function Overview() {
             lastReviewed: card.lastReviewed
           })
         });
-
       } catch (error) {
         console.error("Falha ao sincronizar progresso do card", error);
       }
     }
 
-    // atualiza também o deck ativo síncronamente pra ui refletir
     if (activeDeck && activeDeck.id === deckId) {
       setActiveDeck((prev) => {
         if (!prev) return null;
@@ -353,12 +318,10 @@ function Overview() {
     }
   };
 
-
   const handleStudyDeck = (deck: Deck) => {
-    // verificar se há cards pra revisar agora
     const cardsToReview = deck.cards.filter((card) => {
-      if (!card.nextReviewDate) return true; // nunca estudado
-      return new Date(card.nextReviewDate) <= new Date(); // vencido
+      if (!card.nextReviewDate) return true;
+      return new Date(card.nextReviewDate) <= new Date();
     });
 
     if (cardsToReview.length === 0) {
@@ -366,12 +329,11 @@ function Overview() {
       return;
     }
 
-    setStudySessionCards(cardsToReview); // congela a lista pra sessão
+    setStudySessionCards(cardsToReview);
     setActiveDeck(deck);
     setViewState("study");
   };
 
-  // funções das categorias
   const handleDeleteCategory = async (catName: string) => {
     showConfirm("Excluir Categoria", `ATENÇÃO: Isso excluirá a categoria "${catName}" e TODOS os decks dentro dela. Continuar?`, async () => {
       if (user) {
@@ -381,7 +343,6 @@ function Overview() {
             method: "DELETE",
             headers: { Authorization: `Bearer ${token}` }
           });
-          // atualização otimista
           setDecks(decks.filter((d) => d.category !== catName));
         } catch (err) {
           console.error("Erro ao excluir categoria", err);
@@ -406,7 +367,6 @@ function Overview() {
             },
             body: JSON.stringify({ newName })
           });
-          // atualização otimista
           setDecks(
             decks.map((d) =>
               d.category === oldName ? { ...d, category: newName } : d
@@ -426,15 +386,12 @@ function Overview() {
     }
   };
 
-  // troca de visualização
-
-  // --- modo exportação ---
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedDeckIds, setSelectedDeckIds] = useState<number[]>([]);
 
   const handleToggleSelectionMode = () => {
     setIsSelectionMode(!isSelectionMode);
-    setSelectedDeckIds([]); // reset
+    setSelectedDeckIds([]);
   };
 
   const handleToggleDeckSelection = (id: number) => {
@@ -478,7 +435,6 @@ function Overview() {
     setSelectedDeckIds([]);
   };
 
-  // --- modo importação ---
   const handleImportDecks = async (file: File) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
@@ -503,19 +459,15 @@ function Overview() {
 
         showNotification(`Importando ${decksToImport.length} decks...`, "info");
 
-        // processa em série pra verificar resultados
         for (const deck of decksToImport) {
           try {
-            // garante payload válido pra criação e ids novos para evitar conflitos
             const payload = {
               title: deck.title,
               category: deck.category || "Importados",
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               cards: deck.cards.map((c: any, idx: number) => ({
-                id: Date.now() + idx, // Gera novos IDs para garantir unicidade e edição correta
+                id: Date.now() + idx,
                 question: c.question,
                 answer: c.answer,
-                // reseta status de estudo
                 lastReviewed: null,
                 nextReviewDate: null,
                 interval: 0,
@@ -540,7 +492,6 @@ function Overview() {
           }
         }
 
-        // atualiza lista
         if (successCount > 0) {
           const res = await fetch(`${API_URL}/decks`, {
             headers: { Authorization: `Bearer ${token}` }
@@ -620,7 +571,6 @@ function Overview() {
               className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
             >
               <Trash2 className="w-5 h-5 opacity-0 cursor-default" />
-              {/* Dummy icon for spacing if needed, or just X */}
             </button>
             <div className="w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6 ring-4 ring-emerald-500/20">
               <CheckCircle className="w-12 h-12 text-emerald-500" />
@@ -637,7 +587,6 @@ function Overview() {
               Continuar
             </Button>
           </div>
-          {/* Confetti effect could go here if we had a library, but simple CSS animation in global css would be better.*/}
         </div>
       )}
       <div className="block md:hidden">
@@ -645,18 +594,17 @@ function Overview() {
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           onMenuClick={() => setIsMobileMenuOpen(true)}
+          activeTab={activeTab}
         />
       </div>
       <Sidebar
         activeTab={activeTab}
         setActiveTab={(tab) => {
           setActiveTab(tab);
-          setIsMobileMenuOpen(false); // fecha na seleção
+          setIsMobileMenuOpen(false);
         }}
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-
-        // Import/Export Props
         onImport={handleImportDecks}
         onExportConfirm={handleExportConfirm}
         isSelectionMode={isSelectionMode}
@@ -674,11 +622,11 @@ function Overview() {
             onExportConfirm={handleExportConfirm}
             selectedCount={selectedDeckIds.length}
             onImport={handleImportDecks}
+            activeTab={activeTab}
           />
         </div>
         <div className="flex-1 overflow-y-auto p-6 md:p-10 bg-dot-pattern">
           <div className="max-w-6xl mx-auto pb-20">
-            {/* decks */}
             {(activeTab === "decks_view" || activeTab === "decks_locked") && (
               <DecksView
                 decks={filteredDecks}
@@ -695,17 +643,14 @@ function Overview() {
               />
             )}
 
-            {/* library */}
             {activeTab === "library" && (
               <LibraryView decks={filteredDecks} onAddDeck={handleSaveDeck} />
             )}
 
-            {/* stats */}
             {(activeTab === "stats_view" || activeTab === "stats_locked") && (
               <StatsView isLocked={!isAuthenticated} decks={decks} />
             )}
 
-            {/* history */}
             {activeTab === "history" && (
               <HistoryView history={history} onClearHistory={clearHistory} />
             )}
@@ -735,12 +680,8 @@ function Overview() {
 
 export default Overview;
 
-// ----------------------------------------------------------------------
-// sub componente: editor de decks (gerenciar decks e suas informações)
-// ----------------------------------------------------------------------
-
 interface DeckEditorProps {
-  deck: Deck | null; /* se for null é pra entrar no modo de criação de deck */
+  deck: Deck | null;
   onSave: (deck: Deck) => void;
   onCancel: () => void;
   showAlert: (title: string, description?: string) => void;
@@ -752,7 +693,6 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
   const [language, setLanguage] = useState(deck?.language || "pt-BR");
   const [cards, setCards] = useState<Card[]>(deck?.cards || []);
 
-  // controladores dos cards
   const handleAddCard = () => {
     const newCard: Card = {
       id: Date.now(),
@@ -772,8 +712,6 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
         return {
           ...c,
           [field]: value,
-          // resetar status de revisão pro card aparecer novamente
-          // use null pra garantir que o json envie o valor e o backend limpe o campo
           nextReviewDate: null,
           lastReviewed: null,
           interval: null,
@@ -873,7 +811,7 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
           </div>
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-zinc-400 mb-2">
-              Idioma do Áudio (TTS)
+              Idioma do Áudio
             </label>
             <select
               className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent focus:border-accent outline-none transition-all appearance-none cursor-pointer"
@@ -938,12 +876,18 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
                   )}
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-zinc-500 mb-1 block uppercase">
-                    Pergunta
-                  </label>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="text-xs font-semibold text-zinc-500 block uppercase">
+                      Pergunta
+                    </label>
+                    <span className={`text-[10px] font-mono ${card.question.length >= 500 ? 'text-red-500' : 'text-zinc-600'}`}>
+                      {card.question.length}/500
+                    </span>
+                  </div>
                   <textarea
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white text-sm focus:ring-1 focus:ring-accent outline-none resize-none min-h-20"
                     value={card.question}
+                    maxLength={500}
                     onChange={(e) =>
                       handleUpdateCard(card.id, "question", e.target.value)
                     }
@@ -951,12 +895,18 @@ export const DeckEditor = ({ deck, onSave, onCancel, showAlert }: DeckEditorProp
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-zinc-500 mb-1 block uppercase">
-                    Resposta
-                  </label>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="text-xs font-semibold text-zinc-500 block uppercase">
+                      Resposta
+                    </label>
+                    <span className={`text-[10px] font-mono ${card.answer.length >= 500 ? 'text-red-500' : 'text-zinc-600'}`}>
+                      {card.answer.length}/500
+                    </span>
+                  </div>
                   <textarea
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-zinc-300 text-sm focus:ring-1 focus:ring-accent outline-none resize-none min-h-20"
                     value={card.answer}
+                    maxLength={500}
                     onChange={(e) =>
                       handleUpdateCard(card.id, "answer", e.target.value)
                     }

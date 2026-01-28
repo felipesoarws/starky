@@ -13,6 +13,7 @@ interface OverviewHeaderProps {
   onExportConfirm?: () => void;
   selectedCount?: number;
   onImport?: (file: File) => void;
+  activeTab?: string;
 }
 
 import { useDialog } from "../../context/DialogContext";
@@ -26,7 +27,8 @@ const OverviewHeader = ({
   onToggleSelectionMode,
   onExportConfirm,
   selectedCount = 0,
-  onImport
+  onImport,
+  activeTab
 }: OverviewHeaderProps) => {
   const { user, logout } = useAuth();
   const { showAlert } = useDialog();
@@ -56,7 +58,6 @@ const OverviewHeader = ({
     if (file && onImport) {
       onImport(file);
     }
-    // reseta o valor do input pra gente conseguir selecionar o mesmo arquivo de novo
     if (event.target) {
       event.target.value = "";
     }
@@ -88,18 +89,19 @@ const OverviewHeader = ({
           <Menu className="w-5 h-5" />
         </button>
 
-        <div className="relative flex-1 md:flex-none">
-          <Search className="w-4 h-4 absolute left-3 top-1/4  text-zinc-500" />
-          <input
-            onChange={(e) => setSearchQuery(e.target.value)}
-            value={searchQuery}
-            type="text"
-            placeholder="Buscar..."
-            className="text-[.8rem] bg-zinc-900 border border-zinc-800 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:border-zinc-700 w-[90%] md:w-64 text-white placeholder-zinc-600"
-          />
-        </div>
+        {(activeTab === "decks_view" || activeTab === "decks_locked") && (
+          <div className="relative flex-1 md:flex-none">
+            <Search className="w-4 h-4 absolute left-3 top-1/4  text-zinc-500" />
+            <input
+              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery}
+              type="text"
+              placeholder="Buscar..."
+              className="text-[.8rem] bg-zinc-900 border border-zinc-800 rounded-full pl-10 pr-4 py-1.5 focus:outline-none focus:border-zinc-700 w-[90%] md:w-64 text-white placeholder-zinc-600"
+            />
+          </div>
+        )}
       </div>
-
 
       {user && (
         <div className="flex items-center gap-3 relative" ref={profileRef}>
@@ -143,7 +145,6 @@ const OverviewHeader = ({
             </div>
           )}
 
-          {/* botão do avatar */}
           <div
             onClick={() => setIsProfileOpen(!isProfileOpen)}
             className="cursor-pointer select-none w-8 h-8 rounded-full bg-linear-to-l from-(--accent-color) to-blue-400 flex items-center justify-center text-xs font-bold text-white border border-white/10 hover:opacity-90 transition-opacity"
@@ -152,7 +153,6 @@ const OverviewHeader = ({
             {user ? getInitials(user.name) : "G"}
           </div>
 
-          {/* menu de sair */}
           {isProfileOpen && (
             <div className="absolute top-10 right-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden animate-fade-in z-50">
               <div className="px-4 py-3 border-b border-zinc-800">
@@ -173,7 +173,6 @@ const OverviewHeader = ({
           )}
         </div>
       )}
-
     </header>
   );
 };

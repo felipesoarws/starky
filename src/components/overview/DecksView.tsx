@@ -151,7 +151,6 @@ const DecksView = ({
                 </span>
               </div>
 
-              {/* ações de categoria */}
               <div className="flex items-center md:gap-2">
                 <button
                   onClick={() => startEditCategory(category)}
@@ -168,10 +167,8 @@ const DecksView = ({
               </div>
             </div>
 
-            {/* grid de decks */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 gap-y-12">
               {categoryDecks.map((deck) => {
-                // lógica de revisão
                 const now = new Date();
                 const cardsToReview = deck.cards.filter(c => !c.nextReviewDate || new Date(c.nextReviewDate) <= now).length;
 
@@ -236,7 +233,7 @@ const DecksView = ({
                           <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                             <button
                               onClick={(e) => { e.stopPropagation(); onEditDeck(deck); }}
-                              className={`p-1.5 rounded-lg ${isMastered ? "text-emerald-200/50 hover:text-white hover:bg-emerald-'500/20" : "text-zinc-500 hover:text-white hover:bg-zinc-800"}`}
+                              className={`p-1.5 rounded-lg ${isMastered ? "text-emerald-200/50 hover:text-white hover:bg-emerald-500/20" : "text-zinc-500 hover:text-white hover:bg-zinc-800"}`}
                               title="Editar Deck"
                             >
                               <Edit2 className="w-4 h-4" />

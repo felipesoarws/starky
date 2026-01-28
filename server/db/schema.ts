@@ -28,7 +28,7 @@ export const cards = pgTable("cards", {
   deckId: integer("deck_id").references(() => decks.id, { onDelete: 'cascade' }).notNull(),
   question: text("question").notNull(),
   answer: text("answer").notNull(),
-  difficulty: text("difficulty"), // 'easy', 'medium', 'hard', 'good'
+  difficulty: text("difficulty"),
   lastReviewed: timestamp("last_reviewed"),
   nextReviewDate: timestamp("next_review_date"),
   interval: integer("interval"), // in minutes

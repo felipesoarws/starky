@@ -16,7 +16,6 @@ function Login() {
   const { login, register, verifyEmail, isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  // code verification
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
 
@@ -63,7 +62,7 @@ function Login() {
 
   return (
     <div className="min-h-screen bg-background text-white flex">
-      <SEO 
+      <SEO
         title={`Starky | ${isLogin ? "Login" : "Registro"}`}
         description="Acesse sua conta ou crie uma nova para começar a dominar qualquer assunto com Starky."
         canonical="https://starky.app/login"

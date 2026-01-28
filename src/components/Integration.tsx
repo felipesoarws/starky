@@ -5,7 +5,6 @@ const subjects = [
   { name: "Ciência e Natureza", icon: <Microscope className="w-4 h-4 text-green-400" /> },
   { name: "História Mundial", icon: <BookOpen className="w-4 h-4 text-red-400" /> },
   { name: "Cinema e Cultura Pop", icon: <Clapperboard className="w-4 h-4 text-purple-400" /> },
-  // repetindo os temas do hero pra consistência, mais alguns extras
   { name: "Inglês A1", icon: <Globe className="w-4 h-4 text-indigo-400" /> },
   { name: "Astronomia", icon: <Microscope className="w-4 h-4 text-yellow-400" /> },
   { name: "Literatura", icon: <BookOpen className="w-4 h-4 text-orange-400" /> },

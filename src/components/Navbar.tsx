@@ -51,7 +51,6 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           </span>
         </div>
 
-        {/* header desktop */}
         <nav className="hidden md:flex items-center gap-8">
           <a
             href="#features"
@@ -83,7 +82,6 @@ const Navbar = ({ scrolled }: NavbarProps) => {
                 <Link to={"/overview"}>Começar Agora</Link>
               </Button>
 
-              {/* menu de sair */}
               {isProfileOpen && (
                 <div className="absolute top-12 right-0 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden animate-fade-in z-50">
                   <div className="px-4 py-3 border-b border-zinc-800">
@@ -119,7 +117,6 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           )}
         </div>
 
-        {/* botão do menu mobile */}
         <button
           className="md:hidden text-zinc-400 hover:text-white"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -129,7 +126,6 @@ const Navbar = ({ scrolled }: NavbarProps) => {
         </button>
       </div>
 
-      {/* header mobile */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-zinc-900 border-b border-zinc-800 p-6 flex flex-col gap-4 animate-fade-in shadow-xl">
           <a

@@ -17,7 +17,6 @@ const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 app.use(cors());
 app.use(express.json());
 
-// Middleware to verify JWT
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -31,9 +30,6 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-
-// --- AUTH ROUTES ---
-
 const resendKey = process.env.RESEND_API_KEY;
 if (!resendKey) {
   console.warn("⚠️  RESEND_API_KEY is missing. Emails will fall back to console logging.");
@@ -45,9 +41,7 @@ const resend = new Resend(resendKey || "re_123");
 
 import { getVerificationEmailHtml } from "./email-template.js";
 
-// Helper to send email
 const sendVerificationEmail = async (email: string, code: string) => {
-  // For development, still log it just in case
   console.log(`[EMAIL] To: ${email}, Code: ${code}`);
 
   if (!process.env.RESEND_API_KEY) {
@@ -57,7 +51,7 @@ const sendVerificationEmail = async (email: string, code: string) => {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Starky <onboarding@resend.dev>', // Use resend.dev for testing if verified, or user's domain
+      from: 'Starky <contato@starky.app.br>',
       to: [email],
       subject: 'Seu código de verificação Starky',
       html: getVerificationEmailHtml(code)
@@ -85,7 +79,6 @@ app.post("/api/auth/register", async (req, res) => {
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 mins
 
-    // Check if user exists
     const existingUser = await db.select().from(users).where(eq(users.email, email));
 
     let userId;
@@ -95,18 +88,16 @@ app.post("/api/auth/register", async (req, res) => {
       if (user.isVerified) {
         return res.status(400).json({ message: "Email already in use" });
       } else {
-        // Update existing unverified user
         const [updatedUser] = await db.update(users).set({
           name,
           passwordHash: hashedPassword,
           verificationCode,
           verificationCodeExpiresAt: expiresAt,
-          createdAt: new Date() // specific behavior: reset creation time? Optional.
+          createdAt: new Date()
         }).where(eq(users.id, user.id)).returning();
         userId = updatedUser.id;
       }
     } else {
-      // Create new user
       const [newUser] = await db.insert(users).values({
         name,
         email,
@@ -118,7 +109,6 @@ app.post("/api/auth/register", async (req, res) => {
       userId = newUser.id;
     }
 
-    // Send code
     await sendVerificationEmail(email, verificationCode);
 
     res.json({
@@ -158,7 +148,6 @@ app.post("/api/auth/verify", async (req, res) => {
       return res.status(400).json({ message: "Code expired" });
     }
 
-    // Verify user
     const [updatedUser] = await db.update(users).set({
       isVerified: true,
       verificationCode: null,
@@ -187,7 +176,6 @@ app.post("/api/auth/login", async (req, res) => {
 
     if (!user.isVerified) {
       return res.status(403).json({ message: "Please verify your email first", requiresVerification: true });
-      // NOTE: Frontend can trigger the verify UI if it sees this specific error or flag
     }
 
     const validPassword = await bcrypt.compare(password, user.passwordHash);
@@ -217,14 +205,10 @@ app.get("/api/auth/me", authenticateToken, async (req, res) => {
   }
 });
 
-// --- DECK ROUTES ---
-
-// Get all decks for user (including cards)
 app.get("/api/decks", authenticateToken, async (req, res) => {
   try {
     const userId = (req as any).user.id;
 
-    // Using Drizzle query builders to fetch related cards
     const userDecks = await db.query.decks.findMany({
       where: eq(decks.userId, userId),
       with: {
@@ -240,7 +224,6 @@ app.get("/api/decks", authenticateToken, async (req, res) => {
   }
 });
 
-// Create a new deck
 app.post("/api/decks", authenticateToken, async (req, res) => {
   try {
     const userId = (req as any).user.id;
@@ -266,7 +249,6 @@ app.post("/api/decks", authenticateToken, async (req, res) => {
       await db.insert(cards).values(cardsToInsert);
     }
 
-    // Fetch full deck to return
     const fullDeck = await db.query.decks.findFirst({
       where: eq(decks.id, newDeck.id),
       with: { cards: true }
@@ -279,7 +261,6 @@ app.post("/api/decks", authenticateToken, async (req, res) => {
   }
 });
 
-// Update deck metadata (title, category)
 app.put("/api/decks/:id", authenticateToken, async (req, res) => {
   try {
     const userId = (req as any).user.id;
@@ -288,11 +269,9 @@ app.put("/api/decks/:id", authenticateToken, async (req, res) => {
 
     console.log(`[PUT /api/decks/${deckId}] Updating deck`, req.body);
 
-    // Verify ownership
     const [deck] = await db.select().from(decks).where(and(eq(decks.id, deckId), eq(decks.userId, userId)));
     if (!deck) return res.status(404).json({ message: "Deck not found" });
 
-    // Fix Date parsing: Handle "Nunca" or invalid strings
     let parsedLastStudied = deck.lastStudied;
     if (lastStudied && lastStudied !== "Nunca") {
       const d = new Date(lastStudied);
@@ -301,7 +280,6 @@ app.put("/api/decks/:id", authenticateToken, async (req, res) => {
       }
     }
 
-    // Update Deck Info
     await db.update(decks).set({
       title: title || deck.title,
       category: category || deck.category,
@@ -310,21 +288,17 @@ app.put("/api/decks/:id", authenticateToken, async (req, res) => {
     }).where(eq(decks.id, deckId));
 
     if (incomingCards && Array.isArray(incomingCards)) {
-      // 1. Obter IDs dos cards atuais no banco
       const existingCardsInDb = await db.select({ id: cards.id }).from(cards).where(eq(cards.deckId, deckId));
       const dbCardIds = existingCardsInDb.map(c => c.id);
 
-      // 2. Identificar quais cards foram removidos (estão no banco mas não no payload)
       const incomingCardIds = incomingCards.map(c => c.id).filter(id => id && id <= 2147483647);
       const idsToDelete = dbCardIds.filter(id => !incomingCardIds.includes(id));
 
       if (idsToDelete.length > 0) {
-        // Multi-delete (Drizzle syntax check: inArray is standard)
         const { inArray } = await import("drizzle-orm");
         await db.delete(cards).where(and(eq(cards.deckId, deckId), inArray(cards.id, idsToDelete)));
       }
 
-      // 3. Atualizar ou Inserir cards do payload
       for (const card of incomingCards) {
         if (card.id && typeof card.id === 'number' && card.id <= 2147483647) {
           // Update
@@ -337,12 +311,10 @@ app.put("/api/decks/:id", authenticateToken, async (req, res) => {
             difficulty: card.difficulty
           }).where(eq(cards.id, card.id));
         } else {
-          // Insert (no ID or temporary timestamp ID)
           await db.insert(cards).values({
             deckId: deckId,
             question: card.question,
             answer: card.answer,
-            // se vier com progresso (ex: importação), salva também
             nextReviewDate: card.nextReviewDate ? new Date(card.nextReviewDate) : null,
             lastReviewed: card.lastReviewed ? new Date(card.lastReviewed) : null,
             interval: card.interval || 0,
@@ -364,7 +336,6 @@ app.put("/api/decks/:id", authenticateToken, async (req, res) => {
   }
 });
 
-// Delete deck
 app.delete("/api/decks/:id", authenticateToken, async (req, res) => {
   try {
     const userId = (req as any).user.id;
@@ -382,9 +353,6 @@ app.delete("/api/decks/:id", authenticateToken, async (req, res) => {
   }
 });
 
-// --- CARD ROUTES ---
-
-// Update single card (for study session essentially)
 app.put("/api/cards/:id", authenticateToken, async (req, res) => {
   try {
     const cardId = parseInt(req.params.id);
@@ -406,7 +374,6 @@ app.put("/api/cards/:id", authenticateToken, async (req, res) => {
   }
 });
 
-// Bulk delete category
 app.delete("/api/categories/:name", authenticateToken, async (req, res) => {
   try {
     const userId = (req as any).user.id;
@@ -424,7 +391,6 @@ app.delete("/api/categories/:name", authenticateToken, async (req, res) => {
   }
 });
 
-// Bulk update category name
 app.put("/api/categories/:name", authenticateToken, async (req, res) => {
   try {
     const userId = (req as any).user.id;
@@ -445,8 +411,6 @@ app.put("/api/categories/:name", authenticateToken, async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
-// --- HISTORY ROUTES ---
 
 app.get("/api/history", authenticateToken, async (req, res) => {
   try {
@@ -495,21 +459,12 @@ app.delete("/api/history", authenticateToken, async (req, res) => {
   }
 });
 
-// Export app for Vercel
 export default app;
-
-// Only listen if run directly (not imported as a module)
-// In Vercel, this file is imported, so listen won't run.
-// locally 'npm run server' runs this file directly.
-
 
 if (process.env.NODE_ENV !== 'production') {
   const server = app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
 
-  // Workaround: Prevent process from exiting immediately when running locally
-  // This is necessary because app.listen() is not holding the event loop open
-  // in this specific environment (Node + Drizzle + dotenv combination)
   setInterval(() => { }, 60000);
 }

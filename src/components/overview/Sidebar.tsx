@@ -12,8 +12,6 @@ interface SidebarProps {
   setActiveTab: (tab: TabType) => void;
   isOpen?: boolean;
   onClose?: () => void;
-
-  // props de importar/exportar
   onImport?: (file: File) => void;
   onExportStart?: () => void;
   onExportConfirm?: () => void;
@@ -59,7 +57,6 @@ const Sidebar = ({
     if (event.target) {
       event.target.value = "";
     }
-    // fecha a sidebar depois da ação se quiser, ou mantém aberta
     if (onClose) onClose();
   };
 
@@ -79,7 +76,6 @@ const Sidebar = ({
         onChange={handleFileChange}
       />
 
-      {/* overlay do mobile */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 md:hidden animate-fade-in backdrop-blur-sm"
@@ -87,7 +83,6 @@ const Sidebar = ({
         />
       )}
 
-      {/* conteúdo da sidebar */}
       <aside className={`
         fixed inset-y-0 left-0 z-50 w-64 bg-zinc-950 border-r border-zinc-800 flex flex-col transition-transform duration-300 md:translate-x-0 md:static md:flex
         ${isOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"}
@@ -117,14 +112,12 @@ const Sidebar = ({
             <Eye className="w-4 h-4" /> Decks
           </button>
 
-
           <button
             onClick={() => setActiveTab("library")}
             className={getButtonClass("library")}
           >
             <Library className="w-4 h-4" /> Explorar
           </button>
-
 
           <div className="text-xs font-bold text-zinc-600 uppercase px-4 py-2">
             Stats
@@ -144,7 +137,6 @@ const Sidebar = ({
             <History className="w-4 h-4" /> Histórico
           </button>
 
-          {/* só no mobile: utils de importar/exportar */}
           <div className="md:hidden mt-6 pt-6 border-t border-zinc-900">
             <div className="text-xs font-bold text-zinc-600 uppercase px-4 py-2">
               Gerenciar

@@ -9,13 +9,11 @@ import { AuthProvider } from "./context/AuthContext.tsx";
 import "./index.css";
 import { DialogProvider } from "./context/DialogContext.tsx";
 
-// Lazy load pages
 const Overview = lazy(() => import("./pages/Overview.tsx"));
 const Login = lazy(() => import("./pages/Login.tsx"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy.tsx"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService.tsx"));
 
-// Loading component
 const PageLoader = () => (
   <div className="h-screen w-full flex items-center justify-center bg-zinc-950 text-white">
     <Loader2 className="w-8 h-8 animate-spin text-accent" />

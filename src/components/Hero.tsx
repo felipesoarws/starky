@@ -7,8 +7,6 @@ import {
 import { Button } from "./ui/Button";
 import { useNavigate } from "react-router";
 
-
-
 const HERO_CARDS = [
   {
     category: "Geografia",
@@ -55,7 +53,7 @@ const Hero = () => {
     setIsFlipped(false);
     setTimeout(() => {
       setCurrentCardIndex((prev) => (prev + 1) % HERO_CARDS.length);
-    }, 200); // tempo da animação 
+    }, 200);
   }
 
   return (
@@ -119,7 +117,7 @@ const Hero = () => {
 
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 backdrop-blur-sm p-2 shadow-2xl ring-1 ring-black/5">
             <div className="rounded-xl bg-zinc-950 overflow-hidden relative border border-zinc-800 flex flex-col group hover:border-zinc-700 lg:aspect-16/10  transition-colors">
-              {/* app - cabeçalho */}
+
               <div className="h-14 border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-md flex items-center justify-between px-6 z-10">
                 <div className="flex items-center gap-4">
                   <div className="w-8 h-8 rounded-lg bg-zinc-800/50 flex items-center justify-center text-zinc-400 hover:text-white transition-colors cursor-pointer" onClick={() => setIsFlipped(false)}>
@@ -143,7 +141,6 @@ const Hero = () => {
                 </div>
               </div>
 
-              {/* app - linha de progressão */}
               <div className="h-0.5 bg-zinc-900 w-full">
                 <div
                   className="h-full bg-accent transition-all duration-500"
@@ -151,7 +148,6 @@ const Hero = () => {
                 ></div>
               </div>
 
-              {/* app - área principal */}
               <div
                 className="flex-1 flex flex-col items-center justify-center p-6 sm:p-12 relative bg-background cursor-pointer perspective-1000"
                 onClick={() => !isFlipped && setIsFlipped(true)}
@@ -191,7 +187,6 @@ const Hero = () => {
                 </div>
               </div>
 
-              {/* app - controles */}
               <div className="h-24 border-t border-zinc-800 bg-zinc-950 flex items-center justify-center px-6 gap-4 z-10">
                 {!isFlipped ? (
                   <Button
