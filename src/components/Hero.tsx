@@ -8,6 +8,7 @@ import {
 import { useEffect, useCallback } from "react";
 import { Button } from "./ui/Button";
 import { useNavigate } from "react-router";
+import { motion, AnimatePresence } from "framer-motion";
 
 const HERO_CARDS = [
   {
@@ -97,39 +98,70 @@ const Hero = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isFlipped, currentCard, handleNextCard, handleSpeak]);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" as const }
+    }
+  };
+
   return (
     <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-10 overflow-hidden bg-(--accent-background)">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-accent/[0.15] blur-[120px] rounded-full pointer-events-none -z-10" />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.5, ease: "easeOut" as const }}
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-accent/[0.15] blur-[120px] rounded-full pointer-events-none -z-10"
+      />
       <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-indigo-500/10 blur-[100px] rounded-full pointer-events-none -z-10" />
 
-      <div className="max-w-5xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/50 shadow-sm mb-8 animate-fade-in">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="max-w-5xl mx-auto text-center"
+      >
+        <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/50 shadow-sm mb-8">
           <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse"></span>
           <span className="text-xs font-medium text-zinc-400 ">
             A evolução do aprendizado chegou
           </span>
-        </div>
+        </motion.div>
 
-        <h1
-          className="text-5xl md:text-7xl lg:text-7xl font-bold tracking-tighter mb-8 leading-[.8] animate-slide-up text-white"
+        <motion.h1
+          variants={itemVariants}
+          className="text-5xl md:text-7xl lg:text-7xl font-bold tracking-tighter mb-8 leading-[.8] text-white"
           style={{ userSelect: "none" }}
         >
           Domine qualquer assunto <br className="hidden md:block" />
           <span className="text-accent ">com Repetição Espaçada.</span>
-        </h1>
+        </motion.h1>
 
-        <p
-          className="text-md md:text-xl lg:text-md text-zinc-400 max-w-2xl mx-auto mb-10 leading-[1.3] animate-slide-up"
-          style={{ animationDelay: "0.1s" }}
+        <motion.p
+          variants={itemVariants}
+          className="text-md md:text-xl lg:text-md text-zinc-400 max-w-2xl mx-auto mb-10 leading-[1.3]"
         >
           O Starky ajuda você a memorizar conceitos a longo prazo. Crie
           flashcards, acompanhe seu progresso e deixe nosso algoritmo
           inteligente decidir quando revisar.
-        </p>
+        </motion.p>
 
-        <div
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up"
-          style={{ animationDelay: "0.2s" }}
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <Button
             size="lg"
@@ -148,11 +180,15 @@ const Hero = () => {
             <Play className="w-4 h-4 fill-current mr-2 group-hover:scale-110 transition-transform" />
             Explorar Decks
           </Button>
-        </div>
+        </motion.div>
 
-        <div
-          className="mt-20 relative mx-auto max-w-4xl animate-slide-up text-left"
-          style={{ animationDelay: "0.4s" }}
+        <motion.div
+          variants={itemVariants}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" as const }}
+          className="mt-20 relative mx-auto max-w-4xl text-left"
         >
           <div className="absolute -inset-4 bg-accent/10 blur-3xl rounded-4xl"></div>
 
@@ -217,21 +253,40 @@ const Hero = () => {
                     </button>
                   </div>
 
-                  {!isFlipped ? (
-                    <div className="animate-fade-in key={currentCard.question}">
-                      <h3 className="text-2xl md:text-4xl font-medium text-white leading-tight">
-                        {currentCard.question}
-                      </h3>
-                    </div>
-                  ) : (
-                    <div className="space-y-6 max-w-2xl animate-slide-up key={currentCard.answer}">
-                      <p className="text-xl md:text-4xl text-zinc-100 leading-relaxed font-bold">
-                        {currentCard.answer}
-                      </p>
+                  <AnimatePresence mode="wait">
+                    {!isFlipped ? (
+                      <motion.div
+                        key="question"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <h3 className="text-2xl md:text-4xl font-medium text-white leading-tight">
+                          {currentCard.question}
+                        </h3>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="answer"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="space-y-6 max-w-2xl"
+                      >
+                        <p className="text-xl md:text-4xl text-zinc-100 leading-relaxed font-bold">
+                          {currentCard.answer}
+                        </p>
 
-                      <div className="w-16 h-1 bg-accent/50 rounded-full mx-auto mt-8"></div>
-                    </div>
-                  )}
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: 64 }}
+                          className="h-1 bg-accent/50 rounded-full mx-auto mt-8"
+                        ></motion.div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
                   {!isFlipped && (
                     <div className="mt-12 h-6 flex flex-col items-center justify-center gap-2">
@@ -303,8 +358,8 @@ const Hero = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 };

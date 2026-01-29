@@ -1,11 +1,18 @@
 import { Button } from "./ui/Button";
 import { useNavigate } from "react-router";
+import { motion } from "framer-motion";
 
 const CTA = () => {
   const navigate = useNavigate();
   return (
     <section className="py-24 px-6 bg-(--accent-background)">
-      <div className="max-w-5xl mx-auto rounded-[3rem] bg-(--accent-color) p-12 md:p-24 text-center relative overflow-hidden shadow-2xl shadow-(--accent-color)/20">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="max-w-5xl mx-auto rounded-[3rem] bg-(--accent-color) p-12 md:p-24 text-center relative overflow-hidden shadow-2xl shadow-(--accent-color)/20"
+      >
         <div className="relative z-10">
           <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight text-white">
             Pronto para turbinar sua memória?
@@ -23,7 +30,7 @@ const CTA = () => {
             </Button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

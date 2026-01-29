@@ -1,4 +1,5 @@
 import { Globe } from "lucide-react";
+import { motion } from "framer-motion";
 
 const subjects = [
   { name: "Inglês", icon: <Globe className="w-4 h-4 text-blue-400" /> },
@@ -19,16 +20,28 @@ const Integration = () => {
       id="decks"
       className="py-24 border-y border-zinc-800 bg-zinc-950/50 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6 text-center mb-12">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="max-w-7xl mx-auto px-6 text-center mb-12"
+      >
         <h3 className="text-zinc-500 font-medium text-sm uppercase tracking-widest mb-2">
           Biblioteca em Crescimento
         </h3>
         <p className="text-2xl font-bold text-white">
           Comece a aprender imediatamente
         </p>
-      </div>
+      </motion.div>
 
-      <div className="relative w-full overflow-hidden group">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1 }}
+        className="relative w-full overflow-hidden group"
+      >
         <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 z-10 bg-linear-to-r from-(--accent-background) to-transparent pointer-events-none"></div>
         <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 z-10 bg-linear-to-l from-(--accent-background) to-transparent pointer-events-none"></div>
         <div className="flex w-max animate-marquee whitespace-nowrap hover:[animation-play-state:paused]">
@@ -44,7 +57,7 @@ const Integration = () => {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

@@ -6,6 +6,7 @@ import {
   Layout,
   Download,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface FeatureCardProps {
   title: string;
@@ -18,7 +19,13 @@ const Features = () => {
   return (
     <section id="features" className="py-24 px-10 bg-zinc-950">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-16 md:text-center max-w-5xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mb-16 md:text-center max-w-5xl mx-auto"
+        >
           <h2
             className="text-3xl md:text-6xl font-bold mb-6 tracking-tight text-white leading-[.8]"
             style={{ userSelect: "none" }}
@@ -32,10 +39,30 @@ const Features = () => {
             O Starky combina o poder da recordação ativa com agendamento
             inteligente para garantir que você nunca esqueça o que aprendeu.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="md:col-span-2 p-8 md:p-12 rounded-3xl border border-zinc-800 bg-zinc-900 relative overflow-hidden group shadow-sm">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1
+              }
+            }
+          }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        >
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 }
+            }}
+            className="md:col-span-2 p-8 md:p-12 rounded-3xl border border-zinc-800 bg-zinc-900 relative overflow-hidden group shadow-sm"
+          >
             <div className="absolute top-0 right-0 p-12 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity">
               <BrainCircuit className="w-64 h-64 text-(--accent-color)" />
             </div>
@@ -53,35 +80,36 @@ const Features = () => {
               </p>
 
               <div className="mt-10 grid grid-cols-2 gap-4 max-w-md lg:grid-cols-4">
-                <div className="bg-green-900/10 p-4 rounded-lg border border-green-900/50 text-center">
-                  <div className="text-xl font-bold text-green-400 mb-1">
-                    Fácil
-                  </div>
-                  <div className="text-xs text-green-400">Mostrar em 4d</div>
-                </div>
-                <div className="bg-blue-900/10 p-4 rounded-lg border border-blue-900/50 text-center">
-                  <div className="text-xl font-bold text-blue-400 mb-1">
-                    Bom
-                  </div>
-                  <div className="text-xs text-blue-400">Mostrar em 2d</div>
-                </div>
-                <div className="bg-yellow-900/10 p-4 rounded-lg border border-yellow-900/50 text-center">
-                  <div className="text-xl font-bold text-yellow-400 mb-1">
-                    Médio
-                  </div>
-                  <div className="text-xs text-yellow-400">Mostrar em 10m</div>
-                </div>
-                <div className="bg-red-900/10 p-4 rounded-lg border border-red-900/50 text-center">
-                  <div className="text-xl font-bold text-red-400 mb-1">
-                    Difícil
-                  </div>
-                  <div className="text-xs text-red-400">Mostrar em 1m</div>
-                </div>
+                {[
+                  { label: "Fácil", color: "green", time: "em 4d" },
+                  { label: "Bom", color: "blue", time: "em 2d" },
+                  { label: "Médio", color: "yellow", time: "em 10m" },
+                  { label: "Difícil", color: "red", time: "em 1m" }
+                ].map((item, idx) => (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5 + idx * 0.1 }}
+                    className={`bg-${item.color}-900/10 p-4 rounded-lg border border-${item.color}-900/50 text-center`}
+                  >
+                    <div className={`text-xl font-bold text-${item.color}-400 mb-1`}>
+                      {item.label}
+                    </div>
+                    <div className={`text-xs text-${item.color}-400`}>Mostrar {item.time}</div>
+                  </motion.div>
+                ))}
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="md:col-span-1 p-8 rounded-3xl border border-zinc-800 bg-zinc-900 flex flex-col justify-between group overflow-hidden shadow-sm">
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 }
+            }}
+            className="md:col-span-1 p-8 rounded-3xl border border-zinc-800 bg-zinc-900 flex flex-col justify-between group overflow-hidden shadow-sm"
+          >
             <div>
               <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center mb-6 text-(--accent-color)">
                 <Library className="w-6 h-6" />
@@ -95,30 +123,20 @@ const Features = () => {
             </div>
 
             <div className="mt-6 space-y-3">
-              <div className="p-3 bg-zinc-800 border border-zinc-700 rounded-lg flex items-center gap-3">
-                <div className="w-8 h-8 rounded bg-blue-900/30 flex items-center justify-center text-blue-500 font-bold text-xs">
-                  EN
+              {[
+                { lang: "EN", color: "blue", text: "Inglês A1 - C1" },
+                { lang: "ES", color: "yellow", text: "Espanhol A1 - C1" },
+                { lang: "FR", color: "red", text: "Francês A1 - C1" }
+              ].map((deck) => (
+                <div key={deck.lang} className="p-3 bg-zinc-800 border border-zinc-700 rounded-lg flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded bg-${deck.color}-900/30 flex items-center justify-center text-${deck.color}-500 font-bold text-xs`}>
+                    {deck.lang}
+                  </div>
+                  <div className="text-sm font-medium text-zinc-300">{deck.text}</div>
                 </div>
-                <div className="text-sm font-medium text-zinc-300">Inglês A1 - C1</div>
-              </div>
-              <div className="p-3 bg-zinc-800 border border-zinc-700 rounded-lg flex items-center gap-3">
-                <div className="w-8 h-8 rounded bg-yellow-900/30 flex items-center justify-center text-yellow-500 font-bold text-xs">
-                  ES
-                </div>
-                <div className="text-sm font-medium text-zinc-300">
-                  Espanhol A1 - C1
-                </div>
-              </div>
-              <div className="p-3 bg-zinc-800 border border-zinc-700 rounded-lg flex items-center gap-3">
-                <div className="w-8 h-8 rounded bg-red-900/30 flex items-center justify-center text-red-500 font-bold text-xs">
-                  FR
-                </div>
-                <div className="text-sm font-medium text-zinc-300">
-                  Francês A1 - C1
-                </div>
-              </div>
+              ))}
             </div>
-          </div>
+          </motion.div>
 
           <FeatureCard
             title="Personalização Rica"
@@ -132,10 +150,10 @@ const Features = () => {
           />
           <FeatureCard
             title="Design Intuitivo"
-            description="Uma interface moderna e limpa que torna o estudo uma alegria."
+            description="Uma interface moderna e limpa que torna o estudo fácil e prático."
             icon={<Layout className="w-6 h-6" />}
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -147,7 +165,11 @@ const FeatureCard = ({
   icon,
   className = "",
 }: FeatureCardProps) => (
-  <div
+  <motion.div
+    variants={{
+      hidden: { opacity: 0, y: 20 },
+      visible: { opacity: 1, y: 0 }
+    }}
     className={`p-8 rounded-3xl border border-zinc-800 bg-zinc-900 hover:border-(--accent-color)/30 hover:shadow-lg hover:shadow-(--accent-color)/5 transition-all group ${className}`}
   >
     <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-(--accent-color)">
@@ -155,7 +177,7 @@ const FeatureCard = ({
     </div>
     <h3 className="text-xl font-semibold mb-3 text-white ">{title}</h3>
     <p className="text-zinc-400 leading-relaxed lg:leading-[1.1vw]">{description}</p>
-  </div>
+  </motion.div>
 );
 
 export default Features;

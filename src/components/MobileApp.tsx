@@ -1,4 +1,5 @@
 import { Construction } from "lucide-react";
+import { motion } from "framer-motion";
 
 const MobileApp = () => {
   return (
@@ -7,7 +8,13 @@ const MobileApp = () => {
       className="py-24 px-10 border-y border-zinc-800 bg-zinc-900/50"
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
-        <div className="flex-1 text-center md:text-left">
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="flex-1 text-center md:text-left"
+        >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-yellow-500/20 bg-yellow-500/10 mb-6">
             <Construction className="w-4 h-4 text-yellow-500" />
             <span className="text-xs font-medium text-yellow-500">
@@ -66,9 +73,15 @@ const MobileApp = () => {
               </div>
             </button>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="flex-1 relative flex justify-center opacity-80">
+        <motion.div
+          initial={{ opacity: 0, x: 40, rotate: 5 }}
+          whileInView={{ opacity: 0.8, x: 0, rotate: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="flex-1 relative flex justify-center"
+        >
           <div className="relative z-10 w-[280px] h-[580px] bg-zinc-900 border-8 border-zinc-800 rounded-[3rem] shadow-2xl overflow-hidden grayscale-[0.5]">
             <div className="absolute top-0 w-full h-8 bg-zinc-900 z-20 flex justify-center border-b border-zinc-800">
               <div className="w-32 h-6 bg-zinc-800 rounded-b-xl"></div>
@@ -135,7 +148,7 @@ const MobileApp = () => {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
