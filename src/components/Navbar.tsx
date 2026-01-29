@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
-import { Menu, X, LampDesk, LogOut, GithubIcon } from "lucide-react";
+import { Menu, X, LampDesk, LogOut, GithubIcon, Settings } from "lucide-react";
 import { Button } from "./ui/Button";
 import { useAuth } from "../context/AuthContext";
 
@@ -103,8 +103,17 @@ const Navbar = ({ scrolled }: NavbarProps) => {
                 <div className="absolute top-12 right-0 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden animate-fade-in z-50">
                   <div className="px-4 py-3 border-b border-zinc-800">
                     <p className="text-sm font-medium text-white truncate">{user.name}</p>
-                    <p className="text-xs text-zinc-500 truncate">{user.email}</p>
+                    <p className="text-xs text-zinc-500 truncate">@{user.username}</p>
                   </div>
+
+                  <Link
+                    to="/account"
+                    onClick={() => setIsProfileOpen(false)}
+                    className="w-full text-left px-4 py-3 text-sm text-zinc-300 hover:bg-zinc-800 transition-colors flex items-center gap-2 border-b border-zinc-800"
+                  >
+                    <Settings className="w-4 h-4" />
+                    Minha Conta
+                  </Link>
 
                   <button
                     onClick={() => {
@@ -179,16 +188,21 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           <hr className="border-zinc-800" />
           <div className="flex flex-col gap-3">
             {isAuthenticated ? (
-              <Button
-                variant="logout"
-                className="w-full"
-                onClick={() => {
-                  logout();
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                Sair
-              </Button>
+              <>
+                <Button variant="secondary" className="w-full">
+                  <Link to="/account" onClick={() => setIsMobileMenuOpen(false)}>Minha Conta</Link>
+                </Button>
+                <Button
+                  variant="logout"
+                  className="w-full"
+                  onClick={() => {
+                    logout();
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  Sair
+                </Button>
+              </>
             ) : (
               <>
                 <Button variant="secondary" className="w-full">

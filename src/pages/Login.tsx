@@ -8,6 +8,7 @@ import { Button } from "../components/ui/Button";
 function Login() {
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +42,7 @@ function Login() {
       return;
     }
 
-    if (!email || !password || (!isLogin && !name)) {
+    if (!email || !password || (!isLogin && (!name || !username))) {
       setError("Preencha todos os campos.");
       return;
     }
@@ -50,7 +51,7 @@ function Login() {
       const success = await login(email, password);
       if (!success) setError("Email ou senha inválidos.");
     } else {
-      const result = await register(name, email, password);
+      const result = await register(name, username, email, password);
       if (!result.success) {
         setError(result.message || "Erro ao registrar. Email pode já estar em uso.");
       } else if (result.requiresVerification) {
@@ -124,23 +125,37 @@ function Login() {
               ) : (
                 <>
                   {!isLogin && (
-                    <div className="space-y-1">
-                      <label className="text-sm font-medium text-zinc-300">Nome</label>
-                      <input
-                        type="text"
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none"
-                        placeholder="Seu nome"
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                      />
-                    </div>
+                    <>
+                      <div className="space-y-1">
+                        <label className="text-sm font-medium text-zinc-300">Nome</label>
+                        <input
+                          type="text"
+                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none font-mono"
+                          placeholder="Seu nome"
+                          value={name}
+                          onChange={e => setName(e.target.value)}
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-sm font-medium text-zinc-300">Nome de Usuário (@)</label>
+                        <input
+                          type="text"
+                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none font-mono"
+                          placeholder="seu_usuario"
+                          value={username}
+                          onChange={e => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
+                        />
+                        <p className="text-[10px] text-zinc-500">Apenas letras minúsculas, números e sublinhados.</p>
+                      </div>
+                    </>
                   )}
 
                   <div className="space-y-1">
                     <label className="text-sm font-medium text-zinc-300">Email</label>
                     <input
                       type="email"
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none"
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none font-mono"
                       placeholder="seu@email.com"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
@@ -153,7 +168,7 @@ function Login() {
                     <div className="relative">
                       <input
                         type={showPassword ? "text" : "password"}
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none pr-10"
+                        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-accent outline-none pr-10 font-mono"
                         placeholder="••••••••"
                         value={password}
                         onChange={e => setPassword(e.target.value)}

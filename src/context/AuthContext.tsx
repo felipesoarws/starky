@@ -5,6 +5,7 @@ import { API_URL } from "../config";
 interface User {
   id: number;
   name: string;
+  username: string;
   email: string;
 }
 
@@ -12,11 +13,15 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string) => Promise<{ success: boolean; requiresVerification?: boolean; message?: string }>;
+  register: (name: string, username: string, email: string, password: string) => Promise<{ success: boolean; requiresVerification?: boolean; message?: string }>;
   verifyEmail: (email: string, code: string) => PromiseLike<boolean>;
   logout: () => void;
   isLoading: boolean;
   token: string | null;
+  updateProfile: (name: string, username: string) => Promise<{ success: boolean; message?: string }>;
+  updatePassword: (currentPassword: string, newPassword: string) => Promise<{ success: boolean; message?: string }>;
+  requestEmailChange: (newEmail: string) => Promise<{ success: boolean; message?: string }>;
+  confirmEmailChange: (newEmail: string, code: string) => Promise<{ success: boolean; message?: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -95,13 +100,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const register = async (name: string, email: string, password: string): Promise<{ success: boolean; requiresVerification?: boolean; message?: string }> => {
+  const register = async (name: string, username: string, email: string, password: string): Promise<{ success: boolean; requiresVerification?: boolean; message?: string }> => {
     setIsLoading(true);
     try {
       const res = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, username, email, password }),
         credentials: 'include'
       });
 
@@ -165,6 +170,92 @@ export function AuthProvider({ children }: AuthProviderProps) {
     localStorage.removeItem("starky_token");
   };
 
+  const updateProfile = async (name: string, username: string): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const res = await fetch(`${API_URL}/auth/profile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ name, username }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) return { success: false, message: data.message };
+
+      setUser(data);
+      return { success: true };
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: "Erro de conexão" };
+    }
+  };
+
+  const updatePassword = async (currentPassword: string, newPassword: string): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const res = await fetch(`${API_URL}/auth/password`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) return { success: false, message: data.message };
+
+      return { success: true };
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: "Erro de conexão" };
+    }
+  };
+
+  const requestEmailChange = async (newEmail: string): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const res = await fetch(`${API_URL}/auth/request-email-change`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ newEmail }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) return { success: false, message: data.message };
+
+      return { success: true };
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: "Erro de conexão" };
+    }
+  };
+
+  const confirmEmailChange = async (newEmail: string, code: string): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const res = await fetch(`${API_URL}/auth/confirm-email-change`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ newEmail, code }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) return { success: false, message: data.message };
+
+      setUser(data);
+      return { success: true };
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: "Erro de conexão" };
+    }
+  };
+
   return (
     <AuthContext.Provider value={{
       user,
@@ -174,7 +265,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       verifyEmail,
       logout,
       isLoading,
-      token
+      token,
+      updateProfile,
+      updatePassword,
+      requestEmailChange,
+      confirmEmailChange
     }}>
       {children}
     </AuthContext.Provider>

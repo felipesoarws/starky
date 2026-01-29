@@ -137,10 +137,14 @@ const sendVerificationEmail = async (email: string, code: string) => {
 };
 
 const validateRegistration = (req: Request, res: Response, next: NextFunction) => {
-  const { name, email, password } = req.body;
+  const { name, username, email, password } = req.body;
 
   if (!name || name.trim().length < 2 || name.length > 100) {
     return res.status(400).json({ message: "Nome inválido (2-100 caracteres)" });
+  }
+
+  if (!username || !/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+    return res.status(400).json({ message: "Username inválido (3-20 caracteres, apenas letras, números e _)" });
   }
 
   if (!email || !validator.isEmail(email)) {
@@ -191,33 +195,41 @@ const validateDeck = (req: Request, res: Response, next: NextFunction) => {
 
 app.post("/api/auth/register", validateRegistration, authLimiter, async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, username, email, password } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const verificationCode = crypto.randomInt(100000, 999999).toString();
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 mins
 
-    const existingUser = await db.select().from(users).where(eq(users.email, email));
+    // Check for existing verified user with same email OR username
+    const existingEmail = await db.select().from(users).where(eq(users.email, email));
+    if (existingEmail.length > 0 && existingEmail[0].isVerified) {
+      return res.status(400).json({ message: "Email already in use" });
+    }
+
+    const existingUsername = await db.select().from(users).where(eq(users.username, username));
+    if (existingUsername.length > 0 && existingUsername[0].isVerified) {
+      return res.status(400).json({ message: "Username already in use" });
+    }
 
     let userId;
 
-    if (existingUser.length > 0) {
-      const user = existingUser[0];
-      if (user.isVerified) {
-        return res.status(400).json({ message: "Email already in use" });
-      } else {
-        const [updatedUser] = await db.update(users).set({
-          name,
-          passwordHash: hashedPassword,
-          verificationCode,
-          verificationCodeExpiresAt: expiresAt,
-          createdAt: new Date()
-        }).where(eq(users.id, user.id)).returning();
-        userId = updatedUser.id;
-      }
+    if (existingEmail.length > 0) {
+      const user = existingEmail[0];
+      // Reuse unverified record
+      const [updatedUser] = await db.update(users).set({
+        name,
+        username,
+        passwordHash: hashedPassword,
+        verificationCode,
+        verificationCodeExpiresAt: expiresAt,
+        createdAt: new Date()
+      }).where(eq(users.id, user.id)).returning();
+      userId = updatedUser.id;
     } else {
       const [newUser] = await db.insert(users).values({
         name,
+        username,
         email,
         passwordHash: hashedPassword,
         isVerified: false,
@@ -283,7 +295,7 @@ app.post("/api/auth/verify", verifyLimiter, async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
-    res.json({ token, user: { id: updatedUser.id, name: updatedUser.name, email: updatedUser.email } });
+    res.json({ token, user: { id: updatedUser.id, name: updatedUser.name, username: updatedUser.username, email: updatedUser.email } });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -317,7 +329,7 @@ app.post("/api/auth/login", validateLogin, authLimiter, async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
-    res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
+    res.json({ token, user: { id: user.id, name: user.name, username: user.username, email: user.email } });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -331,7 +343,121 @@ app.get("/api/auth/me", authenticateToken, async (req, res) => {
 
     if (!user) return res.sendStatus(404);
 
-    res.json({ id: user.id, name: user.name, email: user.email });
+    res.json({ id: user.id, name: user.name, username: user.username, email: user.email });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.put("/api/auth/profile", authenticateToken, async (req, res) => {
+  try {
+    const userId = (req as any).user.id;
+    const { name, username } = req.body;
+
+    if (!name || name.trim().length < 2) {
+      return res.status(400).json({ message: "Nome inválido" });
+    }
+
+    if (!username || !/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+      return res.status(400).json({ message: "Username inválido (3-20 caracteres)" });
+    }
+
+    // Check if username is taken by another user
+    const existing = await db.select().from(users).where(and(eq(users.username, username), eq(users.id, userId)));
+    if (existing.length === 0) {
+      const isTaken = await db.select().from(users).where(eq(users.username, username));
+      if (isTaken.length > 0) {
+        return res.status(400).json({ message: "Username já em uso" });
+      }
+    }
+
+    const [updated] = await db.update(users)
+      .set({ name, username })
+      .where(eq(users.id, userId))
+      .returning();
+
+    res.json({ id: updated.id, name: updated.name, username: updated.username, email: updated.email });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.put("/api/auth/password", authenticateToken, async (req, res) => {
+  try {
+    const userId = (req as any).user.id;
+    const { currentPassword, newPassword } = req.body;
+
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
+    if (!user) return res.sendStatus(404);
+
+    const validPassword = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!validPassword) {
+      return res.status(400).json({ message: "Senha atual incorreta" });
+    }
+
+    if (!newPassword || newPassword.length < 8 || !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(newPassword)) {
+      return res.status(400).json({ message: "Nova senha não atende aos requisitos" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await db.update(users).set({ passwordHash: hashedPassword }).where(eq(users.id, userId));
+
+    res.json({ message: "Senha atualizada com sucesso" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.post("/api/auth/request-email-change", authenticateToken, async (req, res) => {
+  try {
+    const userId = (req as any).user.id;
+    const { newEmail } = req.body;
+
+    if (!newEmail || !validator.isEmail(newEmail)) {
+      return res.status(400).json({ message: "Email inválido" });
+    }
+
+    const existing = await db.select().from(users).where(eq(users.email, newEmail));
+    if (existing.length > 0 && existing[0].isVerified) {
+      return res.status(400).json({ message: "Email já em uso" });
+    }
+
+    const verificationCode = crypto.randomInt(100000, 999999).toString();
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+    await db.update(users).set({
+      verificationCode,
+      verificationCodeExpiresAt: expiresAt
+    }).where(eq(users.id, userId));
+
+    await sendVerificationEmail(newEmail, verificationCode);
+
+    res.json({ message: "Código enviado para o novo email" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.put("/api/auth/confirm-email-change", authenticateToken, async (req, res) => {
+  try {
+    const userId = (req as any).user.id;
+    const { newEmail, code } = req.body;
+
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
+    if (!user) return res.sendStatus(404);
+
+    if (user.verificationCode !== code || (user.verificationCodeExpiresAt && new Date() > user.verificationCodeExpiresAt)) {
+      return res.status(400).json({ message: "Código inválido ou expirado" });
+    }
+
+    const [updated] = await db.update(users).set({
+      email: newEmail,
+      verificationCode: null,
+      verificationCodeExpiresAt: null
+    }).where(eq(users.id, userId)).returning();
+
+    res.json({ id: updated.id, name: updated.name, username: updated.username, email: updated.email });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }

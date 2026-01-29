@@ -13,6 +13,7 @@ const Overview = lazy(() => import("./pages/Overview.tsx"));
 const Login = lazy(() => import("./pages/Login.tsx"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy.tsx"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService.tsx"));
+const Account = lazy(() => import("./pages/Account.tsx"));
 
 const PageLoader = () => (
   <div className="h-screen w-full flex items-center justify-center bg-zinc-950 text-white">
@@ -32,6 +33,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/overview" element={<Overview />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/account" element={<Account />} />
             </Routes>
           </Suspense>
         </BrowserRouter>

@@ -1,6 +1,7 @@
-import { Download, Menu, Search, Upload, LogOut } from "lucide-react";
+import { Download, Menu, Search, Upload, LogOut, Settings } from "lucide-react";
 import { Button } from "../ui/Button";
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router";
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -196,8 +197,16 @@ const OverviewHeader = ({
             <div className="absolute top-10 right-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden animate-fade-in z-50">
               <div className="px-4 py-3 border-b border-zinc-800">
                 <p className="text-sm font-medium text-white truncate">{user.name}</p>
-                <p className="text-xs text-zinc-500 truncate">{user.email}</p>
+                <p className="text-xs text-zinc-500 truncate">@{user.username}</p>
               </div>
+              <Link
+                to="/account"
+                onClick={() => setIsProfileOpen(false)}
+                className="w-full text-left px-4 py-3 text-sm text-zinc-300 hover:bg-zinc-800 transition-colors flex items-center gap-2 border-b border-zinc-800"
+              >
+                <Settings className="w-4 h-4" />
+                Minha Conta
+              </Link>
               <button
                 onClick={() => {
                   logout();
