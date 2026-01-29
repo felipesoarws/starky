@@ -3,7 +3,9 @@ import {
   Play,
   ArrowLeft,
   Clock,
+  Volume2
 } from "lucide-react";
+import { useEffect, useCallback } from "react";
 import { Button } from "./ui/Button";
 import { useNavigate } from "react-router";
 
@@ -14,7 +16,8 @@ const HERO_CARDS = [
     answer: "Hello",
     color: "text-blue-400",
     bg: "bg-blue-500/10",
-    border: "border-blue-500/20"
+    border: "border-blue-500/20",
+    language: "en-US"
   },
   {
     category: "Espanhol",
@@ -22,7 +25,8 @@ const HERO_CARDS = [
     answer: "Gracias",
     color: "text-yellow-400",
     bg: "bg-yellow-500/10",
-    border: "border-yellow-500/20"
+    border: "border-yellow-500/20",
+    language: "es-ES"
   },
   {
     category: "Francês",
@@ -30,7 +34,8 @@ const HERO_CARDS = [
     answer: "Au revoir",
     color: "text-red-400",
     bg: "bg-red-500/10",
-    border: "border-red-500/20"
+    border: "border-red-500/20",
+    language: "fr-FR"
   },
   {
     category: "Italiano",
@@ -38,7 +43,8 @@ const HERO_CARDS = [
     answer: "Per favore",
     color: "text-purple-400",
     bg: "bg-purple-500/10",
-    border: "border-purple-500/20"
+    border: "border-purple-500/20",
+    language: "it-IT"
   }
 ];
 
@@ -49,12 +55,47 @@ const Hero = () => {
 
   const currentCard = HERO_CARDS[currentCardIndex];
 
-  const handleNextCard = () => {
+  const handleNextCard = useCallback(() => {
     setIsFlipped(false);
     setTimeout(() => {
       setCurrentCardIndex((prev) => (prev + 1) % HERO_CARDS.length);
     }, 200);
-  }
+  }, []);
+
+  const handleSpeak = useCallback((text: string, lang: string) => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voices = window.speechSynthesis.getVoices();
+    let voice = voices.find(v => v.lang.replace('_', '-') === lang);
+    if (!voice) {
+      voice = voices.find(v => v.lang.startsWith(lang.split('-')[0]));
+    }
+    if (voice) {
+      utterance.voice = voice;
+    }
+    utterance.lang = lang;
+    window.speechSynthesis.speak(utterance);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Prioritize study shortcuts if user is interacting with the hero card
+      if (e.code === "Space") {
+        e.preventDefault();
+        setIsFlipped(prev => !prev);
+      } else if (["1", "2", "3", "4"].includes(e.key)) {
+        handleNextCard();
+      } else if (e.key.toLowerCase() === "s") {
+        const text = isFlipped ? currentCard.answer : currentCard.question;
+        const lang = isFlipped ? currentCard.language : "pt-BR";
+        handleSpeak(text, lang);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isFlipped, currentCard, handleNextCard, handleSpeak]);
 
   return (
     <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-10 overflow-hidden bg-(--accent-background)">
@@ -161,6 +202,21 @@ const Hero = () => {
                     {isFlipped ? "Resposta" : "Pergunta"}
                   </span>
 
+                  <div className="absolute top-4 right-4">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const text = isFlipped ? currentCard.answer : currentCard.question;
+                        const lang = isFlipped ? currentCard.language : "pt-BR";
+                        handleSpeak(text, lang);
+                      }}
+                      className="p-3 text-zinc-500 hover:text-accent transition-colors bg-white/5 rounded-full z-20"
+                      aria-label="Ouvir áudio"
+                    >
+                      <Volume2 className="w-5 h-5 md:w-6 md:h-6" />
+                    </button>
+                  </div>
+
                   {!isFlipped ? (
                     <div className="animate-fade-in key={currentCard.question}">
                       <h3 className="text-2xl md:text-4xl font-medium text-white leading-tight">
@@ -178,9 +234,9 @@ const Hero = () => {
                   )}
 
                   {!isFlipped && (
-                    <div className="mt-12 h-6 flex items-center justify-center">
+                    <div className="mt-12 h-6 flex flex-col items-center justify-center gap-2">
                       <span className="text-xs md:text-sm text-zinc-500 animate-pulse">
-                        Toque para ver a resposta
+                        Toque ou pressione <span className="font-bold border border-zinc-700 rounded px-1 min-w-[20px] inline-block text-center mr-1">Espaço</span> para ver a resposta
                       </span>
                     </div>
                   )}

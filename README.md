@@ -6,29 +6,32 @@ O Starky é uma aplicação moderna e inteligente de flashcards projetada para a
 
 ## ✨ Principais Funcionalidades
 
-- **🧠 Sistema de Repetição Espaçada (SRS)**: Algoritmo inteligente que agenda revisões com base em quão bem você conhece cada card (Fácil, Médio, Difícil).
-
-- **🏆 Decks Dominados**: Visualize claramente quais decks você já domina completamente. Decks com 100% de aproveitamento ganham destaque visual e efeitos especiais.
-
-- **📜 Histórico Detalhado**: Consulte o histórico completo de todas as suas sessões de estudo, com detalhes de cada card revisado e dificuldade escolhida.
-
-- **📊 Estatísticas Avançadas**: Acompanhe seu ritmo com um Heatmap de atividade diária, gráficos de distribuição de cards e previsões de revisão.
-
-- **🌍 Biblioteca Comunitária**: Baixe decks prontos da comunidade e personalize-os livremente (adicione, remova ou edite qualquer pergunta).
-
-- **☁️ Sincronização**: Todo o seu progresso fica salvo na nuvem, permitindo acesso de qualquer dispositivo.
-
-- **🎨 UI com Dark Mode**: Uma interface elegante, minimalista e livre de distrações, projetada para longas sessões de estudo.
-
-- **📱 Design Responsivo**: Funciona perfeitamente em dispositivos desktop e móveis, com adaptações inteligentes de interface.
+- **🧠 Sistema de Repetição Espaçada (SRS)**: Algoritmo inteligente que agenda revisões com base em quão bem você conhece cada card (Fácil, Médio, Bom e Difícil).
+- **🔊 Suporte a Áudio (TTS)**: Ouça a pronúncia dos cards em múltiplos idiomas (Inglês, Espanhol, Francês e Italiano), facilitando o aprendizado de línguas.
+- **⌨️ Atalhos de Teclado**: Estude com mais agilidade usando atalhos dedicados:
+  - `Espaço`: Ver resposta.
+  - `1`, `2`, `3`, `4`: Avaliar dificuldade.
+  - `S`: Ouvir o texto do card.
+- **📊 Estatísticas Avançadas**: Acompanhe sua evolução com:
+  - **Heatmap de Atividade**: Visualize seus dias seguidos de estudo.
+  - **Gráfico de Forecast**: Previsão de revisões para os próximos 7 dias.
+  - **Distribuição do Baralho**: Veja quantos cards estão em aprendizado ou dominados.
+- **🌍 Biblioteca Comunitária**: Baixe decks prontos de idiomas (A1 ao C1) e outros temas diretamente para sua conta.
+- **📂 Organização por Categorias**: Agrupe seus decks em categorias personalizadas para manter tudo organizado.
+- **🔄 Importação de Decks**: Traga seus decks do Anki (.apkg) ou importe via JSON de forma simples.
+- **🏆 Decks Dominados**: Decks com 100% de aproveitamento ganham destaque visual (efeito esmeralda), celebrando sua conquista.
+- **☁️ Sincronização em Nuvem**: Todo o seu progresso, cards e estatísticas são salvos na nuvem para acesso em qualquer lugar.
+- **🎨 UI Moderna**: Interface em Dark Mode, minimalista e focada, projetada para evitar a fadiga visual.
+- **📱 Design Responsivo**: Estude pelo computador, tablet ou celular com interface totalmente adaptada.
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **Framework**: React 18
-- **Linguagem**: TypeScript
-- **Estilização**: Tailwind CSS
-- **Build Tool**: Vite
-- **Ícones**: Lucide React
+- **Core**: React 18, TypeScript, Vite.
+- **Estilização**: Tailwind CSS (Design System personalizado).
+- **Visualização de Dados**: Recharts (Heatmap, Forecast e Distribuição).
+- **Ícones**: Lucide React.
+- **Persistência**: SQLite/Drizzle ORM (Backend) e sincronização via API.
+- **Integração**: Importação nativa de arquivos do Anki (.apkg).
 
 ## 📖 Como Usar
 
