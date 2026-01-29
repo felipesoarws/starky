@@ -32,7 +32,7 @@ export const cards = pgTable("cards", {
   difficulty: text("difficulty"),
   lastReviewed: timestamp("last_reviewed"),
   nextReviewDate: timestamp("next_review_date"),
-  interval: integer("interval"), // in minutes
+  interval: integer("interval"), // em minutos
   createdAt: timestamp("created_at").defaultNow(),
 });
 

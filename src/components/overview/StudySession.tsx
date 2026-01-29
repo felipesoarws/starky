@@ -55,16 +55,35 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
     const speak = () => {
       const voices = window.speechSynthesis.getVoices();
 
-      let voice = voices.find(v => v.lang.replace('_', '-') === targetLang);
+      // tenta encontrar vozes como google ou natural do edge
+      let voice = voices.find(v =>
+        v.lang.replace('_', '-') === targetLang &&
+        (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Premium'))
+      );
 
+      // se não achar, tenta qualquer voz do idioma exato
+      if (!voice) {
+        voice = voices.find(v => v.lang.replace('_', '-') === targetLang);
+      }
+
+      // se ainda não achar, tenta pelo prefixo do idioma (ex: 'pt')
       if (!voice) {
         const langPrefix = targetLang.split('-')[0];
-        voice = voices.find(v => v.lang.startsWith(langPrefix));
+        voice = voices.find(v =>
+          v.lang.startsWith(langPrefix) &&
+          (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Premium'))
+        );
+
+        if (!voice) {
+          voice = voices.find(v => v.lang.startsWith(langPrefix));
+        }
       }
 
       if (voice) {
         utterance.voice = voice;
         utterance.lang = voice.lang;
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
       } else {
         utterance.lang = targetLang;
       }
@@ -100,19 +119,11 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
     }
   };
 
-  const handleDifficulty = (factor: number, difficulty: "easy" | "good" | "medium" | "hard") => {
-    const now = new Date();
-    const nextDate = new Date(now.getTime() + factor * 60000);
-
-    const updatedCard: Card = {
+  const handleDifficulty = (difficulty: "easy" | "good" | "medium" | "hard") => {
+    onUpdateCard({
       ...currentCard,
-      lastReviewed: now,
-      nextReviewDate: nextDate.toISOString(),
-      interval: factor,
       difficulty
-    }
-
-    onUpdateCard(updatedCard);
+    });
     handleNext();
   };
 
@@ -128,16 +139,16 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
       } else if (isFlipped) {
         switch (e.key) {
           case "1":
-            handleDifficulty(1, "hard");
+            handleDifficulty("hard");
             break;
           case "2":
-            handleDifficulty(10, "medium");
+            handleDifficulty("medium");
             break;
           case "3":
-            handleDifficulty(2880, "good");
+            handleDifficulty("good");
             break;
           case "4":
-            handleDifficulty(5760, "easy");
+            handleDifficulty("easy");
             break;
         }
       }
@@ -342,7 +353,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               time="1m"
               textColor="red"
               color="bg-zinc-900 border-zinc-800 hover:border-red-700 hover:bg-red-800/20"
-              onClick={() => handleDifficulty(1, 'hard')}
+              onClick={() => handleDifficulty('hard')}
               shortcut="1"
             />
             <DifficultyButton
@@ -350,7 +361,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               time="10m"
               textColor="yellow"
               color="bg-zinc-900 border-zinc-800 hover:border-yellow-700 hover:bg-yellow-800/20"
-              onClick={() => handleDifficulty(10, 'medium')}
+              onClick={() => handleDifficulty('medium')}
               shortcut="2"
             />
             <DifficultyButton
@@ -358,7 +369,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               time="2d"
               textColor="blue"
               color="bg-zinc-900 border-zinc-800 hover:border-blue-700 hover:bg-blue-800/20"
-              onClick={() => handleDifficulty(2880, 'good')}
+              onClick={() => handleDifficulty('good')}
               shortcut="3"
             />
             <DifficultyButton
@@ -366,7 +377,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
               time="4d"
               textColor="green"
               color="bg-zinc-900 border-zinc-800 hover:border-green-700 hover:bg-green-800/20"
-              onClick={() => handleDifficulty(5760, 'easy')}
+              onClick={() => handleDifficulty('easy')}
               shortcut="4"
             />
           </div>
