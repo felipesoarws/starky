@@ -291,11 +291,12 @@ const DecksView = ({
 
                     <div className={`mt-6 ${isSelectionMode ? "pointer-events-none opacity-50" : ""}`}>
                       <Button
+                        variant={cardsToReview > 0 ? "primary" : "secondary"}
                         className="w-full justify-between group/btn"
                         onClick={(e) => { e.stopPropagation(); onStudyDeck(deck); }}
                       >
-                        Estudar Agora{" "}
-                        <ChevronRight className="w-4 h-4 text-white/50 group-hover/btn:translate-x-1 transition-transform" />
+                        {cardsToReview > 0 ? "Estudar Agora" : "Tudo em dia!"}
+                        <ChevronRight className={`w-4 h-4 transition-transform ${cardsToReview > 0 ? "text-white/50 group-hover/btn:translate-x-1" : "text-zinc-600 group-hover/btn:translate-x-1"}`} />
                       </Button>
                     </div>
                   </div>

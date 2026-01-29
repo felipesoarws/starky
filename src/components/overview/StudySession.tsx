@@ -119,10 +119,42 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
     }
   };
 
+  const calculateSRS = (difficulty: "easy" | "good" | "medium" | "hard") => {
+    const now = new Date();
+    let factor: number;
+
+    switch (difficulty) {
+      case "hard":
+        factor = 1;
+        break;
+      case "medium":
+        factor = 10;
+        break;
+      case "good":
+        factor = 2880; // 2 days
+        break;
+      case "easy":
+        factor = 5760; // 4 days
+        break;
+      default:
+        factor = 1;
+    }
+
+    const nextReviewDate = new Date(now.getTime() + factor * 60000);
+
+    return {
+      nextReviewDate: nextReviewDate as any,
+      interval: factor,
+      lastReviewed: now as any
+    };
+  };
+
   const handleDifficulty = (difficulty: "easy" | "good" | "medium" | "hard") => {
+    const srsData = calculateSRS(difficulty);
     onUpdateCard({
       ...currentCard,
-      difficulty
+      difficulty,
+      ...srsData
     });
     handleNext();
   };
@@ -325,7 +357,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
 
             {!isFlipped && (
               <div className="animate-pulse mt-6 text-xs translate-y-8 text-zinc-600 whitespace-nowrap lg:translate-y-12">
-                Pressione <span className="font-bold border border-zinc-700 rounded px-1 min-w-[20px] inline-block text-center mr-1">Espaço</span> para ver a resposta
+                Pressione <span className="font-bold border border-zinc-700 rounded px-1 min-w-[20px] inline-block text-center mx-1">Espaço</span> para ver a resposta
               </div>
             )}
 

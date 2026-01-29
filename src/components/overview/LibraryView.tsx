@@ -1,4 +1,5 @@
-import { Download, Library, CirclePlus, Check } from "lucide-react";
+import { useState } from "react";
+import { Download, Library, CirclePlus, Check, Loader2 } from "lucide-react";
 import { Button } from "../ui/Button";
 import type { Card, Deck } from "./types";
 import { useAuth } from "../../context/AuthContext";
@@ -44,7 +45,9 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
 
   const { isAuthenticated } = useAuth();
 
-  const addDeckToDash = (deckName: string) => {
+  const [addingDeckId, setAddingDeckId] = useState<string | null>(null);
+
+  const addDeckToDash = async (deckName: string) => {
     if (!isAuthenticated) {
       showAlert("Acesso Restrito", "Crie uma conta gratuita para salvar este deck na sua biblioteca!");
       return;
@@ -61,35 +64,41 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
       return;
     }
 
-    const normalizedCards = selectedDeck.cards.map((card, idx) => {
-      return {
-        id: Date.now() + idx,
-        question: card.question,
-        answer: card.answer,
-        difficulty: undefined,
-        lastReviewed: null,
-        nextReviewDate: null,
-        interval: 0
-      } satisfies Card;
-    });
+    setAddingDeckId(deckName);
 
-    let language = "pt-BR";
-    const titleLower = selectedDeck.title.toLowerCase();
-    if (titleLower.includes("inglês")) language = "en-US";
-    else if (titleLower.includes("espanhol")) language = "es-ES";
-    else if (titleLower.includes("francês")) language = "fr-FR";
-    else if (titleLower.includes("italiano")) language = "it-IT";
+    try {
+      const normalizedCards = selectedDeck.cards.map((card, idx) => {
+        return {
+          id: Date.now() + idx,
+          question: card.question,
+          answer: card.answer,
+          difficulty: undefined,
+          lastReviewed: null,
+          nextReviewDate: null,
+          interval: 0
+        } satisfies Card;
+      });
 
-    const normalizedDeck: Deck = {
-      title: selectedDeck.title,
-      category: selectedDeck.category,
-      id: 0,
-      lastStudied: "Nunca",
-      cards: normalizedCards,
-      language,
-    };
+      let language = "pt-BR";
+      const titleLower = selectedDeck.title.toLowerCase();
+      if (titleLower.includes("inglês")) language = "en-US";
+      else if (titleLower.includes("espanhol")) language = "es-ES";
+      else if (titleLower.includes("francês")) language = "fr-FR";
+      else if (titleLower.includes("italiano")) language = "it-IT";
 
-    onAddDeck(normalizedDeck);
+      const normalizedDeck: Deck = {
+        title: selectedDeck.title,
+        category: selectedDeck.category,
+        id: 0,
+        lastStudied: "Nunca",
+        cards: normalizedCards,
+        language,
+      };
+
+      await onAddDeck(normalizedDeck);
+    } finally {
+      setAddingDeckId(null);
+    }
   };
 
   const handleDownloadDeck = (deckTitle: string) => {
@@ -167,11 +176,15 @@ const LibraryView = ({ decks, onAddDeck }: LibraryViewProps) => {
                 <div>
                   <Button
                     variant={isAdded ? "secondary" : "primary"}
-                    className={`w-full justify-center ${isAdded ? "opacity-50 cursor-not-allowed" : ""}`}
+                    className={`w-full justify-center ${(isAdded || addingDeckId === deck.title) ? "opacity-50 cursor-not-allowed" : ""}`}
                     onClick={() => addDeckToDash(deck.title)}
-                    disabled={isAdded}
+                    disabled={isAdded || addingDeckId === deck.title}
                   >
-                    {isAdded ? (
+                    {addingDeckId === deck.title ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Adicionando...
+                      </>
+                    ) : isAdded ? (
                       <>
                         <Check className="w-4 h-4 mr-2" /> Adicionado
                       </>
