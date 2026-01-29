@@ -81,22 +81,22 @@ const Features = () => {
 
               <div className="mt-10 grid grid-cols-2 gap-4 max-w-md lg:grid-cols-4">
                 {[
-                  { label: "Fácil", color: "green", time: "em 4d" },
-                  { label: "Bom", color: "blue", time: "em 2d" },
-                  { label: "Médio", color: "yellow", time: "em 10m" },
-                  { label: "Difícil", color: "red", time: "em 1m" }
+                  { label: "Fácil", bg: "bg-emerald-900/10", border: "border-emerald-900/50", text: "text-emerald-400", time: "em 4d" },
+                  { label: "Bom", bg: "bg-blue-900/10", border: "border-blue-900/50", text: "text-blue-400", time: "em 2d" },
+                  { label: "Médio", bg: "bg-yellow-900/10", border: "border-yellow-900/50", text: "text-yellow-400", time: "em 10m" },
+                  { label: "Difícil", bg: "bg-red-900/10", border: "border-red-900/50", text: "text-red-400", time: "em 1m" }
                 ].map((item, idx) => (
                   <motion.div
                     key={item.label}
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5 + idx * 0.1 }}
-                    className={`bg-${item.color}-900/10 p-4 rounded-lg border border-${item.color}-900/50 text-center`}
+                    className={`${item.bg} p-4 rounded-lg border ${item.border} text-center`}
                   >
-                    <div className={`text-xl font-bold text-${item.color}-400 mb-1`}>
+                    <div className={`text-xl font-bold ${item.text} mb-1`}>
                       {item.label}
                     </div>
-                    <div className={`text-xs text-${item.color}-400`}>Mostrar {item.time}</div>
+                    <div className={`text-xs ${item.text}`}>Mostrar {item.time}</div>
                   </motion.div>
                 ))}
               </div>
@@ -124,15 +124,15 @@ const Features = () => {
 
             <div className="mt-6 space-y-3">
               {[
-                { lang: "EN", color: "blue", text: "Inglês A1 - C1" },
-                { lang: "ES", color: "yellow", text: "Espanhol A1 - C1" },
-                { lang: "FR", color: "red", text: "Francês A1 - C1" }
+                { lang: "EN", bg: "bg-blue-900/30", text: "text-blue-500", label: "Inglês A1 - C1" },
+                { lang: "ES", bg: "bg-yellow-900/30", text: "text-yellow-500", label: "Espanhol A1 - C1" },
+                { lang: "FR", bg: "bg-red-900/30", text: "text-red-500", label: "Francês A1 - C1" }
               ].map((deck) => (
                 <div key={deck.lang} className="p-3 bg-zinc-800 border border-zinc-700 rounded-lg flex items-center gap-3">
-                  <div className={`w-8 h-8 rounded bg-${deck.color}-900/30 flex items-center justify-center text-${deck.color}-500 font-bold text-xs`}>
+                  <div className={`w-8 h-8 rounded ${deck.bg} flex items-center justify-center ${deck.text} font-bold text-xs`}>
                     {deck.lang}
                   </div>
-                  <div className="text-sm font-medium text-zinc-300">{deck.text}</div>
+                  <div className="text-sm font-medium text-zinc-300">{deck.label}</div>
                 </div>
               ))}
             </div>
