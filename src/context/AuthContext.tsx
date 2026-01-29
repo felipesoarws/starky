@@ -44,7 +44,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (storedToken) {
         try {
           const res = await fetch(`${API_URL}/auth/me`, {
-            headers: { Authorization: `Bearer ${storedToken}` }
+            headers: { Authorization: `Bearer ${storedToken}` },
+            credentials: 'include'
           });
 
           if (res.ok) {
@@ -72,6 +73,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+        credentials: 'include'
       });
 
       if (!res.ok) {
@@ -100,6 +102,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
+        credentials: 'include'
       });
 
       const data = await res.json();
@@ -133,7 +136,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const res = await fetch(`${API_URL}/auth/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code })
+        body: JSON.stringify({ email, code }),
+        credentials: 'include'
       });
 
       if (!res.ok) {

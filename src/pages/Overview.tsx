@@ -530,7 +530,6 @@ function Overview() {
       const token = localStorage.getItem("starky_token");
 
       if (!token) {
-        // Local mode
         setDecks([...importedDecks, ...decks]);
         showNotification(`${importedDecks.length} decks importados localmente.`);
         return;
@@ -540,7 +539,6 @@ function Overview() {
 
       for (const deck of importedDecks) {
         try {
-          // Limit cards per deck to 1500 for safety, notify if truncated
           let cardsToImport = deck.cards;
           if (cardsToImport.length > 1500) {
             cardsToImport = cardsToImport.slice(0, 1500);

@@ -186,8 +186,9 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
           <button
             onClick={onCancel}
             className="p-2 -ml-2 text-zinc-400 hover:text-white rounded-full hover:bg-white/5 transition-colors"
+            aria-label="Voltar para biblioteca"
           >
-            <ArrowLeft className="w-3 h-3 md:w-5 md:h-5" />
+            <ArrowLeft className="w-3 h-3 md:w-5 md:h-5" aria-hidden="true" />
           </button>
           <span className="text-zinc-700">|</span>
           <h1 className="font-bold text-xs md:text-sm tracking-wide text-zinc-200">{deck.title}</h1>
@@ -206,9 +207,10 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
             <button
               onClick={() => setShowLangSettings(!showLangSettings)}
               className="p-2 text-zinc-400 hover:text-white rounded-full hover:bg-white/5 transition-colors"
-              title="Configurações de Áudio"
+              aria-label="Configurações de áudio"
+              aria-expanded={showLangSettings}
             >
-              <Settings2 className="w-4 h-4 md:w-5 md:h-5" />
+              <Settings2 className="w-4 h-4 md:w-5 md:h-5" aria-hidden="true" />
             </button>
 
             {showLangSettings && (
@@ -290,9 +292,9 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
                   handleSpeak(cleanText, isFlipped ? aSpeakLang : qSpeakLang);
                 }}
                 className="p-3 text-zinc-500 hover:text-blue-500 transition-colors bg-white/5 rounded-full z-200"
-                title="Ouvir (s)"
+                aria-label={`Ouvir ${isFlipped ? 'resposta' : 'pergunta'}`}
               >
-                <Volume2 className="w-5 h-5 md:w-6 md:h-6" />
+                <Volume2 className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" />
               </button>
             </div>
 
