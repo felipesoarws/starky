@@ -25,7 +25,7 @@ export class StudyService {
 
         switch (difficulty) {
             case "hard":
-                factor = 1;
+                factor = 0;
                 break;
             case "medium":
                 factor = 10;

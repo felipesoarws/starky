@@ -125,7 +125,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
 
     switch (difficulty) {
       case "hard":
-        factor = 1;
+        factor = 0;
         break;
       case "medium":
         factor = 10;
@@ -165,9 +165,10 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
 
       if (e.code === "Space") {
         e.preventDefault();
-        if (!isFlipped) {
-          setIsFlipped(true);
-        }
+        setIsFlipped(!isFlipped);
+      } else if (e.code === "Escape") {
+        e.preventDefault();
+        setIsFlipped(false);
       } else if (isFlipped) {
         switch (e.key) {
           case "1":
@@ -312,7 +313,7 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
 
       <main className="flex-1 flex items-center justify-center p-4 md:p-6 relative w-full overflow-y-auto">
         <div
-          onClick={() => !isFlipped && setIsFlipped(true)}
+          onClick={() => setIsFlipped(!isFlipped)}
           className="relative w-full max-w-4xl min-h-[50vh] md:min-h-0 md:aspect-video bg-[#121214] md:max-h-[65vh] border border-white/5 rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 cursor-pointer hover:border-white/10 transition-colors shadow-2xl relative group mx-auto my-auto"
         >
           <div className="text-center max-w-2xl w-full">
@@ -379,39 +380,49 @@ export default function StudySession({ deck, onUpdateCard, onFinish, onCancel }:
             Mostrar Resposta
           </Button>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full max-w-3xl">
-            <DifficultyButton
-              label="Difícil"
-              time="1m"
-              textColor="red"
-              color="bg-zinc-900 border-zinc-800 hover:border-red-700 hover:bg-red-800/20"
-              onClick={() => handleDifficulty('hard')}
-              shortcut="1"
-            />
-            <DifficultyButton
-              label="Médio"
-              time="10m"
-              textColor="yellow"
-              color="bg-zinc-900 border-zinc-800 hover:border-yellow-700 hover:bg-yellow-800/20"
-              onClick={() => handleDifficulty('medium')}
-              shortcut="2"
-            />
-            <DifficultyButton
-              label="Bom"
-              time="2d"
-              textColor="blue"
-              color="bg-zinc-900 border-zinc-800 hover:border-blue-700 hover:bg-blue-800/20"
-              onClick={() => handleDifficulty('good')}
-              shortcut="3"
-            />
-            <DifficultyButton
-              label="Fácil"
-              time="4d"
-              textColor="green"
-              color="bg-zinc-900 border-zinc-800 hover:border-green-700 hover:bg-green-800/20"
-              onClick={() => handleDifficulty('easy')}
-              shortcut="4"
-            />
+          <div className="flex flex-col md:flex-row gap-3 md:gap-4 w-full max-w-4xl">
+            <button
+              onClick={() => setIsFlipped(false)}
+              className="hidden md:flex h-15 px-6 rounded-xl border border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all items-center justify-center gap-2 group active:scale-95"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="text-sm font-bold">Voltar</span>
+            </button>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 flex-1">
+              <DifficultyButton
+                label="Difícil"
+                time="Agora"
+                textColor="red"
+                color="bg-zinc-900 border-zinc-800 hover:border-red-700 hover:bg-red-800/20"
+                onClick={() => handleDifficulty('hard')}
+                shortcut="1"
+              />
+              <DifficultyButton
+                label="Médio"
+                time="10m"
+                textColor="yellow"
+                color="bg-zinc-900 border-zinc-800 hover:border-yellow-700 hover:bg-yellow-800/20"
+                onClick={() => handleDifficulty('medium')}
+                shortcut="2"
+              />
+              <DifficultyButton
+                label="Bom"
+                time="2d"
+                textColor="blue"
+                color="bg-zinc-900 border-zinc-800 hover:border-blue-700 hover:bg-blue-800/20"
+                onClick={() => handleDifficulty('good')}
+                shortcut="3"
+              />
+              <DifficultyButton
+                label="Fácil"
+                time="4d"
+                textColor="green"
+                color="bg-zinc-900 border-zinc-800 hover:border-green-700 hover:bg-green-800/20"
+                onClick={() => handleDifficulty('easy')}
+                shortcut="4"
+              />
+            </div>
           </div>
         )}
       </footer>

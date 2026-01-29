@@ -1,15 +1,15 @@
-import { Globe } from "lucide-react";
+import { Code, Stethoscope, BookOpen, Scale, Binary, Music, Atom, Languages } from "lucide-react";
 import { motion } from "framer-motion";
 
 const subjects = [
-  { name: "Inglês", icon: <Globe className="w-4 h-4 text-blue-400" /> },
-  { name: "Espanhol", icon: <Globe className="w-4 h-4 text-yellow-400" /> },
-  { name: "Francês", icon: <Globe className="w-4 h-4 text-red-500" /> },
-  { name: "Italiano", icon: <Globe className="w-4 h-4 text-green-500" /> },
-  { name: "Alemão", icon: <Globe className="w-4 h-4 text-orange-400" /> },
-  { name: "Japonês", icon: <Globe className="w-4 h-4 text-purple-400" /> },
-  { name: "Coreano", icon: <Globe className="w-4 h-4 text-pink-400" /> },
-  { name: "Árabe", icon: <Globe className="w-4 h-4 text-emerald-400" /> },
+  { name: "Programação", icon: <Code className="w-4 h-4 text-blue-400" /> },
+  { name: "Medicina", icon: <Stethoscope className="w-4 h-4 text-red-400" /> },
+  { name: "Idiomas", icon: <Languages className="w-4 h-4 text-emerald-400" /> },
+  { name: "História", icon: <BookOpen className="w-4 h-4 text-yellow-400" /> },
+  { name: "Direito", icon: <Scale className="w-4 h-4 text-indigo-400" /> },
+  { name: "Matemática", icon: <Binary className="w-4 h-4 text-purple-400" /> },
+  { name: "Música", icon: <Music className="w-4 h-4 text-pink-400" /> },
+  { name: "Ciência", icon: <Atom className="w-4 h-4 text-cyan-400" /> },
 ];
 
 const marqueeItems = [...subjects, ...subjects];

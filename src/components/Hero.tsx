@@ -317,7 +317,7 @@ const Hero = () => {
                         Difícil
                       </span>
                       <span className="text-[10px] text-zinc-600 group-hover/btn:text-red-400/70 font-mono">
-                        1m
+                        Agora
                       </span>
                     </button>
                     <button

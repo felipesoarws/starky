@@ -84,7 +84,7 @@ const Features = () => {
                   { label: "Fácil", bg: "bg-emerald-900/10", border: "border-emerald-900/50", text: "text-emerald-400", time: "em 4d" },
                   { label: "Bom", bg: "bg-blue-900/10", border: "border-blue-900/50", text: "text-blue-400", time: "em 2d" },
                   { label: "Médio", bg: "bg-yellow-900/10", border: "border-yellow-900/50", text: "text-yellow-400", time: "em 10m" },
-                  { label: "Difícil", bg: "bg-red-900/10", border: "border-red-900/50", text: "text-red-400", time: "em 1m" }
+                  { label: "Difícil", bg: "bg-red-900/10", border: "border-red-900/50", text: "text-red-400", time: "Agora" }
                 ].map((item, idx) => (
                   <motion.div
                     key={item.label}
