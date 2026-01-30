@@ -26,7 +26,7 @@ function App() {
       <SEO 
         title="Starky | Domine qualquer assunto com Repetição Espaçada"
         description="O Starky ajuda você a memorizar conceitos a longo prazo. Crie flashcards, acompanhe seu progresso e deixe nosso algoritmo inteligente decidir quando revisar."
-        canonical="https://starky.app/"
+        canonical="https://starky.app.br/"
       />
       <Navbar scrolled={scrolled} />
       <main>

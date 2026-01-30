@@ -105,7 +105,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
                     <p className="text-sm font-medium text-white truncate">{user.name}</p>
                     <p className="text-xs text-zinc-500 truncate">@{user.username}</p>
                   </div>
-
+                
                   <Link
                     to="/account"
                     onClick={() => setIsProfileOpen(false)}
@@ -186,9 +186,12 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           </a>
 
           <hr className="border-zinc-800" />
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {isAuthenticated ? (
               <>
+                <Button variant="primary" className="w-full">
+                  <Link to="/overview"  onClick={() => setIsMobileMenuOpen(false)}>Acessar Dashboard</Link>
+                </Button>
                 <Button variant="secondary" className="w-full">
                   <Link to="/account" onClick={() => setIsMobileMenuOpen(false)}>Minha Conta</Link>
                 </Button>
