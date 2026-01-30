@@ -51,7 +51,7 @@ const Navbar = ({ scrolled }: NavbarProps) => {
           </span>
         </div>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-8 lg:ml-15">
           <a
             href="#features"
             className="text-sm font-medium text-zinc-400 hover:text-white transition-colors"

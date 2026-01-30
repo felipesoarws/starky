@@ -81,7 +81,6 @@ const Hero = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Prioritize study shortcuts if user is interacting with the hero card
       if (e.code === "Space") {
         e.preventDefault();
         setIsFlipped(prev => !prev);

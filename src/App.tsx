@@ -7,6 +7,7 @@ import Integration from "./components/Integration";
 import MobileApp from "./components/MobileApp";
 import CTA from "./components/CTA";
 import { Footer } from "./components/Footer";
+import Showcase from "./components/Showcase";
 
 function App() {
   const [scrolled, setScrolled] = useState<boolean>(false);
@@ -30,6 +31,7 @@ function App() {
       <Navbar scrolled={scrolled} />
       <main>
         <Hero />
+        <Showcase />
         <Features />
         <Integration />
         <MobileApp />
